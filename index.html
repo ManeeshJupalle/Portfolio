@@ -10,6 +10,7 @@
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#0b1020" />
 
+  <!-- Fonts & Tailwind -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -35,6 +36,7 @@
     }
   </script>
 
+  <!-- AOS (Animate on Scroll) & Icons -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
   <script type="module" defer src="https://unpkg.com/lucide@latest"></script>
 
@@ -159,166 +161,6 @@
     .liquid-light.pink {
       background: radial-gradient(circle, rgba(244,114,182,0.25), transparent 70%);
     }
-
-    /* NEW: Floating particles */
-    .particles {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      overflow: hidden;
-    }
-    .particle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: rgba(255,255,255,0.3);
-      border-radius: 50%;
-      animation: float-particle 20s infinite;
-    }
-    @keyframes float-particle {
-      0% {
-        transform: translateY(100vh) translateX(0);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-      }
-      90% {
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-100px) translateX(100px);
-        opacity: 0;
-      }
-    }
-
-    /* NEW: Scroll reveal animation */
-    .scroll-reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .scroll-reveal.revealed {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* NEW: Typing cursor effect */
-    .typing-cursor {
-      display: inline-block;
-      width: 3px;
-      height: 1.2em;
-      background: currentColor;
-      margin-left: 2px;
-      animation: blink 1s infinite;
-    }
-    @keyframes blink {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0; }
-    }
-
-    /* NEW: Card entrance animation */
-    .card-entrance {
-      animation: cardSlideIn 0.6s ease-out;
-    }
-    @keyframes cardSlideIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px) scale(0.95);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    /* NEW: Pulse glow effect */
-    .pulse-glow {
-      animation: pulseGlow 3s ease-in-out infinite;
-    }
-    @keyframes pulseGlow {
-      0%, 100% {
-        box-shadow: 0 0 20px rgba(99,102,241,0.3);
-      }
-      50% {
-        box-shadow: 0 0 40px rgba(99,102,241,0.6), 0 0 60px rgba(244,114,182,0.4);
-      }
-    }
-
-    /* NEW: Gradient text animation */
-    .gradient-text-animated {
-      background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899, #6366f1);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: gradientShift 3s linear infinite;
-    }
-    @keyframes gradientShift {
-      to { background-position: 200% center; }
-    }
-
-    /* NEW: Ripple effect on click */
-    .ripple {
-      position: relative;
-      overflow: hidden;
-    }
-    .ripple::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.5);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s, opacity 0.6s;
-      opacity: 0;
-    }
-    .ripple:active::after {
-      width: 300px;
-      height: 300px;
-      opacity: 1;
-      transition: 0s;
-    }
-
-    /* NEW: Smooth section transitions */
-    section {
-      position: relative;
-    }
-    section::before {
-      content: '';
-      position: absolute;
-      top: -100px;
-      left: 0;
-      right: 0;
-      height: 100px;
-      background: linear-gradient(to bottom, transparent, rgba(11,14,24,0.5));
-      pointer-events: none;
-    }
-    section:first-of-type::before {
-      display: none;
-    }
-
-    /* NEW: Icon spin on hover */
-    .icon-spin:hover i {
-      animation: spinIcon 0.5s ease;
-    }
-    @keyframes spinIcon {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* NEW: Parallax effect for cards */
-    .parallax-card {
-      transform-style: preserve-3d;
-      transition: transform 0.3s ease;
-    }
-    .parallax-card:hover {
-      transform: perspective(1000px) rotateX(2deg) rotateY(-2deg);
-    }
   </style>
 </head>
 <body class="dark bg-gray-950 text-gray-100">
@@ -328,49 +170,49 @@
     <div id="liquidPink" class="liquid-light pink"></div>
   </div>
 
-  <!-- NEW: Floating particles -->
-  <div class="particles" id="particlesContainer"></div>
-
+  <!-- Header (sticky, not fixed to avoid overlap) -->
   <header class="sticky top-0 z-50">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mt-4 flex items-center justify-between rounded-2xl glass shadow-soft border border-white/10 px-3 py-2">
         <a href="#home" class="py-2 text-sm font-semibold tracking-wide uppercase text-gray-900 dark:text-white">Laxmi Sai Maneesh Reddy Jupalle</a>
         <nav class="hidden md:flex items-center gap-6 text-sm text-gray-700 dark:text-gray-300">
-          <a href="#about" class="hover:text-white transition-colors">About</a>
-          <a href="#skills" class="hover:text-white transition-colors">Skills</a>
-          <a href="#experience" class="hover:text-white transition-colors">Experience</a>
-          <a href="#projects" class="hover:text-white transition-colors">Projects</a>
-          <a href="#education" class="hover:text-white transition-colors">Education</a>
-          <a href="#publications" class="hover:text-white transition-colors">Publications</a>
-          <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+          <a href="#about" class="hover:text-white">About</a>
+          <a href="#skills" class="hover:text-white">Skills</a>
+          <a href="#experience" class="hover:text-white">Experience</a>
+          <a href="#projects" class="hover:text-white">Projects</a>
+          <a href="#education" class="hover:text-white">Education</a>
+          <a href="#publications" class="hover:text-white">Publications</a>
+          <a href="#contact" class="hover:text-white">Contact</a>
         </nav>
         <div class="flex items-center gap-2">
-          <a href="Laxmi_Resume.pdf" class="btn-liquid ripple hidden sm:inline-flex items-center gap-2 h-10 rounded-xl text-white text-sm font-medium px-4 transition" download>
+          <a href="Laxmi_Resume.pdf" class="btn-liquid hidden sm:inline-flex items-center gap-2 h-10 rounded-xl text-white text-sm font-medium px-4 transition" download>
             <i data-lucide="download" class="w-4 h-4"></i>
             Resume
           </a>
-          <button id="themeToggle" class="btn-liquid ripple inline-flex items-center justify-center h-10 w-10 rounded-xl border border-white/10 transition" aria-label="Toggle dark mode" aria-pressed="true">
+          <button id="themeToggle" class="btn-liquid inline-flex items-center justify-center h-10 w-10 rounded-xl border border-white/10 transition" aria-label="Toggle dark mode" aria-pressed="true">
             <i data-lucide="moon" class="w-5 h-5"></i>
           </button>
-          <button id="navToggle" class="btn-liquid ripple md:hidden inline-flex items-center justify-center h-10 w-10 rounded-xl border border-white/10 transition" aria-label="Toggle navigation" aria-expanded="false">
+          <button id="navToggle" class="btn-liquid md:hidden inline-flex items-center justify-center h-10 w-10 rounded-xl border border-white/10 transition" aria-label="Toggle navigation" aria-expanded="false">
             <i data-lucide="menu" class="w-5 h-5"></i>
           </button>
         </div>
       </div>
+      <!-- Mobile nav -->
       <div id="mobileNav" class="md:hidden hidden mt-2 mb-2 rounded-2xl glass border border-white/10 p-3">
         <nav class="grid gap-3 text-sm text-gray-300">
-          <a class="hover:text-white transition-colors" href="#about">About</a>
-          <a class="hover:text-white transition-colors" href="#skills">Skills</a>
-          <a class="hover:text-white transition-colors" href="#experience">Experience</a>
-          <a class="hover:text-white transition-colors" href="#projects">Projects</a>
-          <a class="hover:text-white transition-colors" href="#education">Education</a>
-          <a class="hover:text-white transition-colors" href="#publications">Publications</a>
-          <a class="hover:text-white transition-colors" href="#contact">Contact</a>
+          <a class="hover:text-white" href="#about">About</a>
+          <a class="hover:text-white" href="#skills">Skills</a>
+          <a class="hover:text-white" href="#experience">Experience</a>
+          <a class="hover:text-white" href="#projects">Projects</a>
+          <a class="hover:text-white" href="#education">Education</a>
+          <a class="hover:text-white" href="#publications">Publications</a>
+          <a class="hover:text-white" href="#contact">Contact</a>
         </nav>
       </div>
     </div>
   </header>
 
+  <!-- Hero -->
   <section id="home" class="pt-16 pb-20 gradient-hero relative overflow-hidden">
     <div class="absolute inset-0 -z-10 opacity-30">
       <svg class="absolute -top-20 left-1/2 -translate-x-1/2" width="1200" height="600" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -389,41 +231,41 @@
       <div class="grid lg:grid-cols-2 items-center gap-10">
         <div data-aos="fade-up" data-aos-duration="900">
           <p class="inline-flex items-center gap-2 text-xs tracking-wider uppercase text-white/80 bg-white/10 border border-white/10 rounded-full px-3 py-1">Chicago, IL • Web Developer • AI & LLMs</p>
-          <h1 class="mt-6 text-4xl sm:text-5xl font-extrabold leading-tight">Hi, I'm <span class="gradient-text-animated">Laxmi Sai Maneesh Reddy Jupalle</span></h1>
+          <h1 class="mt-6 text-4xl sm:text-5xl font-extrabold leading-tight">Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-pink-400">Laxmi Sai Maneesh Reddy Jupalle</span></h1>
           <p class="mt-4 text-lg text-gray-300 max-w-xl">I build modern, performant web experiences and work with machine learning, LLM pipelines, and scalable systems.</p>
           <div class="mt-8 flex flex-wrap gap-3">
-            <a href="#projects" class="btn-liquid ripple inline-flex items-center gap-2 rounded-xl text-white font-medium px-5 py-3 transition icon-spin">
+            <a href="#projects" class="btn-liquid inline-flex items-center gap-2 rounded-xl text-white font-medium px-5 py-3 transition">
               <i data-lucide="rocket" class="w-5 h-5"></i>
               View Projects
             </a>
-            <a href="#contact" class="btn-liquid ripple inline-flex items-center gap-2 rounded-xl border border-white/10 text-white font-medium px-5 py-3 transition icon-spin">
+            <a href="#contact" class="btn-liquid inline-flex items-center gap-2 rounded-xl border border-white/10 text-white font-medium px-5 py-3 transition">
               <i data-lucide="mail" class="w-5 h-5"></i>
               Contact Me
             </a>
           </div>
           <div class="mt-6 flex flex-wrap items-center gap-4">
-            <a href="https://www.linkedin.com/in/laxmi-sai-maneesh-reddy-j-a52935106/" target="_blank" class="inline-flex items-center gap-2 text-gray-300 hover:text-white transition-all icon-spin"><i data-lucide="linkedin" class="w-5 h-5"></i> LinkedIn</a>
-            <a href="https://github.com/ManeeshJupalle" target="_blank" class="inline-flex items-center gap-2 text-gray-300 hover:text-white transition-all icon-spin"><i data-lucide="github" class="w-5 h-5"></i> GitHub</a>
-            <a href="mailto:ljupa1@uic.edu" class="inline-flex items-center gap-2 text-gray-300 hover:text-white transition-all icon-spin"><i data-lucide="mail" class="w-5 h-5"></i> ljupa1@uic.edu</a>
+            <a href="https://www.linkedin.com/in/laxmi-sai-maneesh-reddy-j-a52935106/" target="_blank" class="inline-flex items-center gap-2 text-gray-300 hover:text-white"><i data-lucide="linkedin" class="w-5 h-5"></i> LinkedIn</a>
+            <a href="https://github.com/ManeeshJupalle" target="_blank" class="inline-flex items-center gap-2 text-gray-300 hover:text-white"><i data-lucide="github" class="w-5 h-5"></i> GitHub</a>
+            <a href="mailto:ljupa1@uic.edu" class="inline-flex items-center gap-2 text-gray-300 hover:text-white"><i data-lucide="mail" class="w-5 h-5"></i> ljupa1@uic.edu</a>
           </div>
         </div>
         <div class="relative" data-aos="zoom-in" data-aos-delay="150">
-          <div class="absolute -inset-6 bg-gradient-to-tr from-brand-600/20 to-pink-500/20 rounded-3xl blur-2xl pulse-glow"></div>
+          <div class="absolute -inset-6 bg-gradient-to-tr from-brand-600/20 to-pink-500/20 rounded-3xl blur-2xl"></div>
           <div class="relative rounded-3xl border border-white/10 glass p-6 shadow-soft">
             <div class="grid grid-cols-2 gap-4">
-              <div class="rounded-2xl bg-white/5 border border-white/10 p-4 card-entrance parallax-card">
+              <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
                 <p class="text-xs text-gray-400">Current Focus</p>
                 <p class="mt-1 font-semibold">Web, ML, LLMs</p>
               </div>
-              <div class="rounded-2xl bg-white/5 border border-white/10 p-4 card-entrance parallax-card" style="animation-delay: 0.1s">
+              <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
                 <p class="text-xs text-gray-400">Location</p>
                 <p class="mt-1 font-semibold">Chicago, IL</p>
               </div>
-              <div class="rounded-2xl bg-white/5 border border-white/10 p-4 card-entrance parallax-card" style="animation-delay: 0.2s">
+              <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
                 <p class="text-xs text-gray-400">Open To</p>
                 <p class="mt-1 font-semibold">RA / Internships / Full-Time</p>
               </div>
-              <div class="rounded-2xl bg-white/5 border border-white/10 p-4 card-entrance parallax-card" style="animation-delay: 0.3s">
+              <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
                 <p class="text-xs text-gray-400">Languages</p>
                 <p class="mt-1 font-semibold">Python, JS, C++, Java</p>
               </div>
@@ -434,21 +276,22 @@
     </div>
   </section>
 
-  <section id="about" class="py-20 scroll-reveal">
+  <!-- About -->
+  <section id="about" class="py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="grid lg:grid-cols-3 gap-10 items-start">
         <div class="lg:col-span-1" data-aos="fade-right">
           <h2 class="text-3xl font-bold">About Me</h2>
-          <p class="mt-3 text-gray-400">Web developer with a strong ML background. I enjoy building sleek, accessible UIs and designing data-driven features with modern stacks.</p>
+          <p class="mt-3 text-gray-400">Web developer with a strong ML background. I enjoy building sleek, accessible UIs and designing data‑driven features with modern stacks.</p>
         </div>
         <div class="lg:col-span-2 grid gap-6" data-aos="fade-up">
-          <div class="rounded-2xl glass border border-white/10 p-6 parallax-card">
-            <p class="leading-relaxed text-gray-300">I'm pursuing an MS in Computer Science at the University of Illinois Chicago (GPA 3.80). Previously, I worked at VMware by Broadcom as a Technical Support Engineer, solving complex integration issues at scale and improving developer-tester workflows. I've built ML projects spanning LLM document analysis, assault detection with YOLOv5, and healthcare triage using CNNs.</p>
+          <div class="rounded-2xl glass border border-white/10 p-6">
+            <p class="leading-relaxed text-gray-300">I’m pursuing an MS in Computer Science at the University of Illinois Chicago (GPA 3.80). Previously, I worked at VMware by Broadcom as a Technical Support Engineer, solving complex integration issues at scale and improving developer–tester workflows. I’ve built ML projects spanning LLM document analysis, assault detection with YOLOv5, and healthcare triage using CNNs.</p>
           </div>
-          <div class="rounded-2xl glass border border-white/10 p-6 parallax-card">
+          <div class="rounded-2xl glass border border-white/10 p-6">
             <ul class="grid sm:grid-cols-2 gap-3 text-gray-300">
-              <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-5 h-5 text-brand-400"></i> MS CS @ UIC (2024-2026)</li>
-              <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-5 h-5 text-brand-400"></i> Ex-VMware by Broadcom</li>
+              <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-5 h-5 text-brand-400"></i> MS CS @ UIC (2024–2026)</li>
+              <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-5 h-5 text-brand-400"></i> Ex‑VMware by Broadcom</li>
               <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-5 h-5 text-brand-400"></i> Focus: Web • ML • LLMs</li>
               <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-5 h-5 text-brand-400"></i> Based in Chicago, IL</li>
             </ul>
@@ -458,57 +301,59 @@
     </div>
   </section>
 
-  <section id="skills" class="py-20 scroll-reveal">
+  <!-- Skills -->
+  <section id="skills" class="py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h2 class="text-3xl font-bold" data-aos="fade-up">Skills</h2>
       <div class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6" data-aos="fade-up" data-aos-delay="100">
-        <div class="rounded-2xl glass border border-white/10 p-6 parallax-card">
+        <div class="rounded-2xl glass border border-white/10 p-6">
           <p class="text-sm text-gray-400">Languages</p>
           <div class="mt-3 flex flex-wrap gap-2">
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">Python</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">JavaScript</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">C/C++</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">Java</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">SQL</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">HTML</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">Rust</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">Django</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Python</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">JavaScript</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">C/C++</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Java</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">SQL</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">HTML</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Rust</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Django</span>
           </div>
         </div>
-        <div class="rounded-2xl glass border border-white/10 p-6 parallax-card">
+        <div class="rounded-2xl glass border border-white/10 p-6">
           <p class="text-sm text-gray-400">ML / Data</p>
           <div class="mt-3 flex flex-wrap gap-2">
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">TensorFlow</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">PyTorch</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">scikit-learn</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">LLMs</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">NLP / NLTK</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">Data Analysis</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">Tableau</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">Power BI</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">TensorFlow</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">PyTorch</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">scikit‑learn</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">LLMs</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">NLP / NLTK</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Data Analysis</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Tableau</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Power BI</span>
           </div>
         </div>
-        <div class="rounded-2xl glass border border-white/10 p-6 parallax-card">
+        <div class="rounded-2xl glass border border-white/10 p-6">
           <p class="text-sm text-gray-400">DevOps / Cloud</p>
           <div class="mt-3 flex flex-wrap gap-2">
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">AWS</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">Azure</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">Docker</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">Jenkins</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">Ubuntu</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">Kali Linux</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm transition-all hover:bg-white/20 hover:scale-105">APIs</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">AWS</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Azure</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Docker</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Jenkins</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Ubuntu</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Kali Linux</span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">APIs</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="experience" class="py-20 scroll-reveal">
+  <!-- Experience -->
+  <section id="experience" class="py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h2 class="text-3xl font-bold" data-aos="fade-up">Experience</h2>
       <div class="mt-6 grid gap-6" data-aos="fade-up" data-aos-delay="100">
-        <div class="rounded-2xl glass border border-white/10 p-6 parallax-card">
+        <div class="rounded-2xl glass border border-white/10 p-6">
           <div class="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h3 class="text-xl font-semibold">Technical Support Engineer • VMware by Broadcom</h3>
@@ -520,11 +365,11 @@
             <li>Offered technical expertise in APIs, certificates, profiles, and XML for smooth integration and performance.</li>
             <li>Delivered robust technical support to thousands of clients, ensuring uninterrupted operations.</li>
             <li>Conducted deep investigations into platform issues, contributing to improved enterprise mobility solutions.</li>
-            <li>Designed and enforced Jira ticket standards, reducing dev-QA back-and-forth by ~40%.</li>
+            <li>Designed and enforced Jira ticket standards, reducing dev–QA back‑and‑forth by ~40%.</li>
             <li>Recognized for Apple product compatibility expertise; mentored new team members in troubleshooting.</li>
           </ul>
         </div>
-        <div class="rounded-2xl glass border border-white/10 p-6 parallax-card">
+        <div class="rounded-2xl glass border border-white/10 p-6">
           <div class="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h3 class="text-xl font-semibold">Associate Technical Support Engineer • VMware by Broadcom</h3>
@@ -536,7 +381,7 @@
             <li>Handled complex support requests and collaborated across teams to resolve platform issues.</li>
           </ul>
         </div>
-        <div class="rounded-2xl glass border border-white/10 p-6 parallax-card">
+        <div class="rounded-2xl glass border border-white/10 p-6">
           <div class="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h3 class="text-xl font-semibold">Campus Ambassador • Ifortis Corporate</h3>
@@ -552,53 +397,58 @@
     </div>
   </section>
 
-  <section id="projects" class="py-20 scroll-reveal">
+  <!-- Projects -->
+  <section id="projects" class="py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="flex items-end justify-between gap-4" data-aos="fade-up">
         <h2 class="text-3xl font-bold">Projects</h2>
         <div class="text-sm text-gray-400">Selected work</div>
       </div>
 
+      <!-- Filter -->
       <div class="mt-6 flex flex-wrap gap-2" data-aos="fade-up" data-aos-delay="50">
-        <button class="btn-liquid ripple proj-filter px-3 py-1 rounded-full text-sm transition-all" data-tech="all">All</button>
-        <button class="btn-liquid ripple proj-filter px-3 py-1 rounded-full text-sm transition-all" data-tech="llm">LLMs</button>
-        <button class="btn-liquid ripple proj-filter px-3 py-1 rounded-full text-sm transition-all" data-tech="cv">Computer Vision</button>
-        <button class="btn-liquid ripple proj-filter px-3 py-1 rounded-full text-sm transition-all" data-tech="health">Health</button>
+        <button class="btn-liquid proj-filter px-3 py-1 rounded-full text-sm" data-tech="all">All</button>
+        <button class="btn-liquid proj-filter px-3 py-1 rounded-full text-sm" data-tech="llm">LLMs</button>
+        <button class="btn-liquid proj-filter px-3 py-1 rounded-full text-sm" data-tech="cv">Computer Vision</button>
+        <button class="btn-liquid proj-filter px-3 py-1 rounded-full text-sm" data-tech="health">Health</button>
       </div>
 
       <div class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="projectsGrid" data-aos="fade-up" data-aos-delay="100">
-        <article class="project group rounded-2xl glass border border-white/10 overflow-hidden hover:border-brand-400/50 transition parallax-card" data-tags="llm">
+        <!-- Insurease -->
+        <article class="project group rounded-2xl glass border border-white/10 overflow-hidden hover:border-brand-400/50 transition" data-tags="llm">
           <div class="p-6">
             <h3 class="text-xl font-semibold">Insurease</h3>
-            <p class="mt-1 text-sm text-gray-400">LLM-powered doc analysis with vector/graph search (Qdrant/Neo4j) to extract and compare insurance documents.</p>
+            <p class="mt-1 text-sm text-gray-400">LLM‑powered doc analysis with vector/graph search (Qdrant/Neo4j) to extract and compare insurance documents.</p>
             <ul class="mt-3 flex flex-wrap gap-2 text-xs text-gray-300">
-              <li class="px-2 py-1 rounded bg-white/10 transition-all hover:bg-white/20">LLMs</li>
-              <li class="px-2 py-1 rounded bg-white/10 transition-all hover:bg-white/20">Qdrant</li>
-              <li class="px-2 py-1 rounded bg-white/10 transition-all hover:bg-white/20">Neo4j</li>
-              <li class="px-2 py-1 rounded bg-white/10 transition-all hover:bg-white/20">Python</li>
+              <li class="px-2 py-1 rounded bg-white/10">LLMs</li>
+              <li class="px-2 py-1 rounded bg-white/10">Qdrant</li>
+              <li class="px-2 py-1 rounded bg-white/10">Neo4j</li>
+              <li class="px-2 py-1 rounded bg-white/10">Python</li>
             </ul>
           </div>
         </article>
-        <article class="project group rounded-2xl glass border border-white/10 overflow-hidden hover:border-brand-400/50 transition parallax-card" data-tags="cv">
+        <!-- SheSecure -->
+        <article class="project group rounded-2xl glass border border-white/10 overflow-hidden hover:border-brand-400/50 transition" data-tags="cv">
           <div class="p-6">
             <h3 class="text-xl font-semibold">SheSecure</h3>
             <p class="mt-1 text-sm text-gray-400">YOLOv5 pipeline detecting potential assault incidents in CCTV footage; ~92% precision (test).</p>
             <ul class="mt-3 flex flex-wrap gap-2 text-xs text-gray-300">
-              <li class="px-2 py-1 rounded bg-white/10 transition-all hover:bg-white/20">YOLOv5</li>
-              <li class="px-2 py-1 rounded bg-white/10 transition-all hover:bg-white/20">Python</li>
-              <li class="px-2 py-1 rounded bg-white/10 transition-all hover:bg-white/20">Computer Vision</li>
+              <li class="px-2 py-1 rounded bg-white/10">YOLOv5</li>
+              <li class="px-2 py-1 rounded bg-white/10">Python</li>
+              <li class="px-2 py-1 rounded bg-white/10">Computer Vision</li>
             </ul>
           </div>
         </article>
-        <article class="project group rounded-2xl glass border border-white/10 overflow-hidden hover:border-brand-400/50 transition parallax-card" data-tags="health">
+        <!-- Jan Swasthya -->
+        <article class="project group rounded-2xl glass border border-white/10 overflow-hidden hover:border-brand-400/50 transition" data-tags="health">
           <div class="p-6">
             <h3 class="text-xl font-semibold">Jan Swasthya</h3>
             <p class="mt-1 text-sm text-gray-400">Healthcare app using CNN (85% accuracy) and chatbot for faster initial assessment.</p>
             <ul class="mt-3 flex flex-wrap gap-2 text-xs text-gray-300">
-              <li class="px-2 py-1 rounded bg-white/10 transition-all hover:bg-white/20">Django</li>
-              <li class="px-2 py-1 rounded bg-white/10 transition-all hover:bg-white/20">CNN</li>
-              <li class="px-2 py-1 rounded bg-white/10 transition-all hover:bg-white/20">Pandas</li>
-              <li class="px-2 py-1 rounded bg-white/10 transition-all hover:bg-white/20">NumPy</li>
+              <li class="px-2 py-1 rounded bg-white/10">Django</li>
+              <li class="px-2 py-1 rounded bg-white/10">CNN</li>
+              <li class="px-2 py-1 rounded bg-white/10">Pandas</li>
+              <li class="px-2 py-1 rounded bg-white/10">NumPy</li>
             </ul>
           </div>
         </article>
@@ -606,20 +456,21 @@
     </div>
   </section>
 
-  <section id="education" class="py-20 scroll-reveal">
+  <!-- Education -->
+  <section id="education" class="py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h2 class="text-3xl font-bold" data-aos="fade-up">Education</h2>
       <div class="mt-6 grid gap-6" data-aos="fade-up" data-aos-delay="100">
-        <div class="rounded-2xl glass border border-white/10 p-6 parallax-card">
+        <div class="rounded-2xl glass border border-white/10 p-6">
           <div class="flex items-center justify-between">
-            <h3 class="text-xl font-semibold">University of Illinois Chicago (UIC) – MS Computer Science</h3>
+            <h3 class="text-xl font-semibold">University of Illinois Chicago (UIC) — MS Computer Science</h3>
             <span class="text-xs text-gray-400">Aug 2024 – May 2026 • GPA: 3.80</span>
           </div>
           <p class="mt-2 text-gray-300 text-sm">AI, ML, Data Science, Networking, DBMS, DevOps</p>
         </div>
-        <div class="rounded-2xl glass border border-white/10 p-6 parallax-card">
+        <div class="rounded-2xl glass border border-white/10 p-6">
           <div class="flex items-center justify-between">
-            <h3 class="text-xl font-semibold">Jain (Deemed-to-be) University – B.Tech CST (AI)</h3>
+            <h3 class="text-xl font-semibold">Jain (Deemed‑to‑be) University — B.Tech CST (AI)</h3>
             <span class="text-xs text-gray-400">Jul 2018 – Jul 2022 • GPA: 3.80</span>
           </div>
           <p class="mt-2 text-gray-300 text-sm">ML, DL, NLP, HCI, DS, DAA, DBMS, Data Science, AI</p>
@@ -628,14 +479,15 @@
     </div>
   </section>
 
-  <section id="publications" class="py-20 scroll-reveal">
+  <!-- Publications -->
+  <section id="publications" class="py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h2 class="text-3xl font-bold" data-aos="fade-up">Publications</h2>
     <div class="mt-6 grid gap-6" data-aos="fade-up" data-aos-delay="100">
-        <div class="rounded-2xl glass border border-white/10 p-6 parallax-card">
+        <div class="rounded-2xl glass border border-white/10 p-6">
           <h3 class="text-xl font-semibold">Diabetic Retinopathy Detection using Machine Learning</h3>
-          <p class="text-sm text-gray-400 mt-1">5-layer CNN to classify X-ray images with 94.5% accuracy. Awarded International Best Researcher by ISSN.</p>
-          <a class="btn-liquid ripple inline-flex items-center gap-2 mt-3 text-white px-3 py-2 rounded-xl border border-white/10 transition-all icon-spin" href="https://www.ijariit.com/manuscript/diabetic-retinopathy-detection-using-machine-learning/" target="_blank" rel="noopener">
+          <p class="text-sm text-gray-400 mt-1">5‑layer CNN to classify X‑ray images with 94.5% accuracy. Awarded International Best Researcher by ISSN.</p>
+          <a class="btn-liquid inline-flex items-center gap-2 mt-3 text-white px-3 py-2 rounded-xl border border-white/10" href="https://www.ijariit.com/manuscript/diabetic-retinopathy-detection-using-machine-learning/" target="_blank" rel="noopener">
             <i data-lucide="external-link" class="w-4 h-4"></i> Read publication
           </a>
         </div>
@@ -643,24 +495,25 @@
     </div>
   </section>
 
-  <section id="contact" class="py-20 scroll-reveal">
+  <!-- Contact -->
+  <section id="contact" class="py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="grid lg:grid-cols-2 gap-10 items-start">
         <div data-aos="fade-right">
           <h2 class="text-3xl font-bold">Contact</h2>
-          <p class="mt-3 text-gray-400">I'm open to research assistantships, internships, and collaborations.</p>
+          <p class="mt-3 text-gray-400">I’m open to research assistantships, internships, and collaborations.</p>
           <div class="mt-6 space-y-3 text-gray-300">
-            <div class="flex items-center gap-3 transition-all hover:text-white icon-spin"><i data-lucide="map-pin" class="w-5 h-5"></i> Chicago, IL</div>
-            <a class="flex items-center gap-3 hover:text-white transition-all icon-spin" href="mailto:ljupa1@uic.edu"><i data-lucide="mail" class="w-5 h-5"></i> ljupa1@uic.edu</a>
-            <a class="flex items-center gap-3 hover:text-white transition-all icon-spin" href="tel:+18723577484"><i data-lucide="phone" class="w-5 h-5"></i> (872) 357-7484</a>
-            <a class="flex items-center gap-3 hover:text-white transition-all icon-spin" target="_blank" href="https://github.com/ManeeshJupalle"><i data-lucide="github" class="w-5 h-5"></i> GitHub</a>
-            <a class="flex items-center gap-3 hover:text-white transition-all icon-spin" target="_blank" href="https://www.linkedin.com/in/laxmi-sai-maneesh-reddy-j-a52935106/"><i data-lucide="linkedin" class="w-5 h-5"></i> LinkedIn</a>
+            <div class="flex items-center gap-3"><i data-lucide="map-pin" class="w-5 h-5"></i> Chicago, IL</div>
+            <a class="flex items-center gap-3 hover:text-white" href="mailto:ljupa1@uic.edu"><i data-lucide="mail" class="w-5 h-5"></i> ljupa1@uic.edu</a>
+            <a class="flex items-center gap-3 hover:text-white" href="tel:+18723577484"><i data-lucide="phone" class="w-5 h-5"></i> (872) 357‑7484</a>
+            <a class="flex items-center gap-3 hover:text-white" target="_blank" href="https://github.com/ManeeshJupalle"><i data-lucide="github" class="w-5 h-5"></i> GitHub</a>
+            <a class="flex items-center gap-3 hover:text-white" target="_blank" href="https://www.linkedin.com/in/laxmi-sai-maneesh-reddy-j-a52935106/"><i data-lucide="linkedin" class="w-5 h-5"></i> LinkedIn</a>
           </div>
         </div>
-        <form class="rounded-2xl glass border border-white/10 p-6 parallax-card" data-aos="fade-up" onsubmit="event.preventDefault(); window.location.href='mailto:ljupa1@uic.edu?subject=Hi%20Laxmi!&body='+encodeURIComponent(document.getElementById('msg').value);">
+        <form class="rounded-2xl glass border border-white/10 p-6" data-aos="fade-up" onsubmit="event.preventDefault(); window.location.href='mailto:ljupa1@uic.edu?subject=Hi%20Laxmi!&body='+encodeURIComponent(document.getElementById('msg').value);">
           <label class="block text-sm text-gray-400">Your Message</label>
-          <textarea id="msg" class="mt-2 w-full rounded-xl bg-white/5 border border-white/10 p-3 outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-400/20 transition-all min-h-[140px]" placeholder="Say hello..."></textarea>
-          <button class="btn-liquid ripple mt-4 inline-flex items-center gap-2 rounded-xl text-white font-medium px-5 py-3 transition-all icon-spin" type="submit">
+          <textarea id="msg" class="mt-2 w-full rounded-xl bg-white/5 border border-white/10 p-3 outline-none focus:border-brand-400 min-h-[140px]" placeholder="Say hello..."></textarea>
+          <button class="btn-liquid mt-4 inline-flex items-center gap-2 rounded-xl text-white font-medium px-5 py-3 transition" type="submit">
             <i data-lucide="send" class="w-5 h-5"></i>
             Send Email
           </button>
@@ -669,68 +522,32 @@
     </div>
   </section>
 
+  <!-- Footer -->
   <footer class="py-10 border-t border-white/10">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-4 text-sm text-gray-400">
       <div>© <span id="year"></span> Laxmi Sai Maneesh Reddy Jupalle</div>
       <div class="flex items-center gap-4">
-        <a href="#home" class="hover:text-white transition-colors">Home</a>
-        <a href="#projects" class="hover:text-white transition-colors">Projects</a>
-        <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+        <a href="#home" class="hover:text-white">Home</a>
+        <a href="#projects" class="hover:text-white">Projects</a>
+        <a href="#contact" class="hover:text-white">Contact</a>
       </div>
     </div>
   </footer>
 
-  <button id="toTop" class="btn-liquid ripple fixed bottom-6 right-6 hidden md:inline-flex items-center justify-center h-10 w-10 rounded-full border border-white/10 transition-all icon-spin" aria-label="Back to top">
+  <!-- Floating back-to-top -->
+  <button id="toTop" class="btn-liquid fixed bottom-6 right-6 hidden md:inline-flex items-center justify-center h-10 w-10 rounded-full border border-white/10 transition" aria-label="Back to top">
     <i data-lucide="chevron-up" class="w-5 h-5"></i>
   </button>
 
+  <!-- Scripts -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
+    // AOS
     AOS.init({ once: true, offset: 80 });
+    // Icons
     lucide.createIcons();
 
-    // NEW: Create floating particles
-    const particlesContainer = document.getElementById('particlesContainer');
-    for (let i = 0; i < 30; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'particle';
-      particle.style.left = Math.random() * 100 + '%';
-      particle.style.animationDelay = Math.random() * 20 + 's';
-      particle.style.animationDuration = (15 + Math.random() * 10) + 's';
-      particlesContainer.appendChild(particle);
-    }
-
-    // NEW: Scroll reveal animation
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -100px 0px'
-    };
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-        }
-      });
-    }, observerOptions);
-    document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
-
-    // NEW: Parallax effect for cards
-    document.querySelectorAll('.parallax-card').forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const rotateX = (y - centerY) / 20;
-        const rotateY = (centerX - x) / 20;
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-      });
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
-      });
-    });
-
+    // Theme toggle (default dark, persist preference)
     const themeToggle = document.getElementById('themeToggle');
     function applyTheme(value){
       document.documentElement.classList.toggle('dark', value !== 'light');
@@ -750,6 +567,7 @@
       applyTheme(now);
     });
 
+    // Mobile nav toggle
     const navToggle = document.getElementById('navToggle');
     const mobileNav = document.getElementById('mobileNav');
     navToggle?.addEventListener('click', () => {
@@ -757,6 +575,7 @@
       navToggle.setAttribute('aria-expanded', String(!open));
     });
 
+    // Projects filter
     const filters = document.querySelectorAll('.proj-filter');
     const cards = document.querySelectorAll('#projectsGrid .project');
     filters.forEach(btn => btn.addEventListener('click', () => {
@@ -769,14 +588,17 @@
       });
     }));
 
+    // Back to top
     const toTop = document.getElementById('toTop');
     window.addEventListener('scroll', () => {
       toTop.style.display = window.scrollY > 600 ? 'inline-flex' : 'none';
     });
     toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
+    // Footer year
     document.getElementById('year').textContent = new Date().getFullYear();
 
+    // Liquid parallax light motion
     const blue = document.getElementById('liquidBlue');
     const pink = document.getElementById('liquidPink');
     function centerLights() {
