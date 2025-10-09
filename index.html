@@ -10,7 +10,6 @@
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#0b1020" />
 
-  <!-- Fonts & Tailwind -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -33,64 +32,125 @@
     }
   </script>
 
-  <!-- AOS (Animate on Scroll) & Icons -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
   <script type="module" defer src="https://unpkg.com/lucide@latest"></script>
 
   <style>
-    html { scroll-behavior: smooth; }
-    .gradient-hero {
-      background:
-        radial-gradient(900px 500px at 10% -10%, rgba(99,102,241,.25), transparent 60%),
-        radial-gradient(900px 500px at 90% -10%, rgba(244,114,182,.25), transparent 60%);
+    /* --- NEW: SMOOTHER SCROLLING & SCROLL PADDING --- */
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 100px; /* Offset for sticky header when jumping to sections */
     }
-    .glass { backdrop-filter: blur(10px); background: rgba(255,255,255,.65); }
-    .dark .glass { background: rgba(17,24,39,.55); }
+    
+    /* --- NEW: CURSOR SPOTLIGHT EFFECT --- */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 100;
+      background: radial-gradient(
+        circle 400px at var(--x, 50%) var(--y, 50%),
+        rgba(99, 102, 241, 0.15),
+        transparent 80%
+      );
+      transition: background .1s ease-out;
+    }
+    
+    /* --- UPDATED: MORE DYNAMIC HERO GRADIENT --- */
+    @keyframes gradient-animation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .gradient-hero {
+      background: linear-gradient(-45deg, #4f46e520, #f472b620, #312e8130, #6366f130);
+      background-size: 400% 400%;
+      animation: gradient-animation 20s ease infinite;
+    }
+
+    .glass { 
+      backdrop-filter: blur(12px); 
+      background: rgba(255,255,255,.65);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .dark .glass { 
+      background: rgba(17,24,39,.55); 
+    }
+    
+    /* --- NEW: HOVER LIFT EFFECT FOR CARDS --- */
+    .interactive-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+    
+    /* --- NEW: ACCESSIBILITY FOCUS STYLES --- */
+    :focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.6);
+    }
+    .header-nav a.active-link {
+        color: #fff;
+        text-shadow: 0 0 10px #818cf8;
+    }
+    
+    /* --- NEW: PROJECT FILTERING TRANSITIONS --- */
+    #projectsGrid .project {
+        transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .project.hidden {
+        opacity: 0;
+        transform: scale(0.95);
+        pointer-events: none;
+        height: 0;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
   </style>
 </head>
-<body class="dark bg-gray-950 text-gray-100">
-  <!-- Header (sticky, not fixed to avoid overlap) -->
-  <header class="sticky top-0 z-50">
+<body class="dark bg-gray-950 text-gray-100 font-sans antialiased">
+  
+  <header id="mainHeader" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="mt-4 flex items-center justify-between rounded-2xl glass shadow-soft border border-white/10 px-3 py-2">
-        <a href="#home" class="py-2 text-sm font-semibold tracking-wide uppercase text-gray-900 dark:text-white">Laxmi Sai Maneesh Reddy Jupalle</a>
-        <nav class="hidden md:flex items-center gap-6 text-sm text-gray-700 dark:text-gray-300">
-          <a href="#about" class="hover:text-white">About</a>
-          <a href="#skills" class="hover:text-white">Skills</a>
-          <a href="#experience" class="hover:text-white">Experience</a>
-          <a href="#projects" class="hover:text-white">Projects</a>
-          <a href="#education" class="hover:text-white">Education</a>
-          <a href="#publications" class="hover:text-white">Publications</a>
-          <a href="#contact" class="hover:text-white">Contact</a>
+      <div id="header-inner" class="mt-4 flex items-center justify-between rounded-2xl glass shadow-soft border border-white/10 px-3 py-2 transition-all duration-300 ease-in-out">
+        <a href="#home" class="py-2 text-sm font-semibold tracking-wide uppercase text-gray-900 dark:text-white rounded-md">Laxmi Sai Maneesh Reddy Jupalle</a>
+        <nav class="hidden md:flex items-center gap-6 text-sm text-gray-700 dark:text-gray-300 header-nav">
+          <a href="#about" class="transition hover:text-white p-1 rounded-md">About</a>
+          <a href="#skills" class="transition hover:text-white p-1 rounded-md">Skills</a>
+          <a href="#experience" class="transition hover:text-white p-1 rounded-md">Experience</a>
+          <a href="#projects" class="transition hover:text-white p-1 rounded-md">Projects</a>
+          <a href="#education" class="transition hover:text-white p-1 rounded-md">Education</a>
+          <a href="#publications" class="transition hover:text-white p-1 rounded-md">Publications</a>
+          <a href="#contact" class="transition hover:text-white p-1 rounded-md">Contact</a>
         </nav>
         <div class="flex items-center gap-2">
-          <a href="Laxmi_Resume.pdf" class="hidden sm:inline-flex items-center gap-2 h-10 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium px-4 transition" download>
+          <a href="Laxmi_Resume.pdf" class="hidden sm:inline-flex items-center gap-2 h-10 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium px-4 transition-transform hover:scale-105" download>
             <i data-lucide="download" class="w-4 h-4"></i>
             Resume
           </a>
-          <button id="themeToggle" class="inline-flex items-center justify-center h-10 w-10 rounded-xl border border-white/10 hover:bg-white/10 transition" aria-label="Toggle dark mode" aria-pressed="true">
+          <button id="themeToggle" class="inline-flex items-center justify-center h-10 w-10 rounded-xl border border-white/10 hover:bg-white/10 transition-transform hover:scale-110" aria-label="Toggle dark mode" aria-pressed="true">
             <i data-lucide="moon" class="w-5 h-5"></i>
           </button>
-          <button id="navToggle" class="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-xl border border-white/10 hover:bg-white/10 transition" aria-label="Toggle navigation" aria-expanded="false">
+          <button id="navToggle" class="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-xl border border-white/10 hover:bg-white/10 transition-transform hover:scale-110" aria-label="Toggle navigation" aria-expanded="false">
             <i data-lucide="menu" class="w-5 h-5"></i>
           </button>
         </div>
       </div>
-      <!-- Mobile nav -->
       <div id="mobileNav" class="md:hidden hidden mt-2 mb-2 rounded-2xl glass border border-white/10 p-3">
         <nav class="grid gap-3 text-sm text-gray-300">
-          <a class="hover:text-white" href="#about">About</a>
-          <a class="hover:text-white" href="#skills">Skills</a>
-          <a class="hover:text-white" href="#experience">Experience</a>
-          <a class="hover:text-white" href="#projects">Projects</a>
-          <a class="hover:text-white" href="#education">Education</a>
-          <a class="hover:text-white" href="#publications">Publications</a>
-          <a class="hover:text-white" href="#contact">Contact</a>
+          <a class="hover:text-white block p-2 rounded-md" href="#about">About</a>
+          <a class="hover:text-white block p-2 rounded-md" href="#skills">Skills</a>
+          <a class="hover:text-white block p-2 rounded-md" href="#experience">Experience</a>
+          <a class="hover:text-white block p-2 rounded-md" href="#projects">Projects</a>
+          <a class="hover:text-white block p-2 rounded-md" href="#education">Education</a>
+          <a class="hover:text-white block p-2 rounded-md" href="#publications">Publications</a>
+          <a class="hover:text-white block p-2 rounded-md" href="#contact">Contact</a>
         </nav>
       </div>
     </div>
   </header>
-
   <!-- Hero -->
   <section id="home" class="pt-16 pb-20 gradient-hero relative overflow-hidden">
     <div class="absolute inset-0 -z-10 opacity-30">
