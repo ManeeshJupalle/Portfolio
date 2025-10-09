@@ -14,6 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
+
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -36,13 +37,11 @@
   <script type="module" defer src="https://unpkg.com/lucide@latest"></script>
 
   <style>
-    /* --- NEW: SMOOTHER SCROLLING & SCROLL PADDING --- */
     html {
       scroll-behavior: smooth;
-      scroll-padding-top: 100px; /* Offset for sticky header when jumping to sections */
+      scroll-padding-top: var(--header-height, 100px);
     }
-    
-    /* --- NEW: CURSOR SPOTLIGHT EFFECT --- */
+
     body::before {
       content: '';
       position: fixed;
@@ -57,8 +56,7 @@
       );
       transition: background .1s ease-out;
     }
-    
-    /* --- UPDATED: MORE DYNAMIC HERO GRADIENT --- */
+
     @keyframes gradient-animation {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
@@ -75,248 +73,79 @@
       background: rgba(255,255,255,.65);
       transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     }
-    .dark .glass { 
-      background: rgba(17,24,39,.55); 
-    }
-    
-    /* --- NEW: HOVER LIFT EFFECT FOR CARDS --- */
+    .dark .glass { background: rgba(17,24,39,.55); }
+
     .interactive-card:hover {
         transform: translateY(-4px);
         box-shadow: 0 20px 40px rgba(0,0,0,0.1);
     }
-    
-    /* --- NEW: ACCESSIBILITY FOCUS STYLES --- */
+
     :focus-visible {
         outline: none;
         box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.6);
     }
-    .header-nav a.active-link {
-        color: #fff;
-        text-shadow: 0 0 10px #818cf8;
+
+    #home {
+      padding-top: calc(var(--header-height, 88px) + 3rem);
     }
-    
-    /* --- NEW: PROJECT FILTERING TRANSITIONS --- */
-    #projectsGrid .project {
-        transition: opacity 0.4s ease, transform 0.4s ease;
-    }
-    .project.hidden {
-        opacity: 0;
-        transform: scale(0.95);
-        pointer-events: none;
-        height: 0;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-    }
+
   </style>
 </head>
+
 <body class="dark bg-gray-950 text-gray-100 font-sans antialiased">
-  
+
+  <!-- Header -->
   <header id="mainHeader" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div id="header-inner" class="mt-4 flex items-center justify-between rounded-2xl glass shadow-soft border border-white/10 px-3 py-2 transition-all duration-300 ease-in-out">
+      <div class="mt-4 flex items-center justify-between rounded-2xl glass shadow-soft border border-white/10 px-3 py-2">
         <a href="#home" class="py-2 text-sm font-semibold tracking-wide uppercase text-gray-900 dark:text-white rounded-md">Laxmi Sai Maneesh Reddy Jupalle</a>
-        <nav class="hidden md:flex items-center gap-6 text-sm text-gray-700 dark:text-gray-300 header-nav">
-          <a href="#about" class="transition hover:text-white p-1 rounded-md">About</a>
-          <a href="#skills" class="transition hover:text-white p-1 rounded-md">Skills</a>
-          <a href="#experience" class="transition hover:text-white p-1 rounded-md">Experience</a>
-          <a href="#projects" class="transition hover:text-white p-1 rounded-md">Projects</a>
-          <a href="#education" class="transition hover:text-white p-1 rounded-md">Education</a>
-          <a href="#publications" class="transition hover:text-white p-1 rounded-md">Publications</a>
-          <a href="#contact" class="transition hover:text-white p-1 rounded-md">Contact</a>
+        <nav class="hidden md:flex items-center gap-6 text-sm text-gray-700 dark:text-gray-300">
+          <a href="#about" class="hover:text-white">About</a>
+          <a href="#skills" class="hover:text-white">Skills</a>
+          <a href="#experience" class="hover:text-white">Experience</a>
+          <a href="#projects" class="hover:text-white">Projects</a>
+          <a href="#education" class="hover:text-white">Education</a>
+          <a href="#publications" class="hover:text-white">Publications</a>
+          <a href="#contact" class="hover:text-white">Contact</a>
         </nav>
         <div class="flex items-center gap-2">
-          <a href="Laxmi_Resume.pdf" class="hidden sm:inline-flex items-center gap-2 h-10 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium px-4 transition-transform hover:scale-105" download>
+          <a href="Laxmi_Resume.pdf"
+             class="hidden sm:inline-flex items-center justify-center gap-2 h-10 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium px-4 transition-transform hover:scale-105"
+             download>
             <i data-lucide="download" class="w-4 h-4"></i>
             Resume
           </a>
-          <button id="themeToggle" class="inline-flex items-center justify-center h-10 w-10 rounded-xl border border-white/10 hover:bg-white/10 transition-transform hover:scale-110" aria-label="Toggle dark mode" aria-pressed="true">
+          <button id="themeToggle" class="inline-flex items-center justify-center h-10 w-10 rounded-xl border border-white/10 hover:bg-white/10">
             <i data-lucide="moon" class="w-5 h-5"></i>
           </button>
-          <button id="navToggle" class="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-xl border border-white/10 hover:bg-white/10 transition-transform hover:scale-110" aria-label="Toggle navigation" aria-expanded="false">
-            <i data-lucide="menu" class="w-5 h-5"></i>
-          </button>
         </div>
-      </div>
-      <div id="mobileNav" class="md:hidden hidden mt-2 mb-2 rounded-2xl glass border border-white/10 p-3">
-        <nav class="grid gap-3 text-sm text-gray-300">
-          <a class="hover:text-white block p-2 rounded-md" href="#about">About</a>
-          <a class="hover:text-white block p-2 rounded-md" href="#skills">Skills</a>
-          <a class="hover:text-white block p-2 rounded-md" href="#experience">Experience</a>
-          <a class="hover:text-white block p-2 rounded-md" href="#projects">Projects</a>
-          <a class="hover:text-white block p-2 rounded-md" href="#education">Education</a>
-          <a class="hover:text-white block p-2 rounded-md" href="#publications">Publications</a>
-          <a class="hover:text-white block p-2 rounded-md" href="#contact">Contact</a>
-        </nav>
       </div>
     </div>
   </header>
-  
-  <main>
-    <section id="home" class="pt-32 pb-20 relative overflow-hidden gradient-hero">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-2 items-center gap-10">
-          <div data-aos="fade-up" data-aos-duration="900">
-            <p class="inline-flex items-center gap-2 text-xs tracking-wider uppercase text-white/80 bg-white/10 border border-white/10 rounded-full px-3 py-1">Chicago, IL • Web Developer • AI & LLMs</p>
-            <h1 class="mt-6 text-4xl sm:text-5xl font-extrabold leading-tight">Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-pink-400">Laxmi Sai Maneesh Reddy Jupalle</span></h1>
-            <p class="mt-4 text-lg text-gray-300 max-w-xl">I build modern, performant web experiences and work with machine learning, LLM pipelines, and scalable systems.</p>
-            <div class="mt-8 flex flex-wrap gap-3">
-              <a href="#projects" class="inline-flex items-center gap-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-medium px-5 py-3 transition-transform hover:scale-105">
-                <i data-lucide="rocket" class="w-5 h-5"></i>
-                View Projects
-              </a>
-              <a href="#contact" class="inline-flex items-center gap-2 rounded-xl border border-white/10 hover:bg-white/10 text-white font-medium px-5 py-3 transition-transform hover:scale-105">
-                <i data-lucide="mail" class="w-5 h-5"></i>
-                Contact Me
-              </a>
-            </div>
-            <div class="mt-6 flex flex-wrap items-center gap-4">
-              <a href="https://www.linkedin.com/in/laxmi-sai-maneesh-reddy-j-a52935106/" target="_blank" class="inline-flex items-center gap-2 text-gray-300 hover:text-white transition-transform hover:scale-105"><i data-lucide="linkedin" class="w-5 h-5"></i> LinkedIn</a>
-              <a href="https://github.com/ManeeshJupalle" target="_blank" class="inline-flex items-center gap-2 text-gray-300 hover:text-white transition-transform hover:scale-105"><i data-lucide="github" class="w-5 h-5"></i> GitHub</a>
-              <a href="mailto:ljupa1@uic.edu" class="inline-flex items-center gap-2 text-gray-300 hover:text-white transition-transform hover:scale-105"><i data-lucide="mail" class="w-5 h-5"></i> ljupa1@uic.edu</a>
-            </div>
-          </div>
-          <div class="relative" data-aos="zoom-in" data-aos-delay="150">
-            <div class="absolute -inset-6 bg-gradient-to-tr from-brand-600/20 to-pink-500/20 rounded-3xl blur-2xl"></div>
-            <div class="relative rounded-3xl border border-white/10 glass p-6 shadow-soft">
-              <div class="grid grid-cols-2 gap-4">
-                <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
-                  <p class="text-xs text-gray-400">Current Focus</p>
-                  <p class="mt-1 font-semibold">Web, ML, LLMs</p>
-                </div>
-                <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
-                  <p class="text-xs text-gray-400">Location</p>
-                  <p class="mt-1 font-semibold">Chicago, IL</p>
-                </div>
-                <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
-                  <p class="text-xs text-gray-400">Open To</p>
-                  <p class="mt-1 font-semibold">RA / Internships</p>
-                </div>
-                <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
-                  <p class="text-xs text-gray-400">Languages</p>
-                  <p class="mt-1 font-semibold">Python, JS, C++, Java</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <section id="about" class="py-20 scroll-mt-20">
-        </section>
-    
-    <section id="skills" class="py-20 scroll-mt-20">
-        </section>
-
-    <section id="experience" class="py-20 scroll-mt-20">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold" data-aos="fade-up">Experience</h2>
-        <div class="mt-6 grid gap-6" data-aos="fade-up" data-aos-delay="100">
-          <div class="rounded-2xl glass border border-white/10 p-6 interactive-card">
-            </div>
-          <div class="rounded-2xl glass border border-white/10 p-6 interactive-card">
-            </div>
-        </div>
-      </div>
-    </section>
-    
-    <section id="projects" class="py-20 scroll-mt-20">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold" data-aos="fade-up">Projects</h2>
-        <div class="mt-6 flex flex-wrap gap-2" data-aos="fade-up" data-aos-delay="50">
-            <button class="proj-filter px-3 py-1 rounded-full bg-brand-500 text-white text-sm" data-tech="all">All</button>
-            <button class="proj-filter px-3 py-1 rounded-full bg-white/10 text-sm" data-tech="llm">LLMs</button>
-            <button class="proj-filter px-3 py-1 rounded-full bg-white/10 text-sm" data-tech="cv">Computer Vision</button>
-            <button class="proj-filter px-3 py-1 rounded-full bg-white/10 text-sm" data-tech="health">Health</button>
-        </div>
-        <div class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="projectsGrid" data-aos="fade-up" data-aos-delay="100">
-            <article class="project group rounded-2xl glass border border-white/10 overflow-hidden hover:border-brand-400/50 interactive-card" data-tags="llm">
-              <div class="p-6">
-                </div>
-            </article>
-            <article class="project group rounded-2xl glass border border-white/10 overflow-hidden hover:border-brand-400/50 interactive-card" data-tags="cv">
-              <div class="p-6">
-                </div>
-            </article>
-            <article class="project group rounded-2xl glass border border-white/10 overflow-hidden hover:border-brand-400/50 interactive-card" data-tags="health">
-              <div class="p-6">
-                </div>
-            </article>
-        </div>
-      </div>
-    </section>
-
-    </main>
-  
-  <footer class="py-10 border-t border-white/10">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-4 text-sm text-gray-400">
-      <div>© <span id="year"></span> Laxmi Sai Maneesh Reddy Jupalle</div>
-      <div class="flex items-center gap-4">
-        <a href="#home" class="hover:text-white">Home</a>
-        <a href="#projects" class="hover:text-white">Projects</a>
-        <a href="#contact" class="hover:text-white">Contact</a>
-      </div>
-    </div>
-  </footer>
   <!-- Hero -->
-  <section id="home" class="pt-16 pb-20 gradient-hero relative overflow-hidden">
-    <div class="absolute inset-0 -z-10 opacity-30">
-      <svg class="absolute -top-20 left-1/2 -translate-x-1/2" width="1200" height="600" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
-            <stop offset="0%" stop-color="#6366f1" stop-opacity=".4" />
-            <stop offset="100%" stop-color="#f472b6" stop-opacity=".4" />
-          </linearGradient>
-        </defs>
-        <circle cx="200" cy="120" r="120" fill="url(#g)"/>
-        <circle cx="1000" cy="80" r="140" fill="url(#g)"/>
-        <circle cx="600" cy="300" r="220" fill="url(#g)"/>
-      </svg>
-    </div>
+  <section id="home" class="pb-20 gradient-hero relative overflow-hidden">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="grid lg:grid-cols-2 items-center gap-10">
         <div data-aos="fade-up" data-aos-duration="900">
-          <p class="inline-flex items-center gap-2 text-xs tracking-wider uppercase text-white/80 bg-white/10 border border-white/10 rounded-full px-3 py-1">Chicago, IL • Web Developer • AI & LLMs</p>
-          <h1 class="mt-6 text-4xl sm:text-5xl font-extrabold leading-tight">Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-pink-400">Laxmi Sai Maneesh Reddy Jupalle</span></h1>
-          <p class="mt-4 text-lg text-gray-300 max-w-xl">I build modern, performant web experiences and work with machine learning, LLM pipelines, and scalable systems.</p>
+          <p class="inline-flex items-center gap-2 text-xs tracking-wider uppercase text-white/80 bg-white/10 border border-white/10 rounded-full px-3 py-1">
+            Chicago, IL • Web Developer • AI & LLMs
+          </p>
+          <h1 class="mt-6 text-4xl sm:text-5xl font-extrabold leading-tight">
+            Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-pink-400">Laxmi Sai Maneesh Reddy Jupalle</span>
+          </h1>
+          <p class="mt-4 text-lg text-gray-300 max-w-xl">
+            I build modern, performant web experiences and work with machine learning, LLM pipelines, and scalable systems.
+          </p>
           <div class="mt-8 flex flex-wrap gap-3">
-            <a href="#projects" class="inline-flex items-center gap-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-medium px-5 py-3 transition">
+            <a href="#projects" class="inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-medium px-5 py-3 transition-transform hover:scale-105">
               <i data-lucide="rocket" class="w-5 h-5"></i>
               View Projects
             </a>
-            <a href="#contact" class="inline-flex items-center gap-2 rounded-xl border border-white/10 hover:bg-white/10 text-white font-medium px-5 py-3 transition">
+            <a href="#contact" class="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 hover:bg-white/10 text-white font-medium px-5 py-3 transition-transform hover:scale-105">
               <i data-lucide="mail" class="w-5 h-5"></i>
               Contact Me
             </a>
-          </div>
-          <div class="mt-6 flex flex-wrap items-center gap-4">
-            <a href="https://www.linkedin.com/in/laxmi-sai-maneesh-reddy-j-a52935106/" target="_blank" class="inline-flex items-center gap-2 text-gray-300 hover:text-white"><i data-lucide="linkedin" class="w-5 h-5"></i> LinkedIn</a>
-            <a href="https://github.com/ManeeshJupalle" target="_blank" class="inline-flex items-center gap-2 text-gray-300 hover:text-white"><i data-lucide="github" class="w-5 h-5"></i> GitHub</a>
-            <a href="mailto:ljupa1@uic.edu" class="inline-flex items-center gap-2 text-gray-300 hover:text-white"><i data-lucide="mail" class="w-5 h-5"></i> ljupa1@uic.edu</a>
-          </div>
-        </div>
-        <div class="relative" data-aos="zoom-in" data-aos-delay="150">
-          <div class="absolute -inset-6 bg-gradient-to-tr from-brand-600/20 to-pink-500/20 rounded-3xl blur-2xl"></div>
-          <div class="relative rounded-3xl border border-white/10 glass p-6 shadow-soft">
-            <div class="grid grid-cols-2 gap-4">
-              <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
-                <p class="text-xs text-gray-400">Current Focus</p>
-                <p class="mt-1 font-semibold">Web, ML, LLMs</p>
-              </div>
-              <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
-                <p class="text-xs text-gray-400">Location</p>
-                <p class="mt-1 font-semibold">Chicago, IL</p>
-              </div>
-              <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
-                <p class="text-xs text-gray-400">Open To</p>
-                <p class="mt-1 font-semibold">RA / Internships</p>
-              </div>
-              <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
-                <p class="text-xs text-gray-400">Languages</p>
-                <p class="mt-1 font-semibold">Python, JS, C++, Java</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -326,118 +155,40 @@
   <!-- About -->
   <section id="about" class="py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="grid lg:grid-cols-3 gap-10 items-start">
-        <div class="lg:col-span-1" data-aos="fade-right">
-          <h2 class="text-3xl font-bold">About Me</h2>
-          <p class="mt-3 text-gray-400">Web developer with a strong ML background. I enjoy building sleek, accessible UIs and designing data‑driven features with modern stacks.</p>
-        </div>
-        <div class="lg:col-span-2 grid gap-6" data-aos="fade-up">
-          <div class="rounded-2xl glass border border-white/10 p-6">
-            <p class="leading-relaxed text-gray-300">I’m pursuing an MS in Computer Science at the University of Illinois Chicago (GPA 3.80). Previously, I worked at VMware by Broadcom as a Technical Support Engineer, solving complex integration issues at scale and improving developer–tester workflows. I’ve built ML projects spanning LLM document analysis, assault detection with YOLOv5, and healthcare triage using CNNs.</p>
-          </div>
-          <div class="rounded-2xl glass border border-white/10 p-6">
-            <ul class="grid sm:grid-cols-2 gap-3 text-gray-300">
-              <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-5 h-5 text-brand-400"></i> MS CS @ UIC (2024–2026)</li>
-              <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-5 h-5 text-brand-400"></i> Ex‑VMware by Broadcom</li>
-              <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-5 h-5 text-brand-400"></i> Focus: Web • ML • LLMs</li>
-              <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-5 h-5 text-brand-400"></i> Based in Chicago, IL</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      <h2 class="text-3xl font-bold mb-4">About Me</h2>
+      <p class="text-gray-300 max-w-3xl">
+        I’m pursuing an MS in Computer Science at the University of Illinois Chicago (GPA 3.80). 
+        Previously, I worked at VMware by Broadcom as a Technical Support Engineer, solving complex integration issues and 
+        improving developer–tester workflows. I’ve built ML projects spanning LLM document analysis, assault detection with YOLOv5, 
+        and healthcare triage using CNNs.
+      </p>
     </div>
   </section>
 
   <!-- Skills -->
   <section id="skills" class="py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-bold" data-aos="fade-up">Skills</h2>
-      <div class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6" data-aos="fade-up" data-aos-delay="100">
-        <div class="rounded-2xl glass border border-white/10 p-6">
-          <p class="text-sm text-gray-400">Languages</p>
-          <div class="mt-3 flex flex-wrap gap-2">
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Python</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">JavaScript</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">C/C++</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Java</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">SQL</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">HTML</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Rust</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Django</span>
-          </div>
-        </div>
-        <div class="rounded-2xl glass border border-white/10 p-6">
-          <p class="text-sm text-gray-400">ML / Data</p>
-          <div class="mt-3 flex flex-wrap gap-2">
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">TensorFlow</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">PyTorch</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">scikit‑learn</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">LLMs</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">NLP / NLTK</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Data Analysis</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Tableau</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Power BI</span>
-          </div>
-        </div>
-        <div class="rounded-2xl glass border border-white/10 p-6">
-          <p class="text-sm text-gray-400">DevOps / Cloud</p>
-          <div class="mt-3 flex flex-wrap gap-2">
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">AWS</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Azure</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Docker</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Jenkins</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Ubuntu</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">Kali Linux</span>
-            <span class="px-3 py-1 rounded-full bg-white/10 text-sm">APIs</span>
-          </div>
-        </div>
-      </div>
+      <h2 class="text-3xl font-bold mb-4">Skills</h2>
+      <ul class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 text-gray-300">
+        <li>Python, JavaScript, C++, Java, SQL, HTML, Rust</li>
+        <li>TensorFlow, PyTorch, scikit-learn, LLMs, NLP/NLTK, Tableau</li>
+        <li>AWS, Azure, Docker, Jenkins, Ubuntu, APIs</li>
+      </ul>
     </div>
   </section>
 
   <!-- Experience -->
   <section id="experience" class="py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-bold" data-aos="fade-up">Experience</h2>
-      <div class="mt-6 grid gap-6" data-aos="fade-up" data-aos-delay="100">
-        <div class="rounded-2xl glass border border-white/10 p-6">
-          <div class="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h3 class="text-xl font-semibold">Technical Support Engineer • VMware by Broadcom</h3>
-              <p class="text-sm text-gray-400">May 2023 – Jul 2024 • Bengaluru, India</p>
-            </div>
-            <span class="inline-flex items-center gap-2 text-xs bg-white/10 px-3 py-1 rounded-full">Enterprise • APIs</span>
-          </div>
-          <ul class="mt-3 list-disc pl-5 space-y-2 text-gray-300">
-            <li>Offered technical expertise in APIs, certificates, profiles, and XML for smooth integration and performance.</li>
-            <li>Delivered robust technical support to thousands of clients, ensuring uninterrupted operations.</li>
-            <li>Conducted deep investigations into platform issues, contributing to improved enterprise mobility solutions.</li>
-            <li>Designed and enforced Jira ticket standards, reducing dev–QA back‑and‑forth by ~40%.</li>
-            <li>Recognized for Apple product compatibility expertise; mentored new team members in troubleshooting.</li>
-          </ul>
-        </div>
-        <div class="rounded-2xl glass border border-white/10 p-6">
-          <div class="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h3 class="text-xl font-semibold">Associate Technical Support Engineer • VMware by Broadcom</h3>
-              <p class="text-sm text-gray-400">Aug 2022 – Apr 2023 • Bengaluru, India</p>
-            </div>
-            <span class="inline-flex items-center gap-2 text-xs bg-white/10 px-3 py-1 rounded-full">Support • EMM</span>
-          </div>
-          <ul class="mt-3 list-disc pl-5 space-y-2 text-gray-300">
-            <li>Handled complex support requests and collaborated across teams to resolve platform issues.</li>
-          </ul>
-        </div>
-        <div class="rounded-2xl glass border border-white/10 p-6">
-          <div class="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <h3 class="text-xl font-semibold">Campus Ambassador • Ifortis Corporate</h3>
-              <p class="text-sm text-gray-400">Mar 2020 – Jul 2020 • Bengaluru, India</p>
-            </div>
-            <span class="inline-flex items-center gap-2 text-xs bg-white/10 px-3 py-1 rounded-full">Workshops • Mentoring</span>
-          </div>
-          <ul class="mt-3 list-disc pl-5 space-y-2 text-gray-300">
-            <li>Conducted 30+ online programming workshops; facilitated peer mentorship for 50+ students.</li>
+      <h2 class="text-3xl font-bold mb-4">Experience</h2>
+      <div class="space-y-6 text-gray-300">
+        <div>
+          <h3 class="text-xl font-semibold">Technical Support Engineer • VMware by Broadcom</h3>
+          <p class="text-sm text-gray-400">May 2023 – Jul 2024 • Bengaluru, India</p>
+          <ul class="list-disc pl-5 mt-2 space-y-1">
+            <li>Offered expertise in APIs, certificates, and XML integrations.</li>
+            <li>Delivered support to thousands of enterprise clients.</li>
+            <li>Improved dev–QA workflows with new Jira standards.</li>
           </ul>
         </div>
       </div>
@@ -447,58 +198,20 @@
   <!-- Projects -->
   <section id="projects" class="py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="flex items-end justify-between gap-4" data-aos="fade-up">
-        <h2 class="text-3xl font-bold">Projects</h2>
-        <div class="text-sm text-gray-400">Selected work</div>
-      </div>
-
-      <!-- Filter -->
-      <div class="mt-6 flex flex-wrap gap-2" data-aos="fade-up" data-aos-delay="50">
-        <button class="proj-filter px-3 py-1 rounded-full bg-white/10 text-sm" data-tech="all">All</button>
-        <button class="proj-filter px-3 py-1 rounded-full bg-white/10 text-sm" data-tech="llm">LLMs</button>
-        <button class="proj-filter px-3 py-1 rounded-full bg-white/10 text-sm" data-tech="cv">Computer Vision</button>
-        <button class="proj-filter px-3 py-1 rounded-full bg-white/10 text-sm" data-tech="health">Health</button>
-      </div>
-
-      <div class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="projectsGrid" data-aos="fade-up" data-aos-delay="100">
-        <!-- Insurease -->
-        <article class="project group rounded-2xl glass border border-white/10 overflow-hidden hover:border-brand-400/50 transition" data-tags="llm">
-          <div class="p-6">
-            <h3 class="text-xl font-semibold">Insurease</h3>
-            <p class="mt-1 text-sm text-gray-400">LLM‑powered doc analysis with vector/graph search (Qdrant/Neo4j) to extract and compare insurance documents.</p>
-            <ul class="mt-3 flex flex-wrap gap-2 text-xs text-gray-300">
-              <li class="px-2 py-1 rounded bg-white/10">LLMs</li>
-              <li class="px-2 py-1 rounded bg-white/10">Qdrant</li>
-              <li class="px-2 py-1 rounded bg-white/10">Neo4j</li>
-              <li class="px-2 py-1 rounded bg-white/10">Python</li>
-            </ul>
-          </div>
-        </article>
-        <!-- SheSecure -->
-        <article class="project group rounded-2xl glass border border-white/10 overflow-hidden hover:border-brand-400/50 transition" data-tags="cv">
-          <div class="p-6">
-            <h3 class="text-xl font-semibold">SheSecure</h3>
-            <p class="mt-1 text-sm text-gray-400">YOLOv5 pipeline detecting potential assault incidents in CCTV footage; ~92% precision (test).</p>
-            <ul class="mt-3 flex flex-wrap gap-2 text-xs text-gray-300">
-              <li class="px-2 py-1 rounded bg-white/10">YOLOv5</li>
-              <li class="px-2 py-1 rounded bg-white/10">Python</li>
-              <li class="px-2 py-1 rounded bg-white/10">Computer Vision</li>
-            </ul>
-          </div>
-        </article>
-        <!-- Jan Swasthya -->
-        <article class="project group rounded-2xl glass border border-white/10 overflow-hidden hover:border-brand-400/50 transition" data-tags="health">
-          <div class="p-6">
-            <h3 class="text-xl font-semibold">Jan Swasthya</h3>
-            <p class="mt-1 text-sm text-gray-400">Healthcare app using CNN (85% accuracy) and chatbot for faster initial assessment.</p>
-            <ul class="mt-3 flex flex-wrap gap-2 text-xs text-gray-300">
-              <li class="px-2 py-1 rounded bg-white/10">Django</li>
-              <li class="px-2 py-1 rounded bg-white/10">CNN</li>
-              <li class="px-2 py-1 rounded bg-white/10">Pandas</li>
-              <li class="px-2 py-1 rounded bg-white/10">NumPy</li>
-            </ul>
-          </div>
-        </article>
+      <h2 class="text-3xl font-bold mb-6">Projects</h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 text-gray-300">
+        <div class="glass rounded-2xl p-6">
+          <h3 class="text-xl font-semibold">Insurease</h3>
+          <p class="text-sm text-gray-400">LLM-powered document analysis using vector/graph search.</p>
+        </div>
+        <div class="glass rounded-2xl p-6">
+          <h3 class="text-xl font-semibold">SheSecure</h3>
+          <p class="text-sm text-gray-400">YOLOv5-based assault detection with 92% precision.</p>
+        </div>
+        <div class="glass rounded-2xl p-6">
+          <h3 class="text-xl font-semibold">Jan Swasthya</h3>
+          <p class="text-sm text-gray-400">CNN healthcare triage system (85% accuracy).</p>
+        </div>
       </div>
     </div>
   </section>
@@ -506,21 +219,15 @@
   <!-- Education -->
   <section id="education" class="py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-bold" data-aos="fade-up">Education</h2>
-      <div class="mt-6 grid gap-6" data-aos="fade-up" data-aos-delay="100">
-        <div class="rounded-2xl glass border border-white/10 p-6">
-          <div class="flex items-center justify-between">
-            <h3 class="text-xl font-semibold">University of Illinois Chicago (UIC) — MS Computer Science</h3>
-            <span class="text-xs text-gray-400">Aug 2024 – May 2026 • GPA: 3.80</span>
-          </div>
-          <p class="mt-2 text-gray-300 text-sm">AI, ML, Data Science, Networking, DBMS, DevOps</p>
+      <h2 class="text-3xl font-bold mb-4">Education</h2>
+      <div class="space-y-4 text-gray-300">
+        <div>
+          <h3 class="text-xl font-semibold">University of Illinois Chicago</h3>
+          <p>MS in Computer Science • GPA: 3.80 • 2024–2026</p>
         </div>
-        <div class="rounded-2xl glass border border-white/10 p-6">
-          <div class="flex items-center justify-between">
-            <h3 class="text-xl font-semibold">Jain (Deemed‑to‑be) University — B.Tech CST (AI)</h3>
-            <span class="text-xs text-gray-400">Jul 2018 – Jul 2022 • GPA: 3.80</span>
-          </div>
-          <p class="mt-2 text-gray-300 text-sm">ML, DL, NLP, HCI, DS, DAA, DBMS, Data Science, AI</p>
+        <div>
+          <h3 class="text-xl font-semibold">Jain (Deemed-to-be) University</h3>
+          <p>B.Tech in Computer Science (AI) • GPA: 3.80 • 2018–2022</p>
         </div>
       </div>
     </div>
@@ -529,15 +236,16 @@
   <!-- Publications -->
   <section id="publications" class="py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-bold" data-aos="fade-up">Publications</h2>
-      <div class="mt-6 grid gap-6" data-aos="fade-up" data-aos-delay="100">
-        <div class="rounded-2xl glass border border-white/10 p-6">
-          <h3 class="text-xl font-semibold">Diabetic Retinopathy Detection using Machine Learning</h3>
-          <p class="text-sm text-gray-400 mt-1">5‑layer CNN to classify X‑ray images with 94.5% accuracy. Awarded International Best Researcher by ISSN.</p>
-          <a class="inline-flex items-center gap-2 text-brand-400 hover:text-brand-300 mt-3" href="https://www.ijariit.com/manuscript/diabetic-retinopathy-detection-using-machine-learning/" target="_blank" rel="noopener">
-            <i data-lucide="external-link" class="w-4 h-4"></i> Read publication
-          </a>
-        </div>
+      <h2 class="text-3xl font-bold mb-4">Publications</h2>
+      <div class="glass p-6 rounded-2xl text-gray-300">
+        <h3 class="text-xl font-semibold">Diabetic Retinopathy Detection using Machine Learning</h3>
+        <p class="text-sm text-gray-400 mt-1">
+          5-layer CNN with 94.5% accuracy. Awarded International Best Researcher by ISSN.
+        </p>
+        <a href="https://www.ijariit.com/manuscript/diabetic-retinopathy-detection-using-machine-learning/" 
+           target="_blank" class="text-brand-400 hover:text-brand-300 inline-flex items-center gap-2 mt-2">
+          <i data-lucide="external-link" class="w-4 h-4"></i> Read Publication
+        </a>
       </div>
     </div>
   </section>
@@ -545,26 +253,12 @@
   <!-- Contact -->
   <section id="contact" class="py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="grid lg:grid-cols-2 gap-10 items-start">
-        <div data-aos="fade-right">
-          <h2 class="text-3xl font-bold">Contact</h2>
-          <p class="mt-3 text-gray-400">I’m open to research assistantships, internships, and collaborations.</p>
-          <div class="mt-6 space-y-3 text-gray-300">
-            <div class="flex items-center gap-3"><i data-lucide="map-pin" class="w-5 h-5"></i> Chicago, IL</div>
-            <a class="flex items-center gap-3 hover:text-white" href="mailto:ljupa1@uic.edu"><i data-lucide="mail" class="w-5 h-5"></i> ljupa1@uic.edu</a>
-            <a class="flex items-center gap-3 hover:text-white" href="tel:+18723577484"><i data-lucide="phone" class="w-5 h-5"></i> (872) 357‑7484</a>
-            <a class="flex items-center gap-3 hover:text-white" target="_blank" href="https://github.com/ManeeshJupalle"><i data-lucide="github" class="w-5 h-5"></i> GitHub</a>
-            <a class="flex items-center gap-3 hover:text-white" target="_blank" href="https://www.linkedin.com/in/laxmi-sai-maneesh-reddy-j-a52935106/"><i data-lucide="linkedin" class="w-5 h-5"></i> LinkedIn</a>
-          </div>
-        </div>
-        <form class="rounded-2xl glass border border-white/10 p-6" data-aos="fade-up" onsubmit="event.preventDefault(); window.location.href='mailto:ljupa1@uic.edu?subject=Hi%20Laxmi!&body='+encodeURIComponent(document.getElementById('msg').value);">
-          <label class="block text-sm text-gray-400">Your Message</label>
-          <textarea id="msg" class="mt-2 w-full rounded-xl bg-white/5 border border-white/10 p-3 outline-none focus:border-brand-400 min-h-[140px]" placeholder="Say hello..."></textarea>
-          <button class="mt-4 inline-flex items-center gap-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-medium px-5 py-3 transition" type="submit">
-            <i data-lucide="send" class="w-5 h-5"></i>
-            Send Email
-          </button>
-        </form>
+      <h2 class="text-3xl font-bold mb-4">Contact</h2>
+      <p class="text-gray-300 mb-6">I’m open to research assistantships, internships, and collaborations.</p>
+      <div class="space-y-2 text-gray-300">
+        <div><i data-lucide="map-pin" class="inline w-5 h-5 mr-2"></i> Chicago, IL</div>
+        <div><i data-lucide="mail" class="inline w-5 h-5 mr-2"></i> <a href="mailto:ljupa1@uic.edu">ljupa1@uic.edu</a></div>
+        <div><i data-lucide="phone" class="inline w-5 h-5 mr-2"></i> (872) 357-7484</div>
       </div>
     </div>
   </section>
@@ -581,25 +275,26 @@
     </div>
   </footer>
 
-  <!-- Floating back-to-top -->
-  <button id="toTop" class="fixed bottom-6 right-6 hidden md:inline-flex items-center justify-center h-10 w-10 rounded-full border border-white/10 bg-white/10 hover:bg-white/20 transition" aria-label="Back to top">
-    <i data-lucide="chevron-up" class="w-5 h-5"></i>
-  </button>
-
-  <!-- Scripts -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    // AOS
     AOS.init({ once: true, offset: 80 });
-    // Icons
     lucide.createIcons();
 
-    // Theme toggle (default dark, persist preference)
+    // Dynamic header offset fix
+    const headerEl = document.getElementById('mainHeader');
+    function setHeaderHeightVar() {
+      const h = headerEl?.offsetHeight ? headerEl.offsetHeight : 88;
+      document.documentElement.style.setProperty('--header-height', (h + 12) + 'px');
+    }
+    setHeaderHeightVar();
+    window.addEventListener('resize', setHeaderHeightVar);
+    window.addEventListener('load', setHeaderHeightVar);
+
+    // Theme toggle
     const themeToggle = document.getElementById('themeToggle');
     function applyTheme(value){
       document.documentElement.classList.toggle('dark', value !== 'light');
       localStorage.setItem('theme', value);
-      themeToggle.setAttribute('aria-pressed', value !== 'light');
       themeToggle.innerHTML = '';
       const icon = document.createElementNS('http://www.w3.org/2000/svg','svg');
       icon.setAttribute('data-lucide', value !== 'light' ? 'moon' : 'sun');
@@ -612,37 +307,9 @@
     themeToggle.addEventListener('click', () => {
       const now = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
       applyTheme(now);
+      setHeaderHeightVar();
     });
 
-    // Mobile nav toggle
-    const navToggle = document.getElementById('navToggle');
-    const mobileNav = document.getElementById('mobileNav');
-    navToggle?.addEventListener('click', () => {
-      const open = mobileNav.classList.toggle('hidden');
-      navToggle.setAttribute('aria-expanded', String(!open));
-    });
-
-    // Projects filter
-    const filters = document.querySelectorAll('.proj-filter');
-    const cards = document.querySelectorAll('#projectsGrid .project');
-    filters.forEach(btn => btn.addEventListener('click', () => {
-      const tech = btn.dataset.tech;
-      filters.forEach(b => b.classList.remove('ring-1','ring-brand-400'));
-      btn.classList.add('ring-1','ring-brand-400');
-      cards.forEach(card => {
-        const tags = card.dataset.tags.split(',');
-        card.style.display = (tech === 'all' || tags.includes(tech)) ? '' : 'none';
-      });
-    }));
-
-    // Back to top
-    const toTop = document.getElementById('toTop');
-    window.addEventListener('scroll', () => {
-      toTop.style.display = window.scrollY > 600 ? 'inline-flex' : 'none';
-    });
-    toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-
-    // Footer year
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
