@@ -435,6 +435,41 @@
       border-color: rgba(200, 135, 74, 0.55);
     }
 
+    /* FluxFS CLI preview */
+    .flux-preview {
+      border: 1px solid var(--line);
+      border-radius: 0.75rem;
+      background: #0c0c0c;
+      overflow: hidden;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      line-height: 1.55;
+    }
+    .flux-preview-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0.45rem 0.75rem;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,0.02);
+      color: var(--dim);
+    }
+    .flux-preview-body {
+      padding: 0.75rem;
+      color: var(--dim);
+    }
+    .flux-preview-body .flux-ok { color: var(--sage); }
+    .flux-preview-body .flux-hi { color: var(--copper); }
+    .flux-preview-body .flux-dim { color: #666; }
+    .flux-preview-foot {
+      padding: 0.45rem 0.75rem;
+      border-top: 1px solid var(--line);
+      font-size: 0.55rem;
+      color: var(--dim);
+      display: flex;
+      justify-content: space-between;
+    }
+
     /* Code snippet in hero */
     .code-panel {
       font-family: 'JetBrains Mono', monospace;
@@ -592,8 +627,8 @@
   <!-- Marquee -->
   <div class="marquee-wrap border-y border-ink-line py-4 overflow-hidden opacity-60">
     <div class="marquee-track font-mono text-xs uppercase tracking-[0.25em] text-ink-dim gap-12">
-      <span class="px-6">Next.js</span><span class="px-6">Python</span><span class="px-6">TypeScript</span><span class="px-6">PyTorch</span><span class="px-6">React</span><span class="px-6">LLM Pipelines</span><span class="px-6">Supabase</span><span class="px-6">Azure</span><span class="px-6">RAG Systems</span><span class="px-6">Docker</span>
-      <span class="px-6">Next.js</span><span class="px-6">Python</span><span class="px-6">TypeScript</span><span class="px-6">PyTorch</span><span class="px-6">React</span><span class="px-6">LLM Pipelines</span><span class="px-6">Supabase</span><span class="px-6">Azure</span><span class="px-6">RAG Systems</span><span class="px-6">Docker</span>
+      <span class="px-6">Rust</span><span class="px-6">Next.js</span><span class="px-6">Python</span><span class="px-6">TypeScript</span><span class="px-6">PyTorch</span><span class="px-6">React</span><span class="px-6">LLM Pipelines</span><span class="px-6">Supabase</span><span class="px-6">Azure</span><span class="px-6">Docker</span>
+      <span class="px-6">Rust</span><span class="px-6">Next.js</span><span class="px-6">Python</span><span class="px-6">TypeScript</span><span class="px-6">PyTorch</span><span class="px-6">React</span><span class="px-6">LLM Pipelines</span><span class="px-6">Supabase</span><span class="px-6">Azure</span><span class="px-6">Docker</span>
     </div>
   </div>
 
@@ -715,6 +750,7 @@
       <div class="flex flex-wrap gap-2 mb-10">
         <button class="proj-filter active font-mono text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-ink-line transition-colors" data-tech="all">All</button>
         <button class="proj-filter font-mono text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-ink-line transition-colors" data-tech="llm">LLMs</button>
+        <button class="proj-filter font-mono text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-ink-line transition-colors" data-tech="systems">Systems</button>
         <button class="proj-filter font-mono text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-ink-line transition-colors" data-tech="ml">ML</button>
         <button class="proj-filter font-mono text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-ink-line transition-colors" data-tech="cv">Vision</button>
         <button class="proj-filter font-mono text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-ink-line transition-colors" data-tech="health">Health</button>
@@ -770,10 +806,52 @@
           </div>
         </article>
 
+        <article class="project-card featured card rounded-2xl" data-tags="systems">
+          <div class="project-body p-6 h-full flex flex-col">
+            <div class="flex items-center justify-between mb-3">
+              <span class="project-index">02</span>
+              <span class="font-mono text-[0.65rem] text-ink-dim">May 2026 · v0.2</span>
+            </div>
+            <div class="project-intro shrink-0">
+              <h3 class="text-xl">FluxFS</h3>
+              <p class="text-sm text-ink-dim">Intelligent filesystem autopilot — watch, organize, deduplicate, and search your files automatically. Cross-platform desktop app with CLI, daemon, tray, and installers.</p>
+            </div>
+
+            <div class="flux-preview my-4 flex-1">
+              <div class="flux-preview-bar">
+                <span class="text-sage">●</span> flux status
+              </div>
+              <div class="flux-preview-body">
+                <div><span class="flux-ok">●</span> Daemon <span class="flux-dim">· uptime 3h 22m</span></div>
+                <div><span class="flux-ok">●</span> Service <span class="flux-dim">· auto-start</span></div>
+                <div class="flux-hi">Index: 142,847 files (48.3 GB)</div>
+                <div class="mt-2 flux-dim">$ flux find "assignment"</div>
+                <div class="flux-hi">→ 4 results in 12ms</div>
+              </div>
+              <div class="flux-preview-foot">
+                <span><span class="flux-hi">88</span> unit tests</span>
+                <span>Win · macOS · Linux</span>
+              </div>
+            </div>
+
+            <ul class="mt-auto space-y-1.5 text-xs text-ink-dim">
+              <li>· Shipped v0.2 with background agent, system tray, egui settings GUI, and one-click installers (.exe, .dmg, .deb).</li>
+              <li>· Rust engine: real-time <code class="text-ink-text">notify</code> watcher, SHA-256 dedup, rule-based organize, and nucleo fuzzy search across 100k+ files in &lt;50ms.</li>
+            </ul>
+            <div class="mt-5 flex flex-wrap gap-2">
+              <span class="skill-pill rounded-full">Rust</span><span class="skill-pill rounded-full">Tokio</span><span class="skill-pill rounded-full">egui</span><span class="skill-pill rounded-full">Rayon</span>
+            </div>
+            <div class="mt-4 flex flex-wrap gap-4 text-sm">
+              <a href="https://github.com/ManeeshJupalle/FluxFS" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">GitHub →</a>
+              <a href="https://github.com/ManeeshJupalle/FluxFS/releases" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">Releases →</a>
+            </div>
+          </div>
+        </article>
+
         <article class="project-card featured card rounded-2xl" data-tags="llm">
           <div class="project-body p-6 h-full flex flex-col">
             <div class="flex items-center justify-between mb-4">
-              <span class="project-index">02</span>
+              <span class="project-index">03</span>
               <span class="font-mono text-[0.65rem] text-ink-dim">Apr 2026</span>
             </div>
             <h3 class="text-xl font-semibold mb-2">Synapse</h3>
@@ -792,7 +870,7 @@
         <article class="project-card card rounded-2xl" data-tags="llm">
           <div class="project-body p-6 h-full flex flex-col">
             <div class="flex items-center justify-between mb-4">
-              <span class="project-index">03</span>
+              <span class="project-index">04</span>
               <span class="font-mono text-[0.65rem] text-ink-dim">May 2026</span>
             </div>
             <h3 class="text-xl font-semibold mb-2">PromptForge CLI</h3>
@@ -807,7 +885,7 @@
         <article class="project-card card rounded-2xl" data-tags="llm">
           <div class="project-body p-6 h-full flex flex-col">
             <div class="flex items-center justify-between mb-4">
-              <span class="project-index">04</span>
+              <span class="project-index">05</span>
               <span class="font-mono text-[0.65rem] text-ink-dim">May 2026</span>
             </div>
             <h3 class="text-xl font-semibold mb-2">Sentinel MCP</h3>
@@ -822,7 +900,7 @@
         <article class="project-card card rounded-2xl" data-tags="ml">
           <div class="project-body p-6 h-full flex flex-col">
             <div class="flex items-center justify-between mb-4">
-              <span class="project-index">05</span>
+              <span class="project-index">06</span>
               <span class="font-mono text-[0.65rem] text-ink-dim">May 2026</span>
             </div>
             <h3 class="text-xl font-semibold mb-2">CashPulse</h3>
@@ -837,7 +915,7 @@
         <article class="project-card card rounded-2xl" data-tags="llm,health">
           <div class="project-body p-6 h-full flex flex-col">
             <div class="flex items-center justify-between mb-4">
-              <span class="project-index">06</span>
+              <span class="project-index">07</span>
               <span class="font-mono text-[0.65rem] text-ink-dim">Dec 2025</span>
             </div>
             <h3 class="text-xl font-semibold mb-2">Golden Bridge</h3>
@@ -850,7 +928,7 @@
 
         <article class="project-card card rounded-2xl" data-tags="llm">
           <div class="project-body p-6 h-full flex flex-col">
-            <span class="project-index mb-4">07</span>
+            <span class="project-index mb-4">08</span>
             <h3 class="text-xl font-semibold mb-2">Insurease</h3>
             <p class="text-sm text-ink-dim leading-relaxed flex-1">LLM-powered insurance document extraction, comparison, and simplification with vector/graph search.</p>
             <div class="mt-5 flex flex-wrap gap-2"><span class="skill-pill rounded-full">Qdrant</span><span class="skill-pill rounded-full">Neo4j</span></div>
@@ -859,7 +937,7 @@
 
         <article class="project-card card rounded-2xl" data-tags="llm">
           <div class="project-body p-6 h-full flex flex-col">
-            <span class="project-index mb-4">08</span>
+            <span class="project-index mb-4">09</span>
             <h3 class="text-xl font-semibold mb-2">ResearchAI</h3>
             <p class="text-sm text-ink-dim leading-relaxed flex-1">Full-stack AI research assistant — upload papers, chat with summaries and Q&amp;A.</p>
             <div class="mt-5 flex flex-wrap gap-2"><span class="skill-pill rounded-full">React</span><span class="skill-pill rounded-full">Supabase</span></div>
@@ -868,7 +946,7 @@
 
         <article class="project-card card rounded-2xl" data-tags="cv">
           <div class="project-body p-6 h-full flex flex-col">
-            <span class="project-index mb-4">09</span>
+            <span class="project-index mb-4">10</span>
             <h3 class="text-xl font-semibold mb-2">SheSecure</h3>
             <p class="text-sm text-ink-dim leading-relaxed flex-1">YOLOv5 pipeline detecting potential assault incidents in CCTV footage — ~92% precision.</p>
             <div class="mt-5 flex flex-wrap gap-2"><span class="skill-pill rounded-full">YOLOv5</span><span class="skill-pill rounded-full">Python</span></div>
@@ -877,7 +955,7 @@
 
         <article class="project-card card rounded-2xl" data-tags="health">
           <div class="project-body p-6 h-full flex flex-col">
-            <span class="project-index mb-4">10</span>
+            <span class="project-index mb-4">11</span>
             <h3 class="text-xl font-semibold mb-2">Jan Swasthya</h3>
             <p class="text-sm text-ink-dim leading-relaxed flex-1">Healthcare app using a CNN and chatbot for faster initial assessment — ~85% accuracy.</p>
             <div class="mt-5 flex flex-wrap gap-2"><span class="skill-pill rounded-full">Django</span><span class="skill-pill rounded-full">CNN</span></div>
