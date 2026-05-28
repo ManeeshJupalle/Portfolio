@@ -10,6 +10,10 @@
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#0a0a0a" />
 
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="favicon.svg" sizes="any" />
+  <link rel="apple-touch-icon" href="favicon.svg" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -74,6 +78,186 @@
       opacity: 0.04;
       pointer-events: none;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* Space field — stars + milky way (theme colors preserved) */
+    .space-field {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    #spaceCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .space-milkyway {
+      position: absolute;
+      inset: -30% -10%;
+      background:
+        radial-gradient(ellipse 55% 28% at 22% 18%, rgba(200, 135, 74, 0.09), transparent 58%),
+        radial-gradient(ellipse 48% 22% at 78% 72%, rgba(74, 143, 122, 0.07), transparent 55%),
+        radial-gradient(ellipse 90% 18% at 52% 42%, rgba(232, 230, 225, 0.045), transparent 62%);
+      transform: rotate(-14deg);
+      filter: blur(48px);
+      opacity: 0.95;
+      will-change: transform;
+    }
+    .space-milkyway::after {
+      content: '';
+      position: absolute;
+      inset: 10% 5%;
+      background: linear-gradient(
+        118deg,
+        transparent 18%,
+        rgba(232, 230, 225, 0.035) 38%,
+        rgba(200, 135, 74, 0.05) 52%,
+        rgba(74, 143, 122, 0.04) 64%,
+        transparent 82%
+      );
+      filter: blur(20px);
+    }
+
+    /* Ambient nebula orbs (copper / sage — unchanged palette) */
+    .fx-ambient {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .fx-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.45;
+      will-change: transform;
+    }
+    .fx-orb--copper {
+      width: min(42vw, 520px);
+      height: min(42vw, 520px);
+      top: -8%;
+      right: -6%;
+      background: radial-gradient(circle, rgba(200, 135, 74, 0.55) 0%, transparent 68%);
+    }
+    .fx-orb--sage {
+      width: min(36vw, 440px);
+      height: min(36vw, 440px);
+      bottom: 8%;
+      left: -8%;
+      background: radial-gradient(circle, rgba(74, 143, 122, 0.4) 0%, transparent 68%);
+    }
+    .fx-orb--mix {
+      width: min(28vw, 360px);
+      height: min(28vw, 360px);
+      top: 42%;
+      left: 38%;
+      background: radial-gradient(circle, rgba(200, 135, 74, 0.22) 0%, rgba(74, 143, 122, 0.12) 45%, transparent 70%);
+    }
+
+    /* Hero spotlight */
+    .hero-stage { isolation: isolate; }
+    .hero-spotlight {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(
+        520px circle at var(--spot-x, 62%) var(--spot-y, 38%),
+        rgba(200, 135, 74, 0.11),
+        rgba(74, 143, 122, 0.04) 35%,
+        transparent 62%
+      );
+      transition: opacity 0.4s ease;
+    }
+    .hero-stage > .max-w-6xl { position: relative; z-index: 1; }
+
+    /* Dimensional cards + tilt shine */
+    .depth-card {
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.04) inset,
+        0 20px 50px -24px rgba(0, 0, 0, 0.65),
+        0 8px 24px -12px rgba(200, 135, 74, 0.08);
+      transition: transform 0.2s ease-out, box-shadow 0.35s ease, border-color 0.35s ease;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+    .depth-card:hover {
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.06) inset,
+        0 28px 60px -20px rgba(0, 0, 0, 0.75),
+        0 12px 32px -8px rgba(200, 135, 74, 0.14);
+    }
+    .tilt-target {
+      --mx: 50%;
+      --my: 50%;
+      position: relative;
+    }
+    .tilt-target::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(
+        420px circle at var(--mx) var(--my),
+        rgba(200, 135, 74, 0.14),
+        transparent 48%
+      );
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .tilt-target:hover::before { opacity: 1; }
+    .tilt-target > * { position: relative; z-index: 2; }
+
+    .stat-block.depth-card {
+      background: rgba(22, 22, 22, 0.6);
+      padding: 1rem 1rem 1rem 1.25rem;
+      border-radius: 0.75rem;
+      border: 1px solid var(--line);
+      border-left: 2px solid rgba(200, 135, 74, 0.55);
+    }
+
+    .magnetic-btn {
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+    }
+
+    .marquee-wrap {
+      transform-style: preserve-3d;
+      perspective: 1200px;
+    }
+    .marquee-track span {
+      transition: color 0.25s ease, text-shadow 0.25s ease;
+    }
+    .marquee-wrap:hover .marquee-track span {
+      color: var(--text);
+      text-shadow: 0 0 20px rgba(200, 135, 74, 0.25);
+    }
+
+    .timeline-dot {
+      box-shadow: 0 0 0 4px rgba(200, 135, 74, 0.15), 0 0 24px rgba(200, 135, 74, 0.35);
+    }
+
+    .hr-accent {
+      position: relative;
+      overflow: visible;
+    }
+    .hr-accent::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--copper), transparent);
+      filter: blur(1px);
+      opacity: 0.6;
     }
 
     .scroll-line {
@@ -143,21 +327,6 @@
       line-height: 1.65;
       color: var(--dim);
       max-width: 36rem;
-    }
-
-    /* Project card header block */
-    .project-intro h3 {
-      font-family: 'Instrument Serif', Georgia, serif;
-      font-weight: 400;
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-    }
-    .project-card.featured:first-child .project-intro h3 {
-      font-size: 1.75rem;
-    }
-    .project-intro p {
-      margin-top: 0.625rem;
-      line-height: 1.6;
     }
 
     /* Cards */
@@ -306,30 +475,209 @@
       100% { transform: translateX(-50%); }
     }
 
-    /* Projects bento */
-    .project-card { position: relative; overflow: hidden; }
-    .project-card.featured { grid-column: span 1; }
-    @media (min-width: 1024px) {
-      .project-card.featured:first-child { grid-column: span 2; grid-row: span 2; }
-      .project-card.featured:first-child .project-body { padding: 2rem; }
+    /* Projects — compact accordion list (2-col on md+) */
+    .projects-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.625rem;
+      align-items: start;
     }
+    @media (min-width: 768px) {
+      .projects-list { grid-template-columns: repeat(2, 1fr); }
+      .project-row.is-open { grid-column: 1 / -1; }
+    }
+    .project-row {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 0.875rem;
+      background: var(--card);
+      overflow: hidden;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .project-row:not(.is-open):hover {
+      border-color: rgba(200, 135, 74, 0.35);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+    .project-row.is-open { border-color: rgba(200, 135, 74, 0.45); }
+    .project-row-toggle {
+      position: relative;
+      width: 100%;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: start;
+      gap: 0.65rem 0.85rem;
+      padding: 1rem 1.15rem;
+      text-align: left;
+      background: transparent;
+      border: none;
+      color: inherit;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .project-row-toggle::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--copper);
+      border-radius: 0 2px 2px 0;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .project-row:not(.is-open):hover .project-row-toggle::before,
+    .project-row.is-open .project-row-toggle::before { opacity: 1; }
+    .project-row-toggle:focus-visible {
+      outline: 2px solid var(--copper);
+      outline-offset: -2px;
+    }
+    @media (max-width: 640px) {
+      .project-row-toggle {
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto auto auto;
+      }
+      .project-row-meta { grid-column: 2; }
+      .project-row-action { grid-column: 2; justify-self: end; }
+    }
+    @media (min-width: 768px) {
+      .project-row:not(.is-open) .project-row-toggle {
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto auto auto;
+      }
+      .project-row:not(.is-open) .project-row-meta {
+        grid-column: 2;
+        text-align: left;
+      }
+      .project-row:not(.is-open) .project-row-action {
+        grid-column: 2;
+        justify-self: end;
+        margin-top: 0.15rem;
+      }
+      .project-row.is-open .project-row-toggle {
+        grid-template-columns: auto 1fr auto auto;
+        align-items: center;
+      }
+      .project-row.is-open .project-row-meta { text-align: right; }
+      .project-row.is-open .project-row-action {
+        grid-column: auto;
+        margin-top: 0;
+      }
+    }
+    .project-row-toggle:hover { background: rgba(255, 255, 255, 0.025); }
     .project-index {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.65rem;
       color: var(--dim);
       letter-spacing: 0.15em;
+      align-self: start;
+      padding-top: 0.2rem;
     }
-    .project-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(200,135,74,0.08), transparent 55%);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      pointer-events: none;
+    .project-row-title {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 1.2rem;
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
     }
-    .project-card:hover::before { opacity: 1; }
-
+    @media (min-width: 768px) {
+      .project-row:not(.is-open) .project-row-title { font-size: 1.1rem; }
+    }
+    .project-row-tagline {
+      font-size: 0.8rem;
+      color: var(--dim);
+      line-height: 1.45;
+      margin-top: 0.25rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .project-row-meta {
+      text-align: right;
+      align-self: start;
+    }
+    .project-row-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--dim);
+      white-space: nowrap;
+    }
+    .project-row-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      justify-content: flex-end;
+      margin-top: 0.35rem;
+    }
+    .project-row-pills .skill-pill {
+      font-size: 0.62rem;
+      padding: 0.2rem 0.5rem;
+    }
+    .project-row-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-shrink: 0;
+      padding: 0.35rem 0.55rem 0.35rem 0.65rem;
+      border-radius: 999px;
+      border: 1px solid rgba(200, 135, 74, 0.35);
+      background: rgba(200, 135, 74, 0.08);
+      transition: background 0.25s ease, border-color 0.25s ease;
+    }
+    .project-row:not(.is-open):hover .project-row-action {
+      background: rgba(200, 135, 74, 0.14);
+      border-color: rgba(200, 135, 74, 0.55);
+    }
+    .project-row.is-open .project-row-action {
+      border-color: rgba(200, 135, 74, 0.5);
+      background: rgba(200, 135, 74, 0.12);
+    }
+    .project-row-action-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--copper);
+      white-space: nowrap;
+    }
+    .project-row-chevron {
+      width: 1rem;
+      height: 1rem;
+      color: var(--copper);
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+    .project-row.is-open .project-row-chevron { transform: rotate(180deg); }
+    .project-row-panel {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.35s ease;
+    }
+    .project-row.is-open .project-row-panel { grid-template-rows: 1fr; }
+    .project-row-panel-inner {
+      overflow: hidden;
+      min-height: 0;
+    }
+    .project-row-panel-content {
+      padding: 0 1.25rem 1.25rem;
+      border-top: 1px solid var(--line);
+      padding-top: 1rem;
+    }
+    .project-row-panel .loop-preview,
+    .project-row-panel .flux-preview {
+      margin-bottom: 1rem;
+      min-height: auto;
+    }
+    .project-row-panel .loop-preview { min-height: 9rem; }
+    .project-row-panel .flux-preview { min-height: auto; }
+    .project-row-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+      font-size: 0.875rem;
+    }
     .proj-filter.active {
       background: rgba(200, 135, 74, 0.15);
       border-color: var(--copper);
@@ -428,12 +776,6 @@
       color: var(--dim);
     }
     .loop-stat-val { color: var(--copper); }
-    .project-card.featured:first-child:hover .loop-tile:not(.sparky) {
-      border-color: rgba(255,255,255,0.12);
-    }
-    .project-card.featured:first-child:hover .loop-tile.sparky {
-      border-color: rgba(200, 135, 74, 0.55);
-    }
 
     /* FluxFS CLI preview */
     .flux-preview {
@@ -519,13 +861,23 @@
         transition-duration: 0.01ms !important;
       }
       .marquee-track { animation: none; }
+      .tilt-target::before { display: none; }
     }
   </style>
 </head>
 <body class="antialiased">
 
   <div class="bg-grid" id="bgGrid"></div>
+  <div class="space-field" id="spaceField" aria-hidden="true">
+    <div class="space-milkyway" id="spaceMilkyway"></div>
+    <canvas id="spaceCanvas"></canvas>
+  </div>
   <div class="bg-grain"></div>
+  <div class="fx-ambient" id="fxAmbient" aria-hidden="true">
+    <div class="fx-orb fx-orb--copper" data-parallax="0.04"></div>
+    <div class="fx-orb fx-orb--sage" data-parallax="0.06"></div>
+    <div class="fx-orb fx-orb--mix" data-parallax="0.025"></div>
+  </div>
   <div class="scroll-line" id="scrollLine"></div>
 
   <!-- Navigation -->
@@ -564,7 +916,8 @@
   </header>
 
   <!-- Hero -->
-  <section id="home" class="min-h-screen flex items-center pt-16 pb-20 relative">
+  <section id="home" class="hero-stage min-h-screen flex items-center pt-16 pb-20 relative overflow-hidden">
+    <div class="hero-spotlight" id="heroSpotlight" aria-hidden="true"></div>
     <div class="max-w-6xl mx-auto px-5 sm:px-8 w-full">
       <div class="grid lg:grid-cols-12 gap-12 lg:gap-8 items-end">
         <div class="lg:col-span-7">
@@ -578,30 +931,30 @@
             I build products at the intersection of <span class="text-ink-text">full-stack web</span>, <span class="text-ink-text">machine learning</span>, and <span class="text-ink-text">LLM systems</span> — from shipped platforms to local-first AI tools.
           </p>
           <div class="hero-meta mt-10 flex flex-wrap gap-4">
-            <a href="#projects" class="btn-primary inline-flex items-center px-6 py-3 rounded-full text-sm">View selected work</a>
-            <a href="#contact" class="btn-ghost inline-flex items-center px-6 py-3 rounded-full text-sm">Get in touch</a>
+            <a href="#projects" class="btn-primary magnetic-btn inline-flex items-center px-6 py-3 rounded-full text-sm">View selected work</a>
+            <a href="#contact" class="btn-ghost magnetic-btn inline-flex items-center px-6 py-3 rounded-full text-sm">Get in touch</a>
           </div>
         </div>
         <div class="lg:col-span-5 space-y-6">
           <div class="grid grid-cols-2 gap-4 hero-meta">
-            <div class="stat-block">
+            <div class="stat-block depth-card tilt-target">
               <div class="stat-num" data-count="3.80">0</div>
               <p class="font-mono text-[0.65rem] uppercase tracking-wider text-ink-dim mt-1">MS CS · UIC Grad</p>
             </div>
-            <div class="stat-block">
+            <div class="stat-block depth-card tilt-target">
               <div class="stat-num" data-count="10" data-suffix="+">0</div>
               <p class="font-mono text-[0.65rem] uppercase tracking-wider text-ink-dim mt-1">Projects shipped</p>
             </div>
-            <div class="stat-block">
+            <div class="stat-block depth-card tilt-target">
               <div class="stat-num" data-count="2" data-suffix=" yr">0</div>
               <p class="font-mono text-[0.65rem] uppercase tracking-wider text-ink-dim mt-1">VMware · Broadcom</p>
             </div>
-            <div class="stat-block">
+            <div class="stat-block depth-card tilt-target">
               <div class="stat-num" data-count="1" data-suffix="st">0</div>
               <p class="font-mono text-[0.65rem] uppercase tracking-wider text-ink-dim mt-1">Hackathon win</p>
             </div>
           </div>
-          <div class="code-panel rounded-xl p-5 hero-meta">
+          <div class="code-panel depth-card tilt-target rounded-xl p-5 hero-meta">
             <div class="text-ink-dim text-[0.65rem] mb-3 flex gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-red-500/60"></span>
               <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/60"></span>
@@ -644,20 +997,20 @@
           </div>
         </div>
         <div class="lg:col-span-7 about-col flex flex-col gap-6">
-          <div class="card rounded-2xl p-6 sm:p-8">
+          <div class="card depth-card tilt-target rounded-2xl p-6 sm:p-8">
             <p class="text-ink-text leading-relaxed">I graduated with an MS in Computer Science from the University of Illinois Chicago (GPA 3.80), with coursework in AI, ML, Data Science, GenAI, and systems. Previously, I worked at VMware by Broadcom, solving complex integration issues at scale and improving developer–tester workflows. I'm now focused on full-time roles where I can build reliable, user-centric products with AI/LLM and web technologies.</p>
           </div>
           <div class="grid sm:grid-cols-2 gap-3">
-            <div class="about-fact card rounded-xl px-4 py-3 flex items-center gap-3 text-sm">
+            <div class="about-fact card depth-card tilt-target rounded-xl px-4 py-3 flex items-center gap-3 text-sm">
               <span class="text-copper font-mono text-xs">→</span> MS CS · UIC (Graduated May 2026)
             </div>
-            <div class="about-fact card rounded-xl px-4 py-3 flex items-center gap-3 text-sm">
+            <div class="about-fact card depth-card tilt-target rounded-xl px-4 py-3 flex items-center gap-3 text-sm">
               <span class="text-copper font-mono text-xs">→</span> Ex-VMware by Broadcom
             </div>
-            <div class="about-fact card rounded-xl px-4 py-3 flex items-center gap-3 text-sm">
+            <div class="about-fact card depth-card tilt-target rounded-xl px-4 py-3 flex items-center gap-3 text-sm">
               <span class="text-copper font-mono text-xs">→</span> Focus: Web · ML · LLMs
             </div>
-            <div class="about-fact card rounded-xl px-4 py-3 flex items-center gap-3 text-sm">
+            <div class="about-fact card depth-card tilt-target rounded-xl px-4 py-3 flex items-center gap-3 text-sm">
               <span class="text-copper font-mono text-xs">→</span> Based in Chicago, IL
             </div>
           </div>
@@ -681,7 +1034,7 @@
 
         <article class="timeline-item relative pb-12 pl-6">
           <div class="timeline-dot"></div>
-          <div class="card rounded-2xl p-6 sm:p-8">
+          <div class="card depth-card tilt-target rounded-2xl p-6 sm:p-8">
             <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
               <div>
                 <h3 class="text-xl font-semibold">University of Illinois at Chicago</h3>
@@ -699,7 +1052,7 @@
 
         <article class="timeline-item relative pb-12 pl-6">
           <div class="timeline-dot"></div>
-          <div class="card rounded-2xl p-6 sm:p-8">
+          <div class="card depth-card tilt-target rounded-2xl p-6 sm:p-8">
             <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
               <div>
                 <h3 class="text-xl font-semibold">VMware by Broadcom</h3>
@@ -720,7 +1073,7 @@
 
         <article class="timeline-item relative pl-6">
           <div class="timeline-dot"></div>
-          <div class="card rounded-2xl p-6 sm:p-8">
+          <div class="card depth-card tilt-target rounded-2xl p-6 sm:p-8">
             <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
               <div>
                 <h3 class="text-xl font-semibold">Full Stack Developer Intern · Ifortis Corporate</h3>
@@ -744,10 +1097,9 @@
       <div class="section-head mb-12">
         <p class="section-label">03 — Projects</p>
         <h2 class="section-title">Selected <em>work</em></h2>
-        <p class="section-lead font-mono text-xs uppercase tracking-wider !text-ink-dim !max-w-xl !mt-4">Depth over volume — each project ships, solves a real problem, or both.</p>
       </div>
 
-      <div class="flex flex-wrap gap-2 mb-10">
+      <div class="flex flex-wrap gap-2 mb-6">
         <button class="proj-filter active font-mono text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-ink-line transition-colors" data-tech="all">All</button>
         <button class="proj-filter font-mono text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-ink-line transition-colors" data-tech="llm">LLMs</button>
         <button class="proj-filter font-mono text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-ink-line transition-colors" data-tech="systems">Systems</button>
@@ -756,211 +1108,420 @@
         <button class="proj-filter font-mono text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-ink-line transition-colors" data-tech="health">Health</button>
       </div>
 
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5" id="projectsGrid">
+      <div class="projects-list" id="projectsGrid">
 
-        <article class="project-card featured card rounded-2xl" data-tags="llm">
-          <div class="project-body p-6 h-full flex flex-col">
-            <div class="flex items-center justify-between mb-3">
-              <span class="project-index">01</span>
-              <span class="font-mono text-[0.65rem] text-ink-dim">Apr 2026</span>
+        <article class="project-row depth-card tilt-target" data-tags="llm">
+          <button type="button" class="project-row-toggle" aria-expanded="false">
+            <span class="project-index">01</span>
+            <div>
+              <div class="project-row-title">UIC Loop</div>
+              <p class="project-row-tagline">All-in-one student platform for UIC — campus feed, marketplace, notes, study matching, professor reviews, and AI campus assistant.</p>
             </div>
-            <div class="project-intro shrink-0">
-              <h3 class="text-xl">UIC Loop</h3>
-              <p class="text-sm text-ink-dim">All-in-one student platform for UIC with campus feed, marketplace, notes exchange, study matching, professor reviews, and an AI campus assistant.</p>
-            </div>
-
-            <div class="loop-preview my-4 flex-1 flex flex-col min-h-0">
-              <div class="loop-preview-bar">
-                <span class="dot bg-red-500/50"></span>
-                <span class="dot bg-yellow-500/50"></span>
-                <span class="dot bg-green-500/50"></span>
-                <span class="font-mono text-[0.6rem] text-ink-dim ml-2 truncate">uicloop.com</span>
+            <div class="project-row-meta">
+              <div class="project-row-date">Apr 2026</div>
+              <div class="project-row-pills">
+                <span class="skill-pill rounded-full">Next.js</span>
+                <span class="skill-pill rounded-full">Supabase</span>
+                <span class="skill-pill rounded-full">Groq</span>
               </div>
-              <div class="loop-preview-body flex-1">
-                <div class="loop-tile loop-tile-item"><span class="loop-tile-mark"></span>Feed</div>
-                <div class="loop-tile loop-tile-item"><span class="loop-tile-mark"></span>Market</div>
-                <div class="loop-tile loop-tile-item"><span class="loop-tile-mark"></span>Notes</div>
-                <div class="loop-tile loop-tile-item"><span class="loop-tile-mark"></span>Prof Reviews</div>
-                <div class="loop-tile loop-tile-item"><span class="loop-tile-mark"></span>Schedules</div>
-                <div class="loop-tile loop-tile-item"><span class="loop-tile-mark"></span>Ride Share</div>
-                <div class="loop-tile sparky loop-tile-item">
-                  <span class="sparky-avatar">✦</span>
-                  <p class="sparky-msg"><em>Sparky AI</em> — "Best CS electives this semester at UIC?"</p>
+            </div>
+            <span class="project-row-action">
+              <span class="project-row-action-text">View details</span>
+              <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </button>
+          <div class="project-row-panel">
+            <div class="project-row-panel-inner">
+              <div class="project-row-panel-content">
+                <p class="text-sm text-ink-dim leading-relaxed">All-in-one student platform for UIC with campus feed, marketplace, notes exchange, study matching, professor reviews, and an AI campus assistant.</p>
+                <div class="loop-preview mt-4">
+                  <div class="loop-preview-bar">
+                    <span class="dot bg-red-500/50"></span><span class="dot bg-yellow-500/50"></span><span class="dot bg-green-500/50"></span>
+                    <span class="font-mono text-[0.6rem] text-ink-dim ml-2 truncate">uicloop.com</span>
+                  </div>
+                  <div class="loop-preview-body">
+                    <div class="loop-tile loop-tile-item"><span class="loop-tile-mark"></span>Feed</div>
+                    <div class="loop-tile loop-tile-item"><span class="loop-tile-mark"></span>Market</div>
+                    <div class="loop-tile loop-tile-item"><span class="loop-tile-mark"></span>Notes</div>
+                    <div class="loop-tile loop-tile-item"><span class="loop-tile-mark"></span>Prof Reviews</div>
+                    <div class="loop-tile loop-tile-item"><span class="loop-tile-mark"></span>Schedules</div>
+                    <div class="loop-tile loop-tile-item"><span class="loop-tile-mark"></span>Ride Share</div>
+                    <div class="loop-tile sparky loop-tile-item">
+                      <span class="sparky-avatar">✦</span>
+                      <p class="sparky-msg"><em>Sparky AI</em> — "Best CS electives this semester at UIC?"</p>
+                    </div>
+                  </div>
+                  <div class="loop-preview-stats">
+                    <span><span class="loop-stat-val">10+</span> modules</span>
+                    <span><span class="loop-stat-val">Realtime</span> chat</span>
+                    <span><span class="loop-stat-val">Groq</span> powered</span>
+                  </div>
+                </div>
+                <ul class="mt-4 space-y-1.5 text-xs text-ink-dim list-none">
+                  <li>· Solo-built with Next.js 16, React 19, TypeScript, Supabase</li>
+                  <li>· 10+ workflows + Groq-powered Sparky AI for campus Q&amp;A</li>
+                </ul>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <span class="skill-pill rounded-full">Next.js</span><span class="skill-pill rounded-full">Supabase</span><span class="skill-pill rounded-full">Groq</span>
+                </div>
+                <div class="project-row-links">
+                  <a href="https://uicloop.com" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">Live site →</a>
                 </div>
               </div>
-              <div class="loop-preview-stats">
-                <span><span class="loop-stat-val">10+</span> modules</span>
-                <span><span class="loop-stat-val">Realtime</span> chat</span>
-                <span><span class="loop-stat-val">Groq</span> powered</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-row depth-card tilt-target" data-tags="systems">
+          <button type="button" class="project-row-toggle" aria-expanded="false">
+            <span class="project-index">02</span>
+            <div>
+              <div class="project-row-title">FluxFS</div>
+              <p class="project-row-tagline">Intelligent filesystem autopilot — watch, organize, deduplicate, and search your files automatically. CLI, daemon, tray, and installers.</p>
+            </div>
+            <div class="project-row-meta">
+              <div class="project-row-date">May 2026 · v0.2</div>
+              <div class="project-row-pills">
+                <span class="skill-pill rounded-full">Rust</span>
+                <span class="skill-pill rounded-full">egui</span>
+                <span class="skill-pill rounded-full">Tokio</span>
               </div>
             </div>
-
-            <ul class="mt-auto space-y-1.5 text-xs text-ink-dim">
-              <li>· Solo-built with Next.js 16, React 19, TypeScript, Supabase</li>
-              <li>· 10+ workflows + Groq-powered Sparky AI for campus Q&amp;A</li>
-            </ul>
-            <div class="mt-5 flex flex-wrap gap-2">
-              <span class="skill-pill rounded-full">Next.js</span><span class="skill-pill rounded-full">Supabase</span><span class="skill-pill rounded-full">Groq</span>
-            </div>
-            <a href="https://uicloop.com" target="_blank" rel="noopener" class="mt-5 inline-flex items-center gap-2 text-sm text-copper hover:text-copper-light transition-colors">Live site →</a>
-          </div>
-        </article>
-
-        <article class="project-card featured card rounded-2xl" data-tags="systems">
-          <div class="project-body p-6 h-full flex flex-col">
-            <div class="flex items-center justify-between mb-3">
-              <span class="project-index">02</span>
-              <span class="font-mono text-[0.65rem] text-ink-dim">May 2026 · v0.2</span>
-            </div>
-            <div class="project-intro shrink-0">
-              <h3 class="text-xl">FluxFS</h3>
-              <p class="text-sm text-ink-dim">Intelligent filesystem autopilot — watch, organize, deduplicate, and search your files automatically. Cross-platform desktop app with CLI, daemon, tray, and installers.</p>
-            </div>
-
-            <div class="flux-preview my-4 flex-1">
-              <div class="flux-preview-bar">
-                <span class="text-sage">●</span> flux status
-              </div>
-              <div class="flux-preview-body">
-                <div><span class="flux-ok">●</span> Daemon <span class="flux-dim">· uptime 3h 22m</span></div>
-                <div><span class="flux-ok">●</span> Service <span class="flux-dim">· auto-start</span></div>
-                <div class="flux-hi">Index: 142,847 files (48.3 GB)</div>
-                <div class="mt-2 flux-dim">$ flux find "assignment"</div>
-                <div class="flux-hi">→ 4 results in 12ms</div>
-              </div>
-              <div class="flux-preview-foot">
-                <span><span class="flux-hi">88</span> unit tests</span>
-                <span>Win · macOS · Linux</span>
+            <span class="project-row-action">
+              <span class="project-row-action-text">View details</span>
+              <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </button>
+          <div class="project-row-panel">
+            <div class="project-row-panel-inner">
+              <div class="project-row-panel-content">
+                <p class="text-sm text-ink-dim leading-relaxed">Intelligent filesystem autopilot — watch, organize, deduplicate, and search your files automatically. Cross-platform desktop app with CLI, daemon, tray, and installers.</p>
+                <div class="flux-preview mt-4">
+                  <div class="flux-preview-bar"><span class="text-sage">●</span> flux status</div>
+                  <div class="flux-preview-body">
+                    <div><span class="flux-ok">●</span> Daemon <span class="flux-dim">· uptime 3h 22m</span></div>
+                    <div><span class="flux-ok">●</span> Service <span class="flux-dim">· auto-start</span></div>
+                    <div class="flux-hi">Index: 142,847 files (48.3 GB)</div>
+                    <div class="mt-2 flux-dim">$ flux find "assignment"</div>
+                    <div class="flux-hi">→ 4 results in 12ms</div>
+                  </div>
+                  <div class="flux-preview-foot">
+                    <span><span class="flux-hi">88</span> unit tests</span>
+                    <span>Win · macOS · Linux</span>
+                  </div>
+                </div>
+                <ul class="mt-4 space-y-1.5 text-xs text-ink-dim list-none">
+                  <li>· Shipped v0.2 with background agent, system tray, egui settings GUI, and one-click installers (.exe, .dmg, .deb).</li>
+                  <li>· Rust engine: real-time <code class="text-ink-text">notify</code> watcher, SHA-256 dedup, rule-based organize, and nucleo fuzzy search across 100k+ files in &lt;50ms.</li>
+                </ul>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <span class="skill-pill rounded-full">Rust</span><span class="skill-pill rounded-full">Tokio</span><span class="skill-pill rounded-full">egui</span><span class="skill-pill rounded-full">Rayon</span>
+                </div>
+                <div class="project-row-links">
+                  <a href="https://github.com/ManeeshJupalle/FluxFS" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">GitHub →</a>
+                  <a href="https://github.com/ManeeshJupalle/FluxFS/releases" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">Releases →</a>
+                </div>
               </div>
             </div>
+          </div>
+        </article>
 
-            <ul class="mt-auto space-y-1.5 text-xs text-ink-dim">
-              <li>· Shipped v0.2 with background agent, system tray, egui settings GUI, and one-click installers (.exe, .dmg, .deb).</li>
-              <li>· Rust engine: real-time <code class="text-ink-text">notify</code> watcher, SHA-256 dedup, rule-based organize, and nucleo fuzzy search across 100k+ files in &lt;50ms.</li>
-            </ul>
-            <div class="mt-5 flex flex-wrap gap-2">
-              <span class="skill-pill rounded-full">Rust</span><span class="skill-pill rounded-full">Tokio</span><span class="skill-pill rounded-full">egui</span><span class="skill-pill rounded-full">Rayon</span>
+        <article class="project-row depth-card tilt-target" data-tags="llm">
+          <button type="button" class="project-row-toggle" aria-expanded="false">
+            <span class="project-index">03</span>
+            <div>
+              <div class="project-row-title">Synapse</div>
+              <p class="project-row-tagline">Privacy-first Chrome extension — browsing history becomes a local knowledge graph and searchable second brain.</p>
             </div>
-            <div class="mt-4 flex flex-wrap gap-4 text-sm">
-              <a href="https://github.com/ManeeshJupalle/FluxFS" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">GitHub →</a>
-              <a href="https://github.com/ManeeshJupalle/FluxFS/releases" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">Releases →</a>
+            <div class="project-row-meta">
+              <div class="project-row-date">Apr 2026</div>
+              <div class="project-row-pills">
+                <span class="skill-pill rounded-full">Chrome Ext</span>
+                <span class="skill-pill rounded-full">ONNX</span>
+                <span class="skill-pill rounded-full">React</span>
+              </div>
+            </div>
+            <span class="project-row-action">
+              <span class="project-row-action-text">View details</span>
+              <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </button>
+          <div class="project-row-panel">
+            <div class="project-row-panel-inner">
+              <div class="project-row-panel-content">
+                <p class="text-sm text-ink-dim leading-relaxed">Privacy-first Chrome extension — browsing history becomes a local knowledge graph and searchable second brain.</p>
+                <ul class="mt-4 space-y-1.5 text-xs text-ink-dim list-none">
+                  <li>· Manifest V3 + IndexedDB memory layer</li>
+                  <li>· On-device semantic search with ONNX WASM embeddings</li>
+                </ul>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <span class="skill-pill rounded-full">Chrome Ext</span><span class="skill-pill rounded-full">ONNX</span><span class="skill-pill rounded-full">React</span>
+                </div>
+                <div class="project-row-links">
+                  <a href="https://github.com/ManeeshJupalle/Synapse" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">GitHub →</a>
+                </div>
+              </div>
             </div>
           </div>
         </article>
 
-        <article class="project-card featured card rounded-2xl" data-tags="llm">
-          <div class="project-body p-6 h-full flex flex-col">
-            <div class="flex items-center justify-between mb-4">
-              <span class="project-index">03</span>
-              <span class="font-mono text-[0.65rem] text-ink-dim">Apr 2026</span>
+        <article class="project-row depth-card tilt-target" data-tags="llm">
+          <button type="button" class="project-row-toggle" aria-expanded="false">
+            <span class="project-index">04</span>
+            <div>
+              <div class="project-row-title">PromptForge CLI</div>
+              <p class="project-row-tagline">"Jest for prompts" — test-driven LLM prompt development with local execution and a self-hosted dashboard.</p>
             </div>
-            <h3 class="text-xl font-semibold mb-2">Synapse</h3>
-            <p class="text-sm text-ink-dim leading-relaxed flex-1">Privacy-first Chrome extension — browsing history becomes a local knowledge graph and searchable second brain.</p>
-            <ul class="mt-4 space-y-1.5 text-xs text-ink-dim">
-              <li>· Manifest V3 + IndexedDB memory layer</li>
-              <li>· On-device semantic search with ONNX WASM embeddings</li>
-            </ul>
-            <div class="mt-5 flex flex-wrap gap-2">
-              <span class="skill-pill rounded-full">Chrome Ext</span><span class="skill-pill rounded-full">ONNX</span><span class="skill-pill rounded-full">React</span>
+            <div class="project-row-meta">
+              <div class="project-row-date">May 2026</div>
+              <div class="project-row-pills">
+                <span class="skill-pill rounded-full">TypeScript</span>
+                <span class="skill-pill rounded-full">SQLite</span>
+              </div>
             </div>
-            <a href="https://github.com/ManeeshJupalle/Synapse" target="_blank" rel="noopener" class="mt-5 inline-flex items-center gap-2 text-sm text-copper hover:text-copper-light transition-colors">GitHub →</a>
-          </div>
-        </article>
-
-        <article class="project-card card rounded-2xl" data-tags="llm">
-          <div class="project-body p-6 h-full flex flex-col">
-            <div class="flex items-center justify-between mb-4">
-              <span class="project-index">04</span>
-              <span class="font-mono text-[0.65rem] text-ink-dim">May 2026</span>
-            </div>
-            <h3 class="text-xl font-semibold mb-2">PromptForge CLI</h3>
-            <p class="text-sm text-ink-dim leading-relaxed flex-1">"Jest for prompts" — test-driven LLM prompt development with local-first execution and a self-hosted dashboard.</p>
-            <div class="mt-5 flex flex-wrap gap-2">
-              <span class="skill-pill rounded-full">TypeScript</span><span class="skill-pill rounded-full">SQLite</span>
-            </div>
-            <a href="https://github.com/ManeeshJupalle/promptforge-cli" target="_blank" rel="noopener" class="mt-5 inline-flex items-center gap-2 text-sm text-copper">GitHub →</a>
-          </div>
-        </article>
-
-        <article class="project-card card rounded-2xl" data-tags="llm">
-          <div class="project-body p-6 h-full flex flex-col">
-            <div class="flex items-center justify-between mb-4">
-              <span class="project-index">05</span>
-              <span class="font-mono text-[0.65rem] text-ink-dim">May 2026</span>
-            </div>
-            <h3 class="text-xl font-semibold mb-2">Sentinel MCP</h3>
-            <p class="text-sm text-ink-dim leading-relaxed flex-1">Zero-config MCP server for local-first codebase health analysis — complexity, dependencies, dead code, git health.</p>
-            <div class="mt-5 flex flex-wrap gap-2">
-              <span class="skill-pill rounded-full">MCP</span><span class="skill-pill rounded-full">Tree-sitter</span>
-            </div>
-            <a href="https://github.com/ManeeshJupalle/sentinel-mcp" target="_blank" rel="noopener" class="mt-5 inline-flex items-center gap-2 text-sm text-copper">GitHub →</a>
-          </div>
-        </article>
-
-        <article class="project-card card rounded-2xl" data-tags="ml">
-          <div class="project-body p-6 h-full flex flex-col">
-            <div class="flex items-center justify-between mb-4">
-              <span class="project-index">06</span>
-              <span class="font-mono text-[0.65rem] text-ink-dim">May 2026</span>
-            </div>
-            <h3 class="text-xl font-semibold mb-2">CashPulse</h3>
-            <p class="text-sm text-ink-dim leading-relaxed flex-1">Privacy-first local cash flow forecasting and financial anomaly detection — 533 tests, fully on-device.</p>
-            <div class="mt-5 flex flex-wrap gap-2">
-              <span class="skill-pill rounded-full">PyTorch</span><span class="skill-pill rounded-full">XGBoost</span>
-            </div>
-            <a href="https://github.com/ManeeshJupalle/CashPulse" target="_blank" rel="noopener" class="mt-5 inline-flex items-center gap-2 text-sm text-copper">GitHub →</a>
-          </div>
-        </article>
-
-        <article class="project-card card rounded-2xl" data-tags="llm,health">
-          <div class="project-body p-6 h-full flex flex-col">
-            <div class="flex items-center justify-between mb-4">
-              <span class="project-index">07</span>
-              <span class="font-mono text-[0.65rem] text-ink-dim">Dec 2025</span>
-            </div>
-            <h3 class="text-xl font-semibold mb-2">Golden Bridge</h3>
-            <p class="text-sm text-ink-dim leading-relaxed flex-1">Ambulance pre-arrival system — 1st place, Microsoft-sponsored Hack with Chicago.</p>
-            <div class="mt-5 flex flex-wrap gap-2">
-              <span class="skill-pill rounded-full">LangChain</span><span class="skill-pill rounded-full">Kafka</span>
+            <span class="project-row-action">
+              <span class="project-row-action-text">View details</span>
+              <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </button>
+          <div class="project-row-panel">
+            <div class="project-row-panel-inner">
+              <div class="project-row-panel-content">
+                <p class="text-sm text-ink-dim leading-relaxed">"Jest for prompts" — test-driven LLM prompt development with local-first execution and a self-hosted dashboard.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <span class="skill-pill rounded-full">TypeScript</span><span class="skill-pill rounded-full">SQLite</span>
+                </div>
+                <div class="project-row-links">
+                  <a href="https://github.com/ManeeshJupalle/promptforge-cli" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">GitHub →</a>
+                </div>
+              </div>
             </div>
           </div>
         </article>
 
-        <article class="project-card card rounded-2xl" data-tags="llm">
-          <div class="project-body p-6 h-full flex flex-col">
-            <span class="project-index mb-4">08</span>
-            <h3 class="text-xl font-semibold mb-2">Insurease</h3>
-            <p class="text-sm text-ink-dim leading-relaxed flex-1">LLM-powered insurance document extraction, comparison, and simplification with vector/graph search.</p>
-            <div class="mt-5 flex flex-wrap gap-2"><span class="skill-pill rounded-full">Qdrant</span><span class="skill-pill rounded-full">Neo4j</span></div>
+        <article class="project-row depth-card tilt-target" data-tags="llm">
+          <button type="button" class="project-row-toggle" aria-expanded="false">
+            <span class="project-index">05</span>
+            <div>
+              <div class="project-row-title">Sentinel MCP</div>
+              <p class="project-row-tagline">Zero-config MCP server for instant, local-first codebase health analysis and prioritized reports.</p>
+            </div>
+            <div class="project-row-meta">
+              <div class="project-row-date">May 2026</div>
+              <div class="project-row-pills">
+                <span class="skill-pill rounded-full">MCP</span>
+                <span class="skill-pill rounded-full">Tree-sitter</span>
+              </div>
+            </div>
+            <span class="project-row-action">
+              <span class="project-row-action-text">View details</span>
+              <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </button>
+          <div class="project-row-panel">
+            <div class="project-row-panel-inner">
+              <div class="project-row-panel-content">
+                <p class="text-sm text-ink-dim leading-relaxed">Zero-config MCP server for local-first codebase health analysis — complexity, dependencies, dead code, git health.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <span class="skill-pill rounded-full">MCP</span><span class="skill-pill rounded-full">Tree-sitter</span>
+                </div>
+                <div class="project-row-links">
+                  <a href="https://github.com/ManeeshJupalle/sentinel-mcp" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">GitHub →</a>
+                </div>
+              </div>
+            </div>
           </div>
         </article>
 
-        <article class="project-card card rounded-2xl" data-tags="llm">
-          <div class="project-body p-6 h-full flex flex-col">
-            <span class="project-index mb-4">09</span>
-            <h3 class="text-xl font-semibold mb-2">ResearchAI</h3>
-            <p class="text-sm text-ink-dim leading-relaxed flex-1">Full-stack AI research assistant — upload papers, chat with summaries and Q&amp;A.</p>
-            <div class="mt-5 flex flex-wrap gap-2"><span class="skill-pill rounded-full">React</span><span class="skill-pill rounded-full">Supabase</span></div>
+        <article class="project-row depth-card tilt-target" data-tags="ml">
+          <button type="button" class="project-row-toggle" aria-expanded="false">
+            <span class="project-index">06</span>
+            <div>
+              <div class="project-row-title">CashPulse</div>
+              <p class="project-row-tagline">Privacy-first local cash flow forecasting and financial anomaly detection — fully on-device.</p>
+            </div>
+            <div class="project-row-meta">
+              <div class="project-row-date">May 2026</div>
+              <div class="project-row-pills">
+                <span class="skill-pill rounded-full">PyTorch</span>
+                <span class="skill-pill rounded-full">XGBoost</span>
+              </div>
+            </div>
+            <span class="project-row-action">
+              <span class="project-row-action-text">View details</span>
+              <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </button>
+          <div class="project-row-panel">
+            <div class="project-row-panel-inner">
+              <div class="project-row-panel-content">
+                <p class="text-sm text-ink-dim leading-relaxed">Privacy-first local cash flow forecasting and financial anomaly detection — 533 tests, fully on-device.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <span class="skill-pill rounded-full">PyTorch</span><span class="skill-pill rounded-full">XGBoost</span>
+                </div>
+                <div class="project-row-links">
+                  <a href="https://github.com/ManeeshJupalle/CashPulse" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">GitHub →</a>
+                </div>
+              </div>
+            </div>
           </div>
         </article>
 
-        <article class="project-card card rounded-2xl" data-tags="cv">
-          <div class="project-body p-6 h-full flex flex-col">
-            <span class="project-index mb-4">10</span>
-            <h3 class="text-xl font-semibold mb-2">SheSecure</h3>
-            <p class="text-sm text-ink-dim leading-relaxed flex-1">YOLOv5 pipeline detecting potential assault incidents in CCTV footage — ~92% precision.</p>
-            <div class="mt-5 flex flex-wrap gap-2"><span class="skill-pill rounded-full">YOLOv5</span><span class="skill-pill rounded-full">Python</span></div>
+        <article class="project-row depth-card tilt-target" data-tags="llm,health">
+          <button type="button" class="project-row-toggle" aria-expanded="false">
+            <span class="project-index">07</span>
+            <div>
+              <div class="project-row-title">Golden Bridge</div>
+              <p class="project-row-tagline">Ambulance pre-arrival system — 1st place, Microsoft-sponsored Hack with Chicago.</p>
+            </div>
+            <div class="project-row-meta">
+              <div class="project-row-date">Dec 2025</div>
+              <div class="project-row-pills">
+                <span class="skill-pill rounded-full">LangChain</span>
+                <span class="skill-pill rounded-full">Kafka</span>
+              </div>
+            </div>
+            <span class="project-row-action">
+              <span class="project-row-action-text">View details</span>
+              <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </button>
+          <div class="project-row-panel">
+            <div class="project-row-panel-inner">
+              <div class="project-row-panel-content">
+                <p class="text-sm text-ink-dim leading-relaxed">Ambulance pre-arrival system — 1st place, Microsoft-sponsored Hack with Chicago.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <span class="skill-pill rounded-full">LangChain</span><span class="skill-pill rounded-full">Kafka</span>
+                </div>
+              </div>
+            </div>
           </div>
         </article>
 
-        <article class="project-card card rounded-2xl" data-tags="health">
-          <div class="project-body p-6 h-full flex flex-col">
-            <span class="project-index mb-4">11</span>
-            <h3 class="text-xl font-semibold mb-2">Jan Swasthya</h3>
-            <p class="text-sm text-ink-dim leading-relaxed flex-1">Healthcare app using a CNN and chatbot for faster initial assessment — ~85% accuracy.</p>
-            <div class="mt-5 flex flex-wrap gap-2"><span class="skill-pill rounded-full">Django</span><span class="skill-pill rounded-full">CNN</span></div>
+        <article class="project-row depth-card tilt-target" data-tags="llm">
+          <button type="button" class="project-row-toggle" aria-expanded="false">
+            <span class="project-index">08</span>
+            <div>
+              <div class="project-row-title">Insurease</div>
+              <p class="project-row-tagline">LLM-powered insurance document extraction, comparison, and simplification with vector/graph search.</p>
+            </div>
+            <div class="project-row-meta">
+              <div class="project-row-date">—</div>
+              <div class="project-row-pills">
+                <span class="skill-pill rounded-full">Qdrant</span>
+                <span class="skill-pill rounded-full">Neo4j</span>
+              </div>
+            </div>
+            <span class="project-row-action">
+              <span class="project-row-action-text">View details</span>
+              <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </button>
+          <div class="project-row-panel">
+            <div class="project-row-panel-inner">
+              <div class="project-row-panel-content">
+                <p class="text-sm text-ink-dim leading-relaxed">LLM-powered website using GPT-Nano/Gemini Flash with vector/graph search (Qdrant/Neo4j) to extract, compare, and simplify insurance documents.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <span class="skill-pill rounded-full">Qdrant</span><span class="skill-pill rounded-full">Neo4j</span>
+                </div>
+              </div>
+            </div>
           </div>
         </article>
+
+        <article class="project-row depth-card tilt-target" data-tags="llm">
+          <button type="button" class="project-row-toggle" aria-expanded="false">
+            <span class="project-index">09</span>
+            <div>
+              <div class="project-row-title">ResearchAI</div>
+              <p class="project-row-tagline">Full-stack AI research assistant — upload papers and chat with summaries and Q&amp;A.</p>
+            </div>
+            <div class="project-row-meta">
+              <div class="project-row-date">—</div>
+              <div class="project-row-pills">
+                <span class="skill-pill rounded-full">React</span>
+                <span class="skill-pill rounded-full">Supabase</span>
+              </div>
+            </div>
+            <span class="project-row-action">
+              <span class="project-row-action-text">View details</span>
+              <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </button>
+          <div class="project-row-panel">
+            <div class="project-row-panel-inner">
+              <div class="project-row-panel-content">
+                <p class="text-sm text-ink-dim leading-relaxed">Full-stack AI research assistant — upload papers, chat with summaries and Q&amp;A.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <span class="skill-pill rounded-full">React</span><span class="skill-pill rounded-full">Supabase</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-row depth-card tilt-target" data-tags="cv">
+          <button type="button" class="project-row-toggle" aria-expanded="false">
+            <span class="project-index">10</span>
+            <div>
+              <div class="project-row-title">SheSecure</div>
+              <p class="project-row-tagline">YOLOv5 pipeline for assault incident detection in CCTV footage — ~92% precision.</p>
+            </div>
+            <div class="project-row-meta">
+              <div class="project-row-date">—</div>
+              <div class="project-row-pills">
+                <span class="skill-pill rounded-full">YOLOv5</span>
+                <span class="skill-pill rounded-full">Python</span>
+              </div>
+            </div>
+            <span class="project-row-action">
+              <span class="project-row-action-text">View details</span>
+              <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </button>
+          <div class="project-row-panel">
+            <div class="project-row-panel-inner">
+              <div class="project-row-panel-content">
+                <p class="text-sm text-ink-dim leading-relaxed">YOLOv5 pipeline detecting potential assault incidents in CCTV footage.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <span class="skill-pill rounded-full">YOLOv5</span><span class="skill-pill rounded-full">Python</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-row depth-card tilt-target" data-tags="health">
+          <button type="button" class="project-row-toggle" aria-expanded="false">
+            <span class="project-index">11</span>
+            <div>
+              <div class="project-row-title">Jan Swasthya</div>
+              <p class="project-row-tagline">Healthcare app with CNN + chatbot for faster initial assessment — ~85% accuracy.</p>
+            </div>
+            <div class="project-row-meta">
+              <div class="project-row-date">—</div>
+              <div class="project-row-pills">
+                <span class="skill-pill rounded-full">Django</span>
+                <span class="skill-pill rounded-full">CNN</span>
+              </div>
+            </div>
+            <span class="project-row-action">
+              <span class="project-row-action-text">View details</span>
+              <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </button>
+          <div class="project-row-panel">
+            <div class="project-row-panel-inner">
+              <div class="project-row-panel-content">
+                <p class="text-sm text-ink-dim leading-relaxed">Healthcare app using a CNN and chatbot for faster initial assessment.</p>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <span class="skill-pill rounded-full">Django</span><span class="skill-pill rounded-full">CNN</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
       </div>
     </div>
   </section>
@@ -1034,13 +1595,13 @@
         <h2 class="section-title">Education &amp; <em>recognition</em></h2>
       </div>
       <div class="grid lg:grid-cols-2 gap-6 mb-6">
-        <div class="edu-card card rounded-2xl p-6 sm:p-8">
+        <div class="edu-card card depth-card tilt-target rounded-2xl p-6 sm:p-8">
           <p class="font-mono text-xs text-copper mb-2">Aug 2024 – May 2026 · Graduated</p>
           <h3 class="text-lg font-semibold">MS Computer Science</h3>
           <p class="text-ink-dim text-sm mt-1">University of Illinois Chicago · GPA 3.80</p>
           <p class="text-xs text-ink-dim mt-4 leading-relaxed">AI, ML, Data Science, Networking, DBMS, DevOps, GenAI, Economics in CS</p>
         </div>
-        <div class="edu-card card rounded-2xl p-6 sm:p-8">
+        <div class="edu-card card depth-card tilt-target rounded-2xl p-6 sm:p-8">
           <p class="font-mono text-xs text-copper mb-2">2018 – 2022</p>
           <h3 class="text-lg font-semibold">B.Tech CST (AI)</h3>
           <p class="text-ink-dim text-sm mt-1">Jain University · GPA 3.72</p>
@@ -1048,14 +1609,14 @@
         </div>
       </div>
       <div class="grid lg:grid-cols-2 gap-6">
-        <div id="publications" class="edu-card card rounded-2xl p-6 sm:p-8">
+        <div id="publications" class="edu-card card depth-card tilt-target rounded-2xl p-6 sm:p-8">
           <p class="font-mono text-[0.65rem] uppercase tracking-wider text-copper mb-3">Publication</p>
           <h3 class="font-semibold">Diabetic Retinopathy Detection using ML</h3>
           <p class="font-mono text-xs text-ink-dim mt-1">Jan 2022 – Jun 2022</p>
           <p class="text-sm text-ink-dim mt-3">5-layer CNN with 94.5% accuracy. Awarded International Best Researcher by ISSN.</p>
           <a href="https://www.ijariit.com/manuscript/diabetic-retinopathy-detection-using-machine-learning/" target="_blank" rel="noopener" class="inline-flex mt-4 text-sm text-copper hover:text-copper-light">Read paper →</a>
         </div>
-        <div id="awards" class="edu-card card rounded-2xl p-6 sm:p-8">
+        <div id="awards" class="edu-card card depth-card tilt-target rounded-2xl p-6 sm:p-8">
           <p class="font-mono text-[0.65rem] uppercase tracking-wider text-copper mb-3">Award</p>
           <h3 class="font-semibold">VMware vExpert</h3>
           <p class="font-mono text-xs text-ink-dim mt-1">2023</p>
@@ -1093,7 +1654,7 @@
             </a>
           </div>
         </div>
-        <form id="contactForm" class="contact-col card rounded-2xl p-6 sm:p-8">
+        <form id="contactForm" class="contact-col card depth-card tilt-target rounded-2xl p-6 sm:p-8">
           <label class="font-mono text-xs uppercase tracking-wider text-ink-dim">Message</label>
           <textarea id="msg" name="message" class="contact-input mt-3 w-full rounded-xl p-4 min-h-[160px] text-sm text-ink-text resize-none" placeholder="Say hello..." required></textarea>
           <button type="submit" class="btn-primary mt-5 inline-flex items-center px-6 py-3 rounded-full text-sm">Send email</button>
@@ -1126,8 +1687,10 @@
       initScrollLine();
       initContactForm();
       initProjectFilter();
-      initProjectSpotlight();
+      initProjectAccordion();
       initBackToTop();
+      initSpaceField();
+      initVisualEffects();
 
       if (!reducedMotion && typeof gsap !== 'undefined') {
         gsap.registerPlugin(ScrollTrigger);
@@ -1240,6 +1803,17 @@
         ease: 'power3.out',
       });
 
+      gsap.utils.toArray('#about .tilt-target, #education .tilt-target, #contact .tilt-target').forEach((el, i) => {
+        gsap.from(el, {
+          scrollTrigger: { trigger: el, start: 'top 92%' },
+          y: 24,
+          opacity: 0,
+          duration: 0.75,
+          delay: (i % 4) * 0.04,
+          ease: 'power3.out',
+        });
+      });
+
       gsap.from('.about-fact', {
         scrollTrigger: { trigger: '.about-fact', start: 'top 90%' },
         scale: 0.92,
@@ -1263,7 +1837,7 @@
       gsap.utils.toArray('.timeline-item').forEach((item, i) => {
         gsap.from(item.querySelector('.card'), {
           scrollTrigger: { trigger: item, start: 'top 85%' },
-          x: i % 2 === 0 ? -40 : 40,
+          x: i % 2 === 0 ? -28 : 28,
           opacity: 0,
           duration: 0.9,
           ease: 'power3.out',
@@ -1276,22 +1850,13 @@
         });
       });
 
-      gsap.from('.project-card', {
+      gsap.from('.project-row', {
         scrollTrigger: { trigger: '#projectsGrid', start: 'top 80%' },
-        y: 60,
+        y: 20,
         opacity: 0,
-        duration: 0.7,
-        stagger: 0.06,
+        duration: 0.55,
+        stagger: 0.035,
         ease: 'power3.out',
-      });
-
-      gsap.from('.loop-tile-item', {
-        scrollTrigger: { trigger: '.loop-preview', start: 'top 85%' },
-        y: 12,
-        opacity: 0,
-        duration: 0.45,
-        stagger: 0.05,
-        ease: 'power2.out',
       });
 
       gsap.utils.toArray('.skill-bar-fill').forEach(bar => {
@@ -1311,63 +1876,331 @@
         stagger: 0.03,
         ease: 'power2.out',
       });
-
-      gsap.from('.edu-card', {
-        scrollTrigger: { trigger: '#education', start: 'top 75%' },
-        y: 40,
-        opacity: 0,
-        duration: 0.7,
-        stagger: 0.1,
-        ease: 'power3.out',
-      });
-
-      gsap.from('.contact-col', {
-        scrollTrigger: { trigger: '#contact', start: 'top 75%' },
-        y: 50,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: 'power3.out',
-      });
     }
 
     function initGridParallax() {
       const grid = document.getElementById('bgGrid');
       gsap.to(grid, {
         scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom bottom', scrub: 1 },
-        backgroundPosition: '0px 200px',
+        backgroundPosition: '0px 60px',
         ease: 'none',
+      });
+
+      const milkyway = document.getElementById('spaceMilkyway');
+      if (milkyway) {
+        gsap.to(milkyway, {
+          scrollTrigger: { trigger: 'body', start: 'top top', end: 'bottom bottom', scrub: 1.5 },
+          y: 50,
+          x: -8,
+          rotate: -1,
+          ease: 'none',
+        });
+      }
+    }
+
+    function initSpaceField() {
+      const canvas = document.getElementById('spaceCanvas');
+      if (!canvas) return;
+
+      const ctx = canvas.getContext('2d');
+      const layers = [
+        { count: 140, size: [0.4, 1.1], speed: 0.012, opacity: [0.15, 0.45] },
+        { count: 90, size: [0.7, 1.5], speed: 0.028, opacity: [0.3, 0.65] },
+        { count: 40, size: [1.1, 2.4], speed: 0.05, opacity: [0.45, 0.95], twinkle: true },
+      ];
+
+      let stars = [];
+      let width = 0;
+      let height = 0;
+      let rafId = null;
+      let scrollY = 0;
+      let pointerX = 0.5;
+      let pointerY = 0.3;
+
+      const tints = [
+        { r: 232, g: 230, b: 225, a: 1 },
+        { r: 200, g: 135, b: 74, a: 0.75 },
+        { r: 109, g: 184, b: 158, a: 0.65 },
+      ];
+
+      function pickTint() {
+        const roll = Math.random();
+        if (roll > 0.94) return tints[1];
+        if (roll > 0.88) return tints[2];
+        return tints[0];
+      }
+
+      function buildStars() {
+        stars = [];
+        const span = height * 4;
+        layers.forEach((layer, li) => {
+          for (let i = 0; i < layer.count; i++) {
+            stars.push({
+              x: Math.random() * width,
+              y: Math.random() * span,
+              layer: li,
+              r: layer.size[0] + Math.random() * (layer.size[1] - layer.size[0]),
+              o: layer.opacity[0] + Math.random() * (layer.opacity[1] - layer.opacity[0]),
+              phase: Math.random() * Math.PI * 2,
+              tint: pickTint(),
+              twinkle: !!layer.twinkle,
+            });
+          }
+        });
+      }
+
+      function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+        buildStars();
+      }
+
+      function wrapY(y, span) {
+        while (y < -20) y += span;
+        while (y > height + 20) y -= span;
+        return y;
+      }
+
+      function draw(time) {
+        ctx.clearRect(0, 0, width, height);
+        const span = height * 4;
+        const driftX = (pointerX - 0.5) * 8;
+        const driftY = (pointerY - 0.5) * 5;
+
+        stars.forEach(star => {
+          const layer = layers[star.layer];
+          let y = star.y - scrollY * layer.speed + driftY * layer.speed * 1.2;
+          y = wrapY(y, span);
+          const x = star.x + driftX * layer.speed * 2;
+
+          let alpha = star.o;
+          if (star.twinkle && !reducedMotion) {
+            alpha *= 0.55 + 0.45 * Math.sin(time * 0.0018 + star.phase);
+          }
+
+          const { r, g, b, a } = star.tint;
+          ctx.beginPath();
+          ctx.arc(x, y, star.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha * a})`;
+          ctx.fill();
+
+          if (star.r > 1.6 && alpha > 0.55) {
+            ctx.beginPath();
+            ctx.arc(x, y, star.r * 2.8, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha * 0.08})`;
+            ctx.fill();
+          }
+        });
+
+        if (!reducedMotion) rafId = requestAnimationFrame(draw);
+      }
+
+      function onScroll() {
+        scrollY = window.scrollY;
+        if (reducedMotion) draw(0);
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', resize);
+
+      document.addEventListener('space-pointer', (e) => {
+        pointerX = e.detail.x;
+        pointerY = e.detail.y;
+      });
+
+      resize();
+      onScroll();
+      if (reducedMotion) {
+        draw(0);
+      } else {
+        rafId = requestAnimationFrame(draw);
+      }
+
+      return () => {
+        if (rafId) cancelAnimationFrame(rafId);
+      };
+    }
+
+    function initVisualEffects() {
+      if (reducedMotion) return;
+
+      const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      if (canHover) {
+        initTiltTargets('.tilt-target', { max: 9 });
+        initMagneticButtons('.magnetic-btn', 0.32);
+        initPointerAmbience();
+      } else {
+        initOrbScrollDrift();
+      }
+    }
+
+    function applyOrbTransforms(pointerX = 0.5, pointerY = 0.3) {
+      document.querySelectorAll('.fx-orb[data-parallax]').forEach(orb => {
+        const depth = parseFloat(orb.dataset.parallax) || 0.03;
+        const ox = (pointerX - 0.5) * depth * 420;
+        const oy = (pointerY - 0.5) * depth * 420;
+        const scrollY = window.scrollY * depth * 0.1;
+        orb.style.transform = `translate3d(${ox}px, ${oy + scrollY}px, 0)`;
       });
     }
 
-    function initProjectSpotlight() {
-      document.querySelectorAll('.project-card').forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-          const rect = card.getBoundingClientRect();
-          card.style.setProperty('--mx', ((e.clientX - rect.left) / rect.width * 100) + '%');
-          card.style.setProperty('--my', ((e.clientY - rect.top) / rect.height * 100) + '%');
+    function initOrbScrollDrift() {
+      applyOrbTransforms();
+      window.addEventListener('scroll', () => applyOrbTransforms(), { passive: true });
+    }
+
+    function initTiltTargets(selector, { max = 8 } = {}) {
+      document.querySelectorAll(selector).forEach(el => {
+        el.addEventListener('mousemove', (e) => {
+          const rect = el.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width - 0.5;
+          const y = (e.clientY - rect.top) / rect.height - 0.5;
+          el.style.transform = `perspective(900px) rotateY(${x * max}deg) rotateX(${-y * max}deg) translateZ(0)`;
+          el.style.setProperty('--mx', `${(x + 0.5) * 100}%`);
+          el.style.setProperty('--my', `${(y + 0.5) * 100}%`);
+        });
+        el.addEventListener('mouseleave', () => {
+          el.style.transform = '';
+          el.style.setProperty('--mx', '50%');
+          el.style.setProperty('--my', '50%');
+        });
+      });
+    }
+
+    function initMagneticButtons(selector, strength = 0.3) {
+      document.querySelectorAll(selector).forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+          const rect = btn.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          btn.style.transform = `translate(${x * strength}px, ${y * strength}px)`;
+        });
+        btn.addEventListener('mouseleave', () => {
+          btn.style.transform = '';
+        });
+      });
+    }
+
+    function initPointerAmbience() {
+      let raf = null;
+      let targetX = 0.5;
+      let targetY = 0.3;
+      let currentX = 0.5;
+      let currentY = 0.3;
+
+      document.addEventListener('mousemove', (e) => {
+        targetX = e.clientX / window.innerWidth;
+        targetY = e.clientY / window.innerHeight;
+        if (!raf) raf = requestAnimationFrame(tick);
+      }, { passive: true });
+
+      window.addEventListener('scroll', () => applyOrbTransforms(currentX, currentY), { passive: true });
+
+      function tick() {
+        currentX += (targetX - currentX) * 0.08;
+        currentY += (targetY - currentY) * 0.08;
+
+        applyOrbTransforms(currentX, currentY);
+        document.dispatchEvent(new CustomEvent('space-pointer', {
+          detail: { x: currentX, y: currentY },
+        }));
+
+        const spotlight = document.getElementById('heroSpotlight');
+        if (spotlight) {
+          spotlight.style.setProperty('--spot-x', `${currentX * 100}%`);
+          spotlight.style.setProperty('--spot-y', `${currentY * 100}%`);
+        }
+
+        if (Math.abs(targetX - currentX) > 0.001 || Math.abs(targetY - currentY) > 0.001) {
+          raf = requestAnimationFrame(tick);
+        } else {
+          raf = null;
+        }
+      }
+    }
+
+    function setProjectRowAction(row, isOpen) {
+      const label = row.querySelector('.project-row-action-text');
+      if (label) label.textContent = isOpen ? 'Close' : 'View details';
+    }
+
+    function setProjectRowAria(toggle, title, isOpen) {
+      if (isOpen) {
+        toggle.setAttribute('aria-label', `Collapse ${title} — hide details`);
+      } else {
+        toggle.setAttribute('aria-label', `Expand ${title} — view details, demos, and links`);
+      }
+    }
+
+    function initProjectAccordion() {
+      const rows = document.querySelectorAll('.project-row');
+      rows.forEach(row => {
+        const toggle = row.querySelector('.project-row-toggle');
+        if (!toggle) return;
+        const title = row.querySelector('.project-row-title')?.textContent?.trim() || 'project';
+        toggle.setAttribute('aria-expanded', 'false');
+        setProjectRowAria(toggle, title, false);
+        setProjectRowAction(row, false);
+
+        toggle.addEventListener('click', () => {
+          const willOpen = !row.classList.contains('is-open');
+          rows.forEach(r => {
+            r.classList.remove('is-open');
+            const t = r.querySelector('.project-row-toggle');
+            const rt = r.querySelector('.project-row-title')?.textContent?.trim() || 'project';
+            if (t) {
+              t.setAttribute('aria-expanded', 'false');
+              setProjectRowAria(t, rt, false);
+            }
+            setProjectRowAction(r, false);
+          });
+          if (willOpen) {
+            row.classList.add('is-open');
+            toggle.setAttribute('aria-expanded', 'true');
+            setProjectRowAria(toggle, title, true);
+            setProjectRowAction(row, true);
+            row.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'nearest' });
+            const tiles = row.querySelectorAll('.loop-tile-item');
+            if (tiles.length && typeof gsap !== 'undefined' && !reducedMotion) {
+              gsap.from(tiles, {
+                y: 10,
+                opacity: 0,
+                duration: 0.35,
+                stagger: 0.04,
+                ease: 'power2.out',
+              });
+            }
+          }
         });
       });
     }
 
     function initProjectFilter() {
       const filters = document.querySelectorAll('.proj-filter');
-      const cards = document.querySelectorAll('#projectsGrid .project-card');
+      const rows = document.querySelectorAll('#projectsGrid .project-row');
       filters.forEach(btn => {
         btn.addEventListener('click', () => {
           const tech = btn.dataset.tech;
           filters.forEach(b => b.classList.toggle('active', b === btn));
-          cards.forEach(card => {
-            const tags = (card.dataset.tags || '').split(',').filter(Boolean);
+          rows.forEach(row => {
+            const tags = (row.dataset.tags || '').split(',').map(t => t.trim()).filter(Boolean);
             const show = tech === 'all' || tags.includes(tech);
-            card.style.display = show ? '' : 'none';
-            if (show && typeof gsap !== 'undefined') {
-              gsap.fromTo(card, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' });
+            row.style.display = show ? '' : 'none';
+            if (!show) {
+              row.classList.remove('is-open');
+              const t = row.querySelector('.project-row-toggle');
+              const rt = row.querySelector('.project-row-title')?.textContent?.trim() || 'project';
+              if (t) {
+                t.setAttribute('aria-expanded', 'false');
+                setProjectRowAria(t, rt, false);
+              }
+              setProjectRowAction(row, false);
             }
           });
         });
       });
-      filters[0]?.classList.add('active');
     }
 
     function initContactForm() {
