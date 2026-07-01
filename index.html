@@ -1212,9 +1212,53 @@
           </div>
         </article>
 
-        <article class="project-row depth-card tilt-target" data-tags="systems">
+        <article class="project-row depth-card tilt-target" data-tags="llm,systems">
           <button type="button" class="project-row-toggle" aria-expanded="false">
             <span class="project-index">03</span>
+            <div>
+              <div class="project-row-title">ProofPilot</div>
+              <p class="project-row-tagline">Open-source contribution to UI-TARS Desktop — auditable, approval-gated, simulation-first execution for GUI agents.</p>
+            </div>
+            <div class="project-row-meta">
+              <div class="project-row-date">May 2026 · OSS PR</div>
+              <div class="project-row-pills">
+                <span class="skill-pill rounded-full">TypeScript</span>
+                <span class="skill-pill rounded-full">Electron</span>
+                <span class="skill-pill rounded-full">MCP</span>
+              </div>
+            </div>
+            <span class="project-row-action">
+              <span class="project-row-action-text">View details</span>
+              <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </button>
+          <div class="project-row-panel">
+            <div class="project-row-panel-inner">
+              <div class="project-row-panel-content">
+                <p class="text-sm text-ink-dim leading-relaxed">Product layer on top of ByteDance's UI-TARS Desktop for safer, auditable, reproducible GUI agent execution — tamper-evident recording, human approval gates, dry-run simulation, and workflow export. Fully local; no data leaves the machine. Additive and opt-in; recording failures never break a live run.</p>
+                <ul class="mt-4 space-y-1.5 text-xs text-ink-dim list-none">
+                  <li>· Command safety gate + approval hook: evaluates <code class="text-ink-text">run_command</code> / <code class="text-ink-text">run_script</code> against destructive-action rules before execution</li>
+                  <li>· SHA-256 hash-chained Flight Recorder — append-only event log, content-addressed screenshots, integrity verification on read</li>
+                  <li>· Proof Pack export (shareable HTML evidence), Workflow Capsule, and Workflow Compiler with simulation-first guardrails</li>
+                  <li>· Simulation mode: agent observes and plans but skips real UI actions — dry-run workflows without touching the desktop</li>
+                  <li>· Team Workspace with roles, governance policies, and exportable audit reports</li>
+                  <li>· ~6.4k LOC across 9 commits; 19 new service tests passing; fully backward-compatible with existing agent control flow</li>
+                </ul>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <span class="skill-pill rounded-full">TypeScript</span><span class="skill-pill rounded-full">Electron</span><span class="skill-pill rounded-full">React</span><span class="skill-pill rounded-full">MCP</span><span class="skill-pill rounded-full">Vitest</span>
+                </div>
+                <div class="project-row-links">
+                  <a href="https://github.com/bytedance/UI-TARS-desktop/pull/1911" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">Pull request →</a>
+                  <a href="https://github.com/bytedance/UI-TARS-desktop" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">Upstream →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-row depth-card tilt-target" data-tags="systems">
+          <button type="button" class="project-row-toggle" aria-expanded="false">
+            <span class="project-index">04</span>
             <div>
               <div class="project-row-title">FluxFS</div>
               <p class="project-row-tagline">Intelligent filesystem autopilot — watch, organize, deduplicate, and search your files automatically. CLI, daemon, tray, and installers.</p>
@@ -1268,7 +1312,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="llm">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">04</span>
+            <span class="project-index">05</span>
             <div>
               <div class="project-row-title">Synapse</div>
               <p class="project-row-tagline">Privacy-first Chrome extension — browsing history becomes a local knowledge graph and searchable second brain.</p>
@@ -1307,7 +1351,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="llm">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">05</span>
+            <span class="project-index">06</span>
             <div>
               <div class="project-row-title">PromptForge CLI</div>
               <p class="project-row-tagline">"Jest for prompts" — test-driven LLM prompt development with local execution and a self-hosted dashboard.</p>
@@ -1341,7 +1385,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="llm">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">06</span>
+            <span class="project-index">07</span>
             <div>
               <div class="project-row-title">Sentinel MCP</div>
               <p class="project-row-tagline">Zero-config MCP server for instant, local-first codebase health analysis and prioritized reports.</p>
@@ -1375,7 +1419,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="ml">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">07</span>
+            <span class="project-index">08</span>
             <div>
               <div class="project-row-title">CashPulse</div>
               <p class="project-row-tagline">Privacy-first local cash flow forecasting and financial anomaly detection — fully on-device.</p>
@@ -1409,7 +1453,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="llm,health">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">08</span>
+            <span class="project-index">09</span>
             <div>
               <div class="project-row-title">Golden Bridge</div>
               <p class="project-row-tagline">Ambulance pre-arrival system — 1st place, Microsoft-sponsored Hack with Chicago.</p>
@@ -1440,7 +1484,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="llm">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">09</span>
+            <span class="project-index">10</span>
             <div>
               <div class="project-row-title">Insurease</div>
               <p class="project-row-tagline">LLM-powered insurance document extraction, comparison, and simplification with vector/graph search.</p>
@@ -1471,7 +1515,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="llm">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">10</span>
+            <span class="project-index">11</span>
             <div>
               <div class="project-row-title">ResearchAI</div>
               <p class="project-row-tagline">Full-stack AI research assistant — upload papers and chat with summaries and Q&amp;A.</p>
@@ -1502,7 +1546,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="cv">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">11</span>
+            <span class="project-index">12</span>
             <div>
               <div class="project-row-title">SheSecure</div>
               <p class="project-row-tagline">YOLOv5 pipeline for assault incident detection in CCTV footage — ~92% precision.</p>
@@ -1533,7 +1577,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="health">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">12</span>
+            <span class="project-index">13</span>
             <div>
               <div class="project-row-title">Jan Swasthya</div>
               <p class="project-row-tagline">Healthcare app with CNN + chatbot for faster initial assessment — ~85% accuracy.</p>
