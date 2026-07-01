@@ -1172,9 +1172,49 @@
           </div>
         </article>
 
-        <article class="project-row depth-card tilt-target" data-tags="systems">
+        <article class="project-row depth-card tilt-target" data-tags="llm,ml">
           <button type="button" class="project-row-toggle" aria-expanded="false">
             <span class="project-index">02</span>
+            <div>
+              <div class="project-row-title">Fine-Tuning LLMs: Mapping the Limits of Adaptation</div>
+              <p class="project-row-tagline">An empirical study fine-tuning three models of different eras/sizes to map where fine-tuning's power ends and pretraining's begins.</p>
+            </div>
+            <div class="project-row-meta">
+              <div class="project-row-date">Jul 2026</div>
+              <div class="project-row-pills">
+                <span class="skill-pill rounded-full">PyTorch</span>
+                <span class="skill-pill rounded-full">QLoRA</span>
+                <span class="skill-pill rounded-full">Hugging Face</span>
+              </div>
+            </div>
+            <span class="project-row-action">
+              <span class="project-row-action-text">View details</span>
+              <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </button>
+          <div class="project-row-panel">
+            <div class="project-row-panel-inner">
+              <div class="project-row-panel-content">
+                <p class="text-sm text-ink-dim leading-relaxed">Ran a controlled fine-tuning study across three causal language models to answer one question: how much can fine-tuning alone improve a model, and what sets the ceiling? Built a complete QLoRA pipeline — base model → LoRA adapters → training → automated execution-based benchmarking → adapter merging → GGUF conversion → quantization → local deployment in Ollama.</p>
+                <ul class="mt-4 space-y-1.5 text-xs text-ink-dim list-none">
+                  <li>· Fine-tuned each model on the 75K-example Magicoder-OSS-Instruct dataset; measured coding ability with execution-based benchmarks against test cases</li>
+                  <li>· Qwen2.5-Coder-3B (modern, code-specialized): already saturated — fine-tuning barely moved the score, demonstrating the ceiling effect from the top</li>
+                  <li>· TinyLlama-1.1B (modern, general): 7/10 at baseline, modest clean gains</li>
+                  <li>· GPT-2-medium (2019, near-zero at code): 0/10 → 2/10, stayed at 2/10 even after 3× training — proving the plateau is a model-capacity limit, not a training limit</li>
+                  <li>· Adapted the pipeline to each architecture (GPT-2 Conv1D attention, missing chat template, 1024-token context); Drive-checkpointed training resilient to disconnects; solved BF16 vs FP16 and QLoRA-on-Conv1D issues</li>
+                  <li>· Key insight: pretraining sets the ceiling; fine-tuning helps you reach it — a modern 1.1B model out-scored a larger 2019 model with zero fine-tuning</li>
+                </ul>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <span class="skill-pill rounded-full">Python</span><span class="skill-pill rounded-full">PyTorch</span><span class="skill-pill rounded-full">Hugging Face</span><span class="skill-pill rounded-full">PEFT/LoRA</span><span class="skill-pill rounded-full">QLoRA</span><span class="skill-pill rounded-full">TRL</span><span class="skill-pill rounded-full">BitsAndBytes</span><span class="skill-pill rounded-full">llama.cpp</span><span class="skill-pill rounded-full">GGUF</span><span class="skill-pill rounded-full">Ollama</span><span class="skill-pill rounded-full">Google Colab</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-row depth-card tilt-target" data-tags="systems">
+          <button type="button" class="project-row-toggle" aria-expanded="false">
+            <span class="project-index">03</span>
             <div>
               <div class="project-row-title">FluxFS</div>
               <p class="project-row-tagline">Intelligent filesystem autopilot — watch, organize, deduplicate, and search your files automatically. CLI, daemon, tray, and installers.</p>
@@ -1228,7 +1268,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="llm">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">03</span>
+            <span class="project-index">04</span>
             <div>
               <div class="project-row-title">Synapse</div>
               <p class="project-row-tagline">Privacy-first Chrome extension — browsing history becomes a local knowledge graph and searchable second brain.</p>
@@ -1267,7 +1307,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="llm">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">04</span>
+            <span class="project-index">05</span>
             <div>
               <div class="project-row-title">PromptForge CLI</div>
               <p class="project-row-tagline">"Jest for prompts" — test-driven LLM prompt development with local execution and a self-hosted dashboard.</p>
@@ -1301,7 +1341,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="llm">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">05</span>
+            <span class="project-index">06</span>
             <div>
               <div class="project-row-title">Sentinel MCP</div>
               <p class="project-row-tagline">Zero-config MCP server for instant, local-first codebase health analysis and prioritized reports.</p>
@@ -1335,7 +1375,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="ml">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">06</span>
+            <span class="project-index">07</span>
             <div>
               <div class="project-row-title">CashPulse</div>
               <p class="project-row-tagline">Privacy-first local cash flow forecasting and financial anomaly detection — fully on-device.</p>
@@ -1369,7 +1409,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="llm,health">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">07</span>
+            <span class="project-index">08</span>
             <div>
               <div class="project-row-title">Golden Bridge</div>
               <p class="project-row-tagline">Ambulance pre-arrival system — 1st place, Microsoft-sponsored Hack with Chicago.</p>
@@ -1400,7 +1440,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="llm">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">08</span>
+            <span class="project-index">09</span>
             <div>
               <div class="project-row-title">Insurease</div>
               <p class="project-row-tagline">LLM-powered insurance document extraction, comparison, and simplification with vector/graph search.</p>
@@ -1431,7 +1471,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="llm">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">09</span>
+            <span class="project-index">10</span>
             <div>
               <div class="project-row-title">ResearchAI</div>
               <p class="project-row-tagline">Full-stack AI research assistant — upload papers and chat with summaries and Q&amp;A.</p>
@@ -1462,7 +1502,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="cv">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">10</span>
+            <span class="project-index">11</span>
             <div>
               <div class="project-row-title">SheSecure</div>
               <p class="project-row-tagline">YOLOv5 pipeline for assault incident detection in CCTV footage — ~92% precision.</p>
@@ -1493,7 +1533,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="health">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">11</span>
+            <span class="project-index">12</span>
             <div>
               <div class="project-row-title">Jan Swasthya</div>
               <p class="project-row-tagline">Healthcare app with CNN + chatbot for faster initial assessment — ~85% accuracy.</p>
