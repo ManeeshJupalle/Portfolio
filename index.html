@@ -1172,9 +1172,120 @@
           </div>
         </article>
 
-        <article class="project-row depth-card tilt-target" data-tags="llm,ml">
+        <article class="project-row depth-card tilt-target" data-tags="llm,systems">
           <button type="button" class="project-row-toggle" aria-expanded="false">
             <span class="project-index">02</span>
+            <div>
+              <div class="project-row-title">Argus</div>
+              <p class="project-row-tagline">Bloomberg-style terminal for the AI model ecosystem — real-time pricing, arena rankings, benchmarks, and news for ~750 LLMs.</p>
+            </div>
+            <div class="project-row-meta">
+              <div class="project-row-date">Jul 2026</div>
+              <div class="project-row-pills">
+                <span class="skill-pill rounded-full">TypeScript</span>
+                <span class="skill-pill rounded-full">Hono</span>
+                <span class="skill-pill rounded-full">SQLite</span>
+              </div>
+            </div>
+            <span class="project-row-action">
+              <span class="project-row-action-text">View details</span>
+              <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </button>
+          <div class="project-row-panel">
+            <div class="project-row-panel-inner">
+              <div class="project-row-panel-content">
+                <p class="text-sm text-ink-dim leading-relaxed">A keyboard-first workstation for the AI model market — mnemonic commands, multi-panel layouts, watchlists, two years of historical charts, and a unified entity model. Data from OpenRouter, LMArena, HuggingFace, arXiv, and lab feeds; normalized once on the server, served through a consistent REST + SSE API.</p>
+                <div class="flux-preview mt-4">
+                  <div class="flux-preview-bar"><span class="text-sage">●</span> ARGUS · LAYOUT 4</div>
+                  <div class="flux-preview-body">
+                    <div class="flux-hi">&gt; FABLE5 DES ‹GO›</div>
+                    <div>Claude Fable 5 · $3/M in · $15/M out</div>
+                    <div>Arena TEXT #2 · Coding #4 · 90D +12 ELO</div>
+                    <div class="mt-2 flux-dim">&gt; BENCH FABLE5 GPT55 GLM5</div>
+                    <div class="flux-hi">→ 3-model matrix · best-in-row highlighted</div>
+                  </div>
+                  <div class="flux-preview-foot">
+                    <span><span class="flux-hi">~750</span> models</span>
+                    <span>18k arena snapshots</span>
+                    <span>SSE live updates</span>
+                  </div>
+                </div>
+                <ul class="mt-4 space-y-1.5 text-xs text-ink-dim list-none">
+                  <li>· Entity resolver canonicalizes upstream naming (exact/alias/fuzzy tiers) and quarantines unresolvable rows instead of corrupting the entity table</li>
+                  <li>· Immutable snapshot history in SQLite (WAL) powers <code class="text-ink-text">PX</code> price charts and <code class="text-ink-text">ARENA</code> ELO/rank history — two-year backfill on first boot</li>
+                  <li>· Per-source pollers with independent cadence, backoff, and health — one dead feed goes stale in the status bar while everything else keeps ticking</li>
+                  <li>· 12 keyboard functions (<code class="text-ink-text">TOP</code>, <code class="text-ink-text">DES</code>, <code class="text-ink-text">PX</code>, <code class="text-ink-text">ARENA</code>, <code class="text-ink-text">BENCH</code>, <code class="text-ink-text">WATCH</code>, …) with ghost-text autocomplete and inline error bar</li>
+                </ul>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <span class="skill-pill rounded-full">TypeScript</span><span class="skill-pill rounded-full">Hono</span><span class="skill-pill rounded-full">React</span><span class="skill-pill rounded-full">SQLite</span><span class="skill-pill rounded-full">Zod</span><span class="skill-pill rounded-full">SSE</span><span class="skill-pill rounded-full">Vitest</span>
+                </div>
+                <div class="project-row-links">
+                  <a href="https://github.com/ManeeshJupalle/ARGUS" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">GitHub →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-row depth-card tilt-target" data-tags="llm,systems">
+          <button type="button" class="project-row-toggle" aria-expanded="false">
+            <span class="project-index">03</span>
+            <div>
+              <div class="project-row-title">Auricle</div>
+              <p class="project-row-tagline">Local-first meeting transcription engine — one Rust binary, bot-free capture, swappable STT backends, REST/WebSocket API.</p>
+            </div>
+            <div class="project-row-meta">
+              <div class="project-row-date">Jul 2026</div>
+              <div class="project-row-pills">
+                <span class="skill-pill rounded-full">Rust</span>
+                <span class="skill-pill rounded-full">Whisper</span>
+                <span class="skill-pill rounded-full">SQLite</span>
+              </div>
+            </div>
+            <span class="project-row-action">
+              <span class="project-row-action-text">View details</span>
+              <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </button>
+          <div class="project-row-panel">
+            <div class="project-row-panel-inner">
+              <div class="project-row-panel-content">
+                <p class="text-sm text-ink-dim leading-relaxed">Not another meeting app — a single ~31 MB Rust daemon that captures system loopback + microphone (no bot joining your calls), transcribes in real time through swappable STT backends, and exposes everything over REST/WebSocket. The bundled web UI is just a client; curl works equally well. Privacy by default: with local Whisper, no audio leaves your machine.</p>
+                <div class="flux-preview mt-4">
+                  <div class="flux-preview-bar"><span class="text-sage">●</span> auricle serve</div>
+                  <div class="flux-preview-body">
+                    <div><span class="flux-ok">●</span> Daemon <span class="flux-dim">· http://127.0.0.1:4820</span></div>
+                    <div><span class="flux-ok">●</span> STT <span class="flux-dim">· whisper-local · Silero VAD</span></div>
+                    <div class="mt-2"><span class="flux-hi">Them:</span> Let's sync on the Q3 roadmap…</div>
+                    <div><span class="flux-hi">You:</span> I can share the deck after this call.</div>
+                  </div>
+                  <div class="flux-preview-foot">
+                    <span><span class="flux-hi">0.54s</span> p50 final (deepgram)</span>
+                    <span>2 channels</span>
+                    <span>local-first</span>
+                  </div>
+                </div>
+                <ul class="mt-4 space-y-1.5 text-xs text-ink-dim list-none">
+                  <li>· Lock-free ring-buffer capture pipeline: WASAPI loopback + mic → resample → Silero VAD → chunker → trait-object STT → SQLite assembler</li>
+                  <li>· Swappable providers: whisper-local, Deepgram (streaming), Groq Whisper, OpenAI-compatible — opt-in cloud via env vars only</li>
+                  <li>· Two-channel speaker labels from capture topology (<code class="text-ink-text">You</code> / <code class="text-ink-text">Them</code>); export markdown or summarize with local Ollama or cloud LLM</li>
+                  <li>· Measured capture→final p50 of 0.54s (Deepgram nova-3) and 2.6s (whisper-local base.en) on 2019-class laptop hardware</li>
+                </ul>
+                <div class="mt-4 flex flex-wrap gap-2">
+                  <span class="skill-pill rounded-full">Rust</span><span class="skill-pill rounded-full">Whisper</span><span class="skill-pill rounded-full">SQLite</span><span class="skill-pill rounded-full">WebSocket</span><span class="skill-pill rounded-full">React</span><span class="skill-pill rounded-full">Vite</span>
+                </div>
+                <div class="project-row-links">
+                  <a href="https://github.com/ManeeshJupalle/Auricle" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">GitHub →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-row depth-card tilt-target" data-tags="llm,ml">
+          <button type="button" class="project-row-toggle" aria-expanded="false">
+            <span class="project-index">04</span>
             <div>
               <div class="project-row-title">Fine-Tuning LLMs: Mapping the Limits of Adaptation</div>
               <p class="project-row-tagline">An empirical study fine-tuning three models of different eras/sizes to map where fine-tuning's power ends and pretraining's begins.</p>
@@ -1214,7 +1325,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="llm,systems">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">03</span>
+            <span class="project-index">05</span>
             <div>
               <div class="project-row-title">ProofPilot</div>
               <p class="project-row-tagline">Open-source contribution to UI-TARS Desktop — auditable, approval-gated, simulation-first execution for GUI agents.</p>
@@ -1258,7 +1369,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="systems">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">04</span>
+            <span class="project-index">06</span>
             <div>
               <div class="project-row-title">FluxFS</div>
               <p class="project-row-tagline">Intelligent filesystem autopilot — watch, organize, deduplicate, and search your files automatically. CLI, daemon, tray, and installers.</p>
@@ -1312,7 +1423,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="llm">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">05</span>
+            <span class="project-index">07</span>
             <div>
               <div class="project-row-title">Synapse</div>
               <p class="project-row-tagline">Privacy-first Chrome extension — browsing history becomes a local knowledge graph and searchable second brain.</p>
@@ -1351,7 +1462,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="llm">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">06</span>
+            <span class="project-index">08</span>
             <div>
               <div class="project-row-title">PromptForge CLI</div>
               <p class="project-row-tagline">"Jest for prompts" — test-driven LLM prompt development with local execution and a self-hosted dashboard.</p>
@@ -1385,7 +1496,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="llm">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">07</span>
+            <span class="project-index">09</span>
             <div>
               <div class="project-row-title">Sentinel MCP</div>
               <p class="project-row-tagline">Zero-config MCP server for instant, local-first codebase health analysis and prioritized reports.</p>
@@ -1419,7 +1530,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="ml">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">08</span>
+            <span class="project-index">10</span>
             <div>
               <div class="project-row-title">CashPulse</div>
               <p class="project-row-tagline">Privacy-first local cash flow forecasting and financial anomaly detection — fully on-device.</p>
@@ -1453,7 +1564,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="llm,health">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">09</span>
+            <span class="project-index">11</span>
             <div>
               <div class="project-row-title">Golden Bridge</div>
               <p class="project-row-tagline">Ambulance pre-arrival system — 1st place, Microsoft-sponsored Hack with Chicago.</p>
@@ -1484,7 +1595,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="llm">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">10</span>
+            <span class="project-index">12</span>
             <div>
               <div class="project-row-title">Insurease</div>
               <p class="project-row-tagline">LLM-powered insurance document extraction, comparison, and simplification with vector/graph search.</p>
@@ -1515,7 +1626,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="llm">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">11</span>
+            <span class="project-index">13</span>
             <div>
               <div class="project-row-title">ResearchAI</div>
               <p class="project-row-tagline">Full-stack AI research assistant — upload papers and chat with summaries and Q&amp;A.</p>
@@ -1546,7 +1657,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="cv">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">12</span>
+            <span class="project-index">14</span>
             <div>
               <div class="project-row-title">SheSecure</div>
               <p class="project-row-tagline">YOLOv5 pipeline for assault incident detection in CCTV footage — ~92% precision.</p>
@@ -1577,7 +1688,7 @@
 
         <article class="project-row depth-card tilt-target" data-tags="health">
           <button type="button" class="project-row-toggle" aria-expanded="false">
-            <span class="project-index">13</span>
+            <span class="project-index">15</span>
             <div>
               <div class="project-row-title">Jan Swasthya</div>
               <p class="project-row-tagline">Healthcare app with CNN + chatbot for faster initial assessment — ~85% accuracy.</p>
