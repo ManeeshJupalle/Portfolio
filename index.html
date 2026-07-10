@@ -1966,9 +1966,10 @@
         const isFloat = target % 1 !== 0;
         const obj = { val: 0 };
         gsap.to(obj, {
+          scrollTrigger: { trigger: el, start: 'top 92%', once: true },
           val: target,
           duration: 1.8,
-          delay: 0.6 + i * 0.1,
+          delay: 0.3 + i * 0.1,
           ease: 'power2.out',
           onUpdate: () => {
             el.textContent = (isFloat ? obj.val.toFixed(2) : Math.round(obj.val)) + suffix;
@@ -2045,13 +2046,17 @@
         });
       });
 
-      gsap.from('.project-row', {
-        scrollTrigger: { trigger: '#projectsGrid', start: 'top 80%' },
-        y: 20,
-        opacity: 0,
-        duration: 0.55,
-        stagger: 0.035,
-        ease: 'power3.out',
+      ScrollTrigger.batch('.project-row', {
+        start: 'top 92%',
+        once: true,
+        onEnter: batch => gsap.from(batch, {
+          y: 20,
+          opacity: 0,
+          duration: 0.55,
+          stagger: 0.06,
+          ease: 'power3.out',
+          overwrite: true,
+        }),
       });
 
       gsap.utils.toArray('.skill-bar-fill').forEach(bar => {
@@ -2063,13 +2068,17 @@
         });
       });
 
-      gsap.from('.skill-pill-item', {
-        scrollTrigger: { trigger: '#skills', start: 'top 70%' },
-        y: 20,
-        opacity: 0,
-        duration: 0.4,
-        stagger: 0.03,
-        ease: 'power2.out',
+      ScrollTrigger.batch('.skill-pill-item', {
+        start: 'top 95%',
+        once: true,
+        onEnter: batch => gsap.from(batch, {
+          y: 20,
+          opacity: 0,
+          duration: 0.4,
+          stagger: 0.03,
+          ease: 'power2.out',
+          overwrite: true,
+        }),
       });
     }
 
@@ -2368,6 +2377,9 @@
               });
             }
           }
+          if (!reducedMotion && typeof ScrollTrigger !== 'undefined') {
+            setTimeout(() => ScrollTrigger.refresh(), 420);
+          }
         });
       });
     }
@@ -2394,6 +2406,7 @@
               setProjectRowAction(row, false);
             }
           });
+          if (!reducedMotion && typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
         });
       });
     }
