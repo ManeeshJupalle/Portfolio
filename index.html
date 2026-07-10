@@ -2004,6 +2004,13 @@
     }
 
     function initScrollAnimations() {
+      gsap.to('#home > .max-w-6xl', {
+        scrollTrigger: { trigger: '#home', start: 'top top', end: 'bottom 35%', scrub: 0.4 },
+        y: -56,
+        opacity: 0,
+        ease: 'none',
+      });
+
       gsap.utils.toArray('.section-head').forEach(head => {
         gsap.from(head.children, {
           scrollTrigger: { trigger: head, start: 'top 85%', toggleActions: 'play none none none' },
