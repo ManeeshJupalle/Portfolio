@@ -1878,6 +1878,23 @@
   <script>
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    // Single rAF-throttled scroll dispatcher; callbacks run once on registration
+    const scrollSubscribers = [];
+    let scrollTicking = false;
+    function onScrollY(cb) {
+      scrollSubscribers.push(cb);
+      cb(window.scrollY);
+    }
+    window.addEventListener('scroll', () => {
+      if (scrollTicking) return;
+      scrollTicking = true;
+      requestAnimationFrame(() => {
+        scrollTicking = false;
+        const y = window.scrollY;
+        scrollSubscribers.forEach(cb => cb(y));
+      });
+    }, { passive: true });
+
     document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -1917,9 +1934,7 @@
       const mobileNav = document.getElementById('mobileNav');
       const links = document.querySelectorAll('.nav-link');
 
-      window.addEventListener('scroll', () => {
-        nav.classList.toggle('scrolled', window.scrollY > 40);
-      }, { passive: true });
+      onScrollY(y => nav.classList.toggle('scrolled', y > 40));
 
       toggle?.addEventListener('click', () => {
         const open = mobileNav.classList.toggle('hidden');
@@ -1943,10 +1958,10 @@
 
     function initScrollLine() {
       const line = document.getElementById('scrollLine');
-      window.addEventListener('scroll', () => {
+      onScrollY(y => {
         const h = document.documentElement.scrollHeight - window.innerHeight;
-        line.style.width = h > 0 ? (window.scrollY / h * 100) + '%' : '0%';
-      }, { passive: true });
+        line.style.width = h > 0 ? (y / h * 100) + '%' : '0%';
+      });
     }
 
     function initHeroAnimations() {
@@ -2208,12 +2223,6 @@
         if (!reducedMotion) rafId = requestAnimationFrame(draw);
       }
 
-      function onScroll() {
-        scrollY = window.scrollY;
-        if (reducedMotion) draw(0);
-      }
-
-      window.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', resize);
 
       document.addEventListener('space-pointer', (e) => {
@@ -2222,10 +2231,11 @@
       });
 
       resize();
-      onScroll();
-      if (reducedMotion) {
-        draw(0);
-      } else {
+      onScrollY(y => {
+        scrollY = y;
+        if (reducedMotion) draw(0);
+      });
+      if (!reducedMotion) {
         rafId = requestAnimationFrame(draw);
       }
 
@@ -2258,8 +2268,7 @@
     }
 
     function initOrbScrollDrift() {
-      applyOrbTransforms();
-      window.addEventListener('scroll', () => applyOrbTransforms(), { passive: true });
+      onScrollY(() => applyOrbTransforms());
     }
 
     function initTiltTargets(selector, { max = 8 } = {}) {
@@ -2307,7 +2316,7 @@
         if (!raf) raf = requestAnimationFrame(tick);
       }, { passive: true });
 
-      window.addEventListener('scroll', () => applyOrbTransforms(currentX, currentY), { passive: true });
+      onScrollY(() => applyOrbTransforms(currentX, currentY));
 
       function tick() {
         currentX += (targetX - currentX) * 0.08;
@@ -2429,11 +2438,14 @@
 
     function initBackToTop() {
       const btn = document.getElementById('toTop');
-      window.addEventListener('scroll', () => {
-        const show = window.scrollY > 600;
+      let shown = null;
+      onScrollY(y => {
+        const show = y > 600;
+        if (show === shown) return;
+        shown = show;
         btn.style.opacity = show ? '1' : '0';
         btn.style.pointerEvents = show ? 'auto' : 'none';
-      }, { passive: true });
+      });
       btn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     }
   </script>
