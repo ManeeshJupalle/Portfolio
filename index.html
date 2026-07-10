@@ -38,6 +38,7 @@
   </script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
   <script>document.documentElement.classList.add('js');</script>
 
   <style>
@@ -658,6 +659,7 @@
       transition: grid-template-rows 0.35s ease;
     }
     .project-row.is-open .project-row-panel { grid-template-rows: 1fr; }
+    .projects-list.flip-active .project-row-panel { transition: none; }
     .project-row-panel-inner {
       overflow: hidden;
       min-height: 0;
@@ -1911,6 +1913,7 @@
 
       if (!reducedMotion && typeof gsap !== 'undefined') {
         gsap.registerPlugin(ScrollTrigger);
+        if (typeof Flip !== 'undefined') gsap.registerPlugin(Flip);
         initHeroAnimations();
         initScrollAnimations();
         initGridParallax();
@@ -2273,9 +2276,12 @@
       onScrollY(() => applyOrbTransforms());
     }
 
+    let suppressTilt = false;
+
     function initTiltTargets(selector, { max = 8 } = {}) {
       document.querySelectorAll(selector).forEach(el => {
         el.addEventListener('mousemove', (e) => {
+          if (suppressTilt) return;
           const rect = el.getBoundingClientRect();
           const x = (e.clientX - rect.left) / rect.width - 0.5;
           const y = (e.clientY - rect.top) / rect.height - 0.5;
@@ -2357,6 +2363,7 @@
     }
 
     function initProjectAccordion() {
+      const list = document.getElementById('projectsGrid');
       const rows = document.querySelectorAll('.project-row');
       rows.forEach(row => {
         const toggle = row.querySelector('.project-row-toggle');
@@ -2368,6 +2375,14 @@
 
         toggle.addEventListener('click', () => {
           const willOpen = !row.classList.contains('is-open');
+          const useFlip = !reducedMotion && typeof gsap !== 'undefined' && typeof Flip !== 'undefined';
+          let flipState = null;
+          if (useFlip) {
+            suppressTilt = true;
+            rows.forEach(r => { r.style.transform = ''; });
+            list.classList.add('flip-active');
+            flipState = Flip.getState(rows);
+          }
           rows.forEach(r => {
             r.classList.remove('is-open');
             const t = r.querySelector('.project-row-toggle');
@@ -2383,7 +2398,6 @@
             toggle.setAttribute('aria-expanded', 'true');
             setProjectRowAria(toggle, title, true);
             setProjectRowAction(row, true);
-            row.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'nearest' });
             const tiles = row.querySelectorAll('.loop-tile-item');
             if (tiles.length && typeof gsap !== 'undefined' && !reducedMotion) {
               gsap.from(tiles, {
@@ -2395,8 +2409,27 @@
               });
             }
           }
-          if (!reducedMotion && typeof ScrollTrigger !== 'undefined') {
-            setTimeout(() => ScrollTrigger.refresh(), 420);
+          if (useFlip) {
+            if (willOpen) {
+              const content = row.querySelector('.project-row-panel-content');
+              if (content) gsap.from(content, { opacity: 0, duration: 0.35, delay: 0.1, ease: 'power1.out', overwrite: true });
+            }
+            Flip.from(flipState, {
+              duration: 0.45,
+              ease: 'power3.inOut',
+              overwrite: true,
+              onComplete: () => {
+                list.classList.remove('flip-active');
+                suppressTilt = false;
+                if (willOpen) row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+              },
+            });
+          } else {
+            if (willOpen) row.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'nearest' });
+            if (!reducedMotion && typeof ScrollTrigger !== 'undefined') {
+              setTimeout(() => ScrollTrigger.refresh(), 420);
+            }
           }
         });
       });
@@ -2404,11 +2437,20 @@
 
     function initProjectFilter() {
       const filters = document.querySelectorAll('.proj-filter');
+      const list = document.getElementById('projectsGrid');
       const rows = document.querySelectorAll('#projectsGrid .project-row');
       filters.forEach(btn => {
         btn.addEventListener('click', () => {
           const tech = btn.dataset.tech;
           filters.forEach(b => b.classList.toggle('active', b === btn));
+          const useFlip = !reducedMotion && typeof gsap !== 'undefined' && typeof Flip !== 'undefined';
+          let flipState = null;
+          if (useFlip) {
+            suppressTilt = true;
+            rows.forEach(r => { r.style.transform = ''; });
+            list.classList.add('flip-active');
+            flipState = Flip.getState(rows);
+          }
           rows.forEach(row => {
             const tags = (row.dataset.tags || '').split(',').map(t => t.trim()).filter(Boolean);
             const show = tech === 'all' || tags.includes(tech);
@@ -2424,7 +2466,24 @@
               setProjectRowAction(row, false);
             }
           });
-          if (!reducedMotion && typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+          if (useFlip) {
+            Flip.from(flipState, {
+              duration: 0.4,
+              ease: 'power2.inOut',
+              overwrite: true,
+              onEnter: els => gsap.fromTo(els,
+                { opacity: 0, y: 14 },
+                { opacity: 1, y: 0, duration: 0.35, stagger: 0.03, ease: 'power2.out', overwrite: true }
+              ),
+              onComplete: () => {
+                list.classList.remove('flip-active');
+                suppressTilt = false;
+                if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+              },
+            });
+          } else if (!reducedMotion && typeof ScrollTrigger !== 'undefined') {
+            ScrollTrigger.refresh();
+          }
         });
       });
     }
