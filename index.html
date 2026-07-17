@@ -479,7 +479,7 @@
       100% { transform: translateX(-50%); }
     }
 
-    /* Projects — compact accordion list (2-col on md+) */
+    /* Projects — compact accordion list (2-col tablet, 3-col desktop) */
     .projects-list {
       display: grid;
       grid-template-columns: 1fr;
@@ -489,6 +489,11 @@
     @media (min-width: 768px) {
       .projects-list { grid-template-columns: repeat(2, 1fr); }
       .project-row.is-open { grid-column: 1 / -1; }
+    }
+    @media (min-width: 1100px) {
+      .projects-list { grid-template-columns: repeat(3, 1fr); }
+      .project-row:not(.is-open) .project-row-toggle { padding: 0.9rem 1rem; }
+      .project-row:not(.is-open) .project-row-title { font-size: 1.05rem; }
     }
     .project-row {
       position: relative;
