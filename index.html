@@ -742,7 +742,10 @@
     .project-row-panel-inner {
       overflow: hidden;
       min-height: 0;
+      /* Collapsed panels are not rendered at all (no layout, no a11y tree) until opened. */
+      content-visibility: hidden;
     }
+    .project-row-panel.is-open .project-row-panel-inner { content-visibility: visible; }
     .project-row-panel-content {
       position: relative;
       margin-top: 8px;
@@ -2008,21 +2011,16 @@
     document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('year').textContent = new Date().getFullYear();
 
+      const motion = !reducedMotion && typeof gsap !== 'undefined';
+
+      // First task: only what the first frame needs.
       initNav();
       initScrollLine();
-      initCopyEmail();
-      initTerminal();
-      initProjectFilter(initProjectAccordion());
-      initBackToTop();
       initSpaceField();
-      initVisualEffects();
-
-      if (!reducedMotion && typeof gsap !== 'undefined') {
+      if (motion) {
         gsap.registerPlugin(ScrollTrigger);
         if (typeof Flip !== 'undefined') gsap.registerPlugin(Flip);
         initHeroAnimations();
-        initScrollAnimations();
-        initGridParallax();
       } else {
         document.querySelectorAll('.hero-word-inner, .hero-meta, .stat-num').forEach(el => {
           el.style.opacity = '1';
@@ -2034,6 +2032,20 @@
           el.textContent = el.dataset.count + suffix;
         });
       }
+
+      // Everything below the fold waits one frame so the hero paints first and the
+      // ScrollTrigger setup does not share a long task with it.
+      requestAnimationFrame(() => setTimeout(() => {
+        initProjectFilter(initProjectAccordion());
+        initBackToTop();
+        initCopyEmail();
+        initTerminal();
+        initVisualEffects();
+        if (motion) {
+          initScrollAnimations();
+          initGridParallax();
+        }
+      }, 0));
     });
 
     function initNav() {
@@ -2368,7 +2380,7 @@
       }
 
       function resize() {
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        dpr = Math.min(window.devicePixelRatio || 1, 1.5);
         width = window.innerWidth;
         height = window.innerHeight;
         sizeCanvas(canvas);
