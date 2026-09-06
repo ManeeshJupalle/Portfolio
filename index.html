@@ -142,7 +142,7 @@
       overflow: hidden;
       pointer-events: none;
     }
-    #spaceCanvas {
+    #spaceCanvas, #spaceCanvasTwinkle {
       position: absolute;
       inset: 0;
       width: 100%;
@@ -156,9 +156,7 @@
         radial-gradient(ellipse 48% 22% at 78% 72%, rgba(74, 143, 122, 0.07), transparent 55%),
         radial-gradient(ellipse 90% 18% at 52% 42%, rgba(232, 230, 225, 0.045), transparent 62%);
       transform: rotate(-14deg);
-      filter: blur(48px);
       opacity: 0.95;
-      will-change: transform;
     }
     .space-milkyway::after {
       content: '';
@@ -172,7 +170,6 @@
         rgba(74, 143, 122, 0.04) 64%,
         transparent 82%
       );
-      filter: blur(20px);
     }
 
     /* Ambient nebula orbs (copper / sage — unchanged palette) */
@@ -183,33 +180,32 @@
       overflow: hidden;
       pointer-events: none;
     }
+    /* Soft radial gradients do the blurring; no filter layers to re-rasterise. */
     .fx-orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(80px);
       opacity: 0.45;
-      will-change: transform;
     }
     .fx-orb--copper {
-      width: min(42vw, 520px);
-      height: min(42vw, 520px);
-      top: -8%;
-      right: -6%;
-      background: radial-gradient(circle, rgba(200, 135, 74, 0.55) 0%, transparent 68%);
+      width: min(52vw, 640px);
+      height: min(52vw, 640px);
+      top: -14%;
+      right: -12%;
+      background: radial-gradient(circle, rgba(200, 135, 74, 0.5) 0%, rgba(200, 135, 74, 0.2) 30%, rgba(200, 135, 74, 0.06) 52%, transparent 70%);
     }
     .fx-orb--sage {
-      width: min(36vw, 440px);
-      height: min(36vw, 440px);
-      bottom: 8%;
-      left: -8%;
-      background: radial-gradient(circle, rgba(74, 143, 122, 0.4) 0%, transparent 68%);
+      width: min(44vw, 540px);
+      height: min(44vw, 540px);
+      bottom: 2%;
+      left: -14%;
+      background: radial-gradient(circle, rgba(74, 143, 122, 0.38) 0%, rgba(74, 143, 122, 0.14) 30%, rgba(74, 143, 122, 0.04) 52%, transparent 70%);
     }
     .fx-orb--mix {
-      width: min(28vw, 360px);
-      height: min(28vw, 360px);
-      top: 42%;
-      left: 38%;
-      background: radial-gradient(circle, rgba(200, 135, 74, 0.22) 0%, rgba(74, 143, 122, 0.12) 45%, transparent 70%);
+      width: min(34vw, 440px);
+      height: min(34vw, 440px);
+      top: 38%;
+      left: 34%;
+      background: radial-gradient(circle, rgba(200, 135, 74, 0.2) 0%, rgba(74, 143, 122, 0.1) 40%, rgba(74, 143, 122, 0.03) 58%, transparent 72%);
     }
 
     /* Hero spotlight */
@@ -932,6 +928,7 @@
   <div class="space-field" id="spaceField" aria-hidden="true">
     <div class="space-milkyway" id="spaceMilkyway"></div>
     <canvas id="spaceCanvas"></canvas>
+    <canvas id="spaceCanvasTwinkle"></canvas>
   </div>
   <div class="bg-grain"></div>
   <div class="fx-ambient" id="fxAmbient" aria-hidden="true">
@@ -1059,20 +1056,20 @@
           </div>
         </div>
         <div class="lg:col-span-7 about-col flex flex-col gap-6">
-          <div class="card depth-card tilt-target rounded-2xl p-6 sm:p-8">
+          <div class="card rounded-2xl p-6 sm:p-8">
             <p class="text-ink-text leading-relaxed">I graduated with an MS in Computer Science from the University of Illinois Chicago (GPA 3.80), with coursework in AI, ML, Data Science, GenAI, and systems. Previously, I worked at VMware by Broadcom, solving complex integration issues at scale and improving developer–tester workflows. I'm now focused on full-time roles where I can build reliable, user-centric products with AI/LLM and web technologies.</p>
           </div>
           <div class="grid sm:grid-cols-2 gap-3">
-            <div class="about-fact card depth-card tilt-target rounded-xl px-4 py-3 flex items-center gap-3 text-sm">
+            <div class="about-fact card rounded-xl px-4 py-3 flex items-center gap-3 text-sm">
               <span class="text-copper font-mono text-xs">→</span> MS CS · UIC (Graduated May 2026)
             </div>
-            <div class="about-fact card depth-card tilt-target rounded-xl px-4 py-3 flex items-center gap-3 text-sm">
+            <div class="about-fact card rounded-xl px-4 py-3 flex items-center gap-3 text-sm">
               <span class="text-copper font-mono text-xs">→</span> Ex-VMware by Broadcom
             </div>
-            <div class="about-fact card depth-card tilt-target rounded-xl px-4 py-3 flex items-center gap-3 text-sm">
+            <div class="about-fact card rounded-xl px-4 py-3 flex items-center gap-3 text-sm">
               <span class="text-copper font-mono text-xs">→</span> Focus: Web · ML · LLMs
             </div>
-            <div class="about-fact card depth-card tilt-target rounded-xl px-4 py-3 flex items-center gap-3 text-sm">
+            <div class="about-fact card rounded-xl px-4 py-3 flex items-center gap-3 text-sm">
               <span class="text-copper font-mono text-xs">→</span> Based in Chicago, IL
             </div>
           </div>
@@ -1096,7 +1093,7 @@
 
         <article class="timeline-item relative pb-12 pl-6">
           <div class="timeline-dot"></div>
-          <div class="card depth-card tilt-target rounded-2xl p-6 sm:p-8">
+          <div class="card rounded-2xl p-6 sm:p-8">
             <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
               <div>
                 <h3 class="text-xl font-semibold">University of Illinois at Chicago</h3>
@@ -1114,7 +1111,7 @@
 
         <article class="timeline-item relative pb-12 pl-6">
           <div class="timeline-dot"></div>
-          <div class="card depth-card tilt-target rounded-2xl p-6 sm:p-8">
+          <div class="card rounded-2xl p-6 sm:p-8">
             <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
               <div>
                 <h3 class="text-xl font-semibold">VMware by Broadcom</h3>
@@ -1135,7 +1132,7 @@
 
         <article class="timeline-item relative pl-6">
           <div class="timeline-dot"></div>
-          <div class="card depth-card tilt-target rounded-2xl p-6 sm:p-8">
+          <div class="card rounded-2xl p-6 sm:p-8">
             <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
               <div>
                 <h3 class="text-xl font-semibold">Full Stack Developer Intern · Ifortis Corporate</h3>
@@ -1172,7 +1169,7 @@
 
       <div class="projects-list" id="projectsGrid">
 
-        <article class="project-row depth-card tilt-target" data-tags="llm">
+        <article class="project-row" data-tags="llm">
           <button type="button" class="project-row-toggle" aria-expanded="false">
             <span class="project-index">01</span>
             <div>
@@ -1234,7 +1231,7 @@
           </div>
         </article>
 
-        <article class="project-row depth-card tilt-target" data-tags="llm,systems">
+        <article class="project-row" data-tags="llm,systems">
           <button type="button" class="project-row-toggle" aria-expanded="false">
             <span class="project-index">02</span>
             <div>
@@ -1289,7 +1286,7 @@
           </div>
         </article>
 
-        <article class="project-row depth-card tilt-target" data-tags="llm,systems">
+        <article class="project-row" data-tags="llm,systems">
           <button type="button" class="project-row-toggle" aria-expanded="false">
             <span class="project-index">03</span>
             <div>
@@ -1345,7 +1342,7 @@
           </div>
         </article>
 
-        <article class="project-row depth-card tilt-target" data-tags="llm,systems">
+        <article class="project-row" data-tags="llm,systems">
           <button type="button" class="project-row-toggle" aria-expanded="false">
             <span class="project-index">04</span>
             <div>
@@ -1401,7 +1398,7 @@
           </div>
         </article>
 
-        <article class="project-row depth-card tilt-target" data-tags="llm,ml">
+        <article class="project-row" data-tags="llm,ml">
           <button type="button" class="project-row-toggle" aria-expanded="false">
             <span class="project-index">05</span>
             <div>
@@ -1441,7 +1438,7 @@
           </div>
         </article>
 
-        <article class="project-row depth-card tilt-target" data-tags="llm,systems">
+        <article class="project-row" data-tags="llm,systems">
           <button type="button" class="project-row-toggle" aria-expanded="false">
             <span class="project-index">06</span>
             <div>
@@ -1485,7 +1482,7 @@
           </div>
         </article>
 
-        <article class="project-row depth-card tilt-target" data-tags="systems">
+        <article class="project-row" data-tags="systems">
           <button type="button" class="project-row-toggle" aria-expanded="false">
             <span class="project-index">07</span>
             <div>
@@ -1539,7 +1536,7 @@
           </div>
         </article>
 
-        <article class="project-row depth-card tilt-target" data-tags="llm">
+        <article class="project-row" data-tags="llm">
           <button type="button" class="project-row-toggle" aria-expanded="false">
             <span class="project-index">08</span>
             <div>
@@ -1578,7 +1575,7 @@
           </div>
         </article>
 
-        <article class="project-row depth-card tilt-target" data-tags="llm">
+        <article class="project-row" data-tags="llm">
           <button type="button" class="project-row-toggle" aria-expanded="false">
             <span class="project-index">09</span>
             <div>
@@ -1612,7 +1609,7 @@
           </div>
         </article>
 
-        <article class="project-row depth-card tilt-target" data-tags="llm">
+        <article class="project-row" data-tags="llm">
           <button type="button" class="project-row-toggle" aria-expanded="false">
             <span class="project-index">10</span>
             <div>
@@ -1646,7 +1643,7 @@
           </div>
         </article>
 
-        <article class="project-row depth-card tilt-target" data-tags="ml">
+        <article class="project-row" data-tags="ml">
           <button type="button" class="project-row-toggle" aria-expanded="false">
             <span class="project-index">11</span>
             <div>
@@ -1680,7 +1677,7 @@
           </div>
         </article>
 
-        <article class="project-row depth-card tilt-target" data-tags="llm,health">
+        <article class="project-row" data-tags="llm,health">
           <button type="button" class="project-row-toggle" aria-expanded="false">
             <span class="project-index">12</span>
             <div>
@@ -1711,7 +1708,7 @@
           </div>
         </article>
 
-        <article class="project-row depth-card tilt-target" data-tags="llm">
+        <article class="project-row" data-tags="llm">
           <button type="button" class="project-row-toggle" aria-expanded="false">
             <span class="project-index">13</span>
             <div>
@@ -1742,7 +1739,7 @@
           </div>
         </article>
 
-        <article class="project-row depth-card tilt-target" data-tags="llm">
+        <article class="project-row" data-tags="llm">
           <button type="button" class="project-row-toggle" aria-expanded="false">
             <span class="project-index">14</span>
             <div>
@@ -1773,7 +1770,7 @@
           </div>
         </article>
 
-        <article class="project-row depth-card tilt-target" data-tags="cv">
+        <article class="project-row" data-tags="cv">
           <button type="button" class="project-row-toggle" aria-expanded="false">
             <span class="project-index">15</span>
             <div>
@@ -1804,7 +1801,7 @@
           </div>
         </article>
 
-        <article class="project-row depth-card tilt-target" data-tags="health">
+        <article class="project-row" data-tags="health">
           <button type="button" class="project-row-toggle" aria-expanded="false">
             <span class="project-index">16</span>
             <div>
@@ -1908,13 +1905,13 @@
         <h2 class="section-title">Education &amp; <em>recognition</em></h2>
       </div>
       <div class="grid lg:grid-cols-2 gap-6 mb-6">
-        <div class="edu-card card depth-card tilt-target rounded-2xl p-6 sm:p-8">
+        <div class="edu-card card rounded-2xl p-6 sm:p-8">
           <p class="font-mono text-xs text-copper mb-2">Aug 2024 – May 2026 · Graduated</p>
           <h3 class="text-lg font-semibold">MS Computer Science</h3>
           <p class="text-ink-dim text-sm mt-1">University of Illinois Chicago · GPA 3.80</p>
           <p class="text-xs text-ink-dim mt-4 leading-relaxed">AI, ML, Data Science, Networking, DBMS, DevOps, GenAI, Economics in CS</p>
         </div>
-        <div class="edu-card card depth-card tilt-target rounded-2xl p-6 sm:p-8">
+        <div class="edu-card card rounded-2xl p-6 sm:p-8">
           <p class="font-mono text-xs text-copper mb-2">2018 – 2022</p>
           <h3 class="text-lg font-semibold">B.Tech CST (AI)</h3>
           <p class="text-ink-dim text-sm mt-1">Jain University · GPA 3.72</p>
@@ -1922,14 +1919,14 @@
         </div>
       </div>
       <div class="grid lg:grid-cols-2 gap-6">
-        <div id="publications" class="edu-card card depth-card tilt-target rounded-2xl p-6 sm:p-8">
+        <div id="publications" class="edu-card card rounded-2xl p-6 sm:p-8">
           <p class="font-mono text-[0.65rem] uppercase tracking-wider text-copper mb-3">Publication</p>
           <h3 class="font-semibold">Diabetic Retinopathy Detection using ML</h3>
           <p class="font-mono text-xs text-ink-dim mt-1">Jan 2022 – Jun 2022</p>
           <p class="text-sm text-ink-dim mt-3">5-layer CNN with 94.5% accuracy. Awarded International Best Researcher by ISSN.</p>
           <a href="https://www.ijariit.com/manuscript/diabetic-retinopathy-detection-using-machine-learning/" target="_blank" rel="noopener" class="inline-flex mt-4 text-sm text-copper hover:text-copper-light">Read paper →</a>
         </div>
-        <div id="awards" class="edu-card card depth-card tilt-target rounded-2xl p-6 sm:p-8">
+        <div id="awards" class="edu-card card rounded-2xl p-6 sm:p-8">
           <p class="font-mono text-[0.65rem] uppercase tracking-wider text-copper mb-3">Award</p>
           <h3 class="font-semibold">VMware vExpert</h3>
           <p class="font-mono text-xs text-ink-dim mt-1">2023</p>
@@ -1967,7 +1964,7 @@
             </a>
           </div>
         </div>
-        <form id="contactForm" class="contact-col card depth-card tilt-target rounded-2xl p-6 sm:p-8">
+        <form id="contactForm" class="contact-col card rounded-2xl p-6 sm:p-8">
           <label class="font-mono text-xs uppercase tracking-wider text-ink-dim">Message</label>
           <textarea id="msg" name="message" class="contact-input mt-3 w-full rounded-xl p-4 min-h-[160px] text-sm text-ink-text resize-none" placeholder="Say hello..." required></textarea>
           <button type="submit" class="btn-primary mt-5 inline-flex items-center px-6 py-3 rounded-full text-sm">Send email</button>
@@ -2252,34 +2249,38 @@
 
     function initSpaceField() {
       const canvas = document.getElementById('spaceCanvas');
-      if (!canvas) return;
+      const twinkleCanvas = document.getElementById('spaceCanvasTwinkle');
+      if (!canvas || !twinkleCanvas) return;
 
       const ctx = canvas.getContext('2d');
+      const tctx = twinkleCanvas.getContext('2d');
       const layers = [
         { count: 140, size: [0.4, 1.1], speed: 0.012, opacity: [0.15, 0.45] },
         { count: 90, size: [0.7, 1.5], speed: 0.028, opacity: [0.3, 0.65] },
         { count: 40, size: [1.1, 2.4], speed: 0.05, opacity: [0.45, 0.95], twinkle: true },
       ];
-
-      let stars = [];
-      let width = 0;
-      let height = 0;
-      let rafId = null;
-      let scrollY = 0;
-      let pointerX = 0.5;
-      let pointerY = 0.3;
-
       const tints = [
         { r: 232, g: 230, b: 225, a: 1 },
         { r: 200, g: 135, b: 74, a: 0.75 },
         { r: 109, g: 184, b: 158, a: 0.65 },
       ];
 
+      let stars = [];
+      let width = 0;
+      let height = 0;
+      let dpr = 1;
+      let scrollY = 0;
+      let pointerX = 0.5;
+      let pointerY = 0.3;
+      let dirty = true;
+      let frame = 0;
+      const sprites = new Map();
+
       function pickTint() {
         const roll = Math.random();
-        if (roll > 0.94) return tints[1];
-        if (roll > 0.88) return tints[2];
-        return tints[0];
+        if (roll > 0.94) return 1;
+        if (roll > 0.88) return 2;
+        return 0;
       }
 
       function buildStars() {
@@ -2287,11 +2288,12 @@
         const span = height * 4;
         layers.forEach((layer, li) => {
           for (let i = 0; i < layer.count; i++) {
+            const r = layer.size[0] + Math.random() * (layer.size[1] - layer.size[0]);
             stars.push({
               x: Math.random() * width,
               y: Math.random() * span,
               layer: li,
-              r: layer.size[0] + Math.random() * (layer.size[1] - layer.size[0]),
+              r: Math.round(r * 4) / 4,
               o: layer.opacity[0] + Math.random() * (layer.opacity[1] - layer.opacity[0]),
               phase: Math.random() * Math.PI * 2,
               tint: pickTint(),
@@ -2301,14 +2303,40 @@
         });
       }
 
-      function resize() {
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        width = window.innerWidth;
-        height = window.innerHeight;
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        buildStars();
+      // Each distinct star look is rasterised once; a frame is then just drawImage calls.
+      function spriteFor(star) {
+        const glow = star.r > 1.6;
+        const key = star.tint + ':' + star.r + ':' + (glow ? 1 : 0);
+        let s = sprites.get(key);
+        if (s) return s;
+        const outer = glow ? star.r * 2.8 : star.r;
+        const size = Math.ceil(outer * 2) + 2;
+        const c = document.createElement('canvas');
+        c.width = size * dpr;
+        c.height = size * dpr;
+        const sc = c.getContext('2d');
+        sc.scale(dpr, dpr);
+        const { r, g, b, a } = tints[star.tint];
+        const mid = size / 2;
+        if (glow) {
+          sc.beginPath();
+          sc.arc(mid, mid, outer, 0, Math.PI * 2);
+          sc.fillStyle = `rgba(${r}, ${g}, ${b}, 0.08)`;
+          sc.fill();
+        }
+        sc.beginPath();
+        sc.arc(mid, mid, star.r, 0, Math.PI * 2);
+        sc.fillStyle = `rgba(${r}, ${g}, ${b}, ${a})`;
+        sc.fill();
+        s = { c, size };
+        sprites.set(key, s);
+        return s;
+      }
+
+      function sizeCanvas(c) {
+        c.width = width * dpr;
+        c.height = height * dpr;
+        c.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
       }
 
       function wrapY(y, span) {
@@ -2317,63 +2345,73 @@
         return y;
       }
 
-      function draw(time) {
-        ctx.clearRect(0, 0, width, height);
+      function drawLayer(c, twinkleLayer, time) {
+        c.clearRect(0, 0, width, height);
         const span = height * 4;
         const driftX = (pointerX - 0.5) * 8;
         const driftY = (pointerY - 0.5) * 5;
-
-        stars.forEach(star => {
+        for (const star of stars) {
+          if (star.twinkle !== twinkleLayer) continue;
           const layer = layers[star.layer];
-          let y = star.y - scrollY * layer.speed + driftY * layer.speed * 1.2;
-          y = wrapY(y, span);
+          const y = wrapY(star.y - scrollY * layer.speed + driftY * layer.speed * 1.2, span);
           const x = star.x + driftX * layer.speed * 2;
-
           let alpha = star.o;
-          if (star.twinkle && !reducedMotion) {
-            alpha *= 0.55 + 0.45 * Math.sin(time * 0.0018 + star.phase);
-          }
+          if (star.twinkle && !reducedMotion) alpha *= 0.55 + 0.45 * Math.sin(time * 0.0018 + star.phase);
+          const s = spriteFor(star);
+          c.globalAlpha = alpha;
+          c.drawImage(s.c, x - s.size / 2, y - s.size / 2, s.size, s.size);
+        }
+        c.globalAlpha = 1;
+      }
 
-          const { r, g, b, a } = star.tint;
-          ctx.beginPath();
-          ctx.arc(x, y, star.r, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha * a})`;
-          ctx.fill();
+      function renderAll(time) {
+        drawLayer(ctx, false, time);
+        drawLayer(tctx, true, time);
+        dirty = false;
+      }
 
-          if (star.r > 1.6 && alpha > 0.55) {
-            ctx.beginPath();
-            ctx.arc(x, y, star.r * 2.8, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha * 0.08})`;
-            ctx.fill();
-          }
-        });
+      function tick(time) {
+        // Static layers redraw only when scroll or pointer moved.
+        if (dirty) {
+          drawLayer(ctx, false, time);
+          dirty = false;
+        }
+        // The twinkle layer is 40 stars on a 3.5s sine; 30fps is plenty.
+        if ((frame++ & 1) === 0) drawLayer(tctx, true, time);
+        requestAnimationFrame(tick);
+      }
 
-        if (!reducedMotion) rafId = requestAnimationFrame(draw);
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        width = window.innerWidth;
+        height = window.innerHeight;
+        sizeCanvas(canvas);
+        sizeCanvas(twinkleCanvas);
+        sprites.clear();
+        buildStars();
+        dirty = true;
+        if (reducedMotion) renderAll(0);
       }
 
       window.addEventListener('resize', resize);
-
       document.addEventListener('space-pointer', (e) => {
         pointerX = e.detail.x;
         pointerY = e.detail.y;
+        dirty = true;
       });
 
       resize();
       onScrollY(y => {
         scrollY = y;
-        if (reducedMotion) draw(0);
+        dirty = true;
+        if (reducedMotion) renderAll(0);
       });
-      if (!reducedMotion) {
-        rafId = requestAnimationFrame(draw);
-      }
-
-      return () => {
-        if (rafId) cancelAnimationFrame(rafId);
-      };
+      if (!reducedMotion) requestAnimationFrame(tick);
     }
 
     function initVisualEffects() {
       if (reducedMotion) return;
+      orbNodes = Array.from(document.querySelectorAll('.fx-orb[data-parallax]'));
 
       const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
       if (canHover) {
@@ -2386,7 +2424,7 @@
     }
 
     function applyOrbTransforms(pointerX = 0.5, pointerY = 0.3) {
-      document.querySelectorAll('.fx-orb[data-parallax]').forEach(orb => {
+      orbNodes.forEach(orb => {
         const depth = parseFloat(orb.dataset.parallax) || 0.03;
         const ox = (pointerX - 0.5) * depth * 420;
         const oy = (pointerY - 0.5) * depth * 420;
@@ -2400,6 +2438,7 @@
     }
 
     let suppressTilt = false;
+    let orbNodes = [];
 
     function initTiltTargets(selector, { max = 8 } = {}) {
       if (typeof gsap === 'undefined') return;
@@ -2454,6 +2493,7 @@
       }, { passive: true });
 
       onScrollY(() => applyOrbTransforms(currentX, currentY));
+      const spotlight = document.getElementById('heroSpotlight');
 
       function tick() {
         currentX += (targetX - currentX) * 0.08;
@@ -2464,7 +2504,6 @@
           detail: { x: currentX, y: currentY },
         }));
 
-        const spotlight = document.getElementById('heroSpotlight');
         if (spotlight) {
           spotlight.style.setProperty('--spot-x', `${currentX * 100}%`);
           spotlight.style.setProperty('--spot-y', `${currentY * 100}%`);
