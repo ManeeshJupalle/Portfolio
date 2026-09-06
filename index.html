@@ -185,9 +185,8 @@
         0 1px 0 rgba(255, 255, 255, 0.04) inset,
         0 20px 50px -24px rgba(0, 0, 0, 0.65),
         0 8px 24px -12px rgba(200, 135, 74, 0.08);
-      transition: transform 0.2s ease-out, box-shadow 0.35s ease, border-color 0.35s ease;
+      transition: box-shadow 0.35s ease, border-color 0.35s ease;
       transform-style: preserve-3d;
-      will-change: transform;
     }
     .depth-card:hover {
       box-shadow:
@@ -337,7 +336,7 @@
     .card {
       background: var(--card);
       border: 1px solid var(--line);
-      transition: border-color 0.35s ease, transform 0.35s ease;
+      transition: border-color 0.35s ease;
     }
     .card:hover { border-color: rgba(200, 135, 74, 0.35); }
 
@@ -440,12 +439,12 @@
       line-height: 1.35;
       border: 1px solid var(--line);
       padding: 0.4rem 0.75rem 0.45rem;
-      transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+      transition: border-color 0.25s ease, background 0.25s ease, translate 0.25s ease;
     }
     .skill-pill:hover {
       border-color: rgba(200, 135, 74, 0.5);
       background: rgba(200, 135, 74, 0.08);
-      transform: translateY(-2px);
+      translate: 0 -2px;
     }
     .skill-group {
       display: flex;
@@ -812,7 +811,7 @@
     }
     .flux-preview-body .flux-ok { color: var(--sage); }
     .flux-preview-body .flux-hi { color: var(--copper); }
-    .flux-preview-body .flux-dim { color: #666; }
+    .flux-preview-body .flux-dim { color: #807e77; }
     .flux-preview-foot {
       padding: 0.45rem 0.75rem;
       border-top: 1px solid var(--line);
@@ -910,7 +909,7 @@
         <a href="https://github.com/ManeeshJupalle" target="_blank" rel="noopener" class="btn-ghost inline-flex items-center justify-center w-9 h-9 rounded-full" aria-label="GitHub">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.82.5 12.38c0 5.25 3.29 9.71 7.86 11.28.58.11.79-.26.79-.57 0-.28-.01-1.02-.02-2-3.2.72-3.88-1.6-3.88-1.6-.53-1.39-1.3-1.76-1.3-1.76-1.06-.76.08-.74.08-.74 1.17.08 1.79 1.25 1.79 1.25 1.04 1.84 2.73 1.31 3.39 1 .11-.78.41-1.31.74-1.61-2.55-.3-5.23-1.32-5.23-5.87 0-1.3.45-2.37 1.2-3.2-.12-.3-.52-1.52.12-3.16 0 0 .98-.32 3.2 1.22a10.7 10.7 0 0 1 5.83 0c2.21-1.54 3.19-1.22 3.19-1.22.64 1.64.24 2.86.12 3.16.75.83 1.2 1.9 1.2 3.2 0 4.56-2.69 5.56-5.25 5.86.42.37.79 1.1.79 2.22 0 1.6-.01 2.89-.01 3.29 0 .31.21.69.8.57C20.22 22.08 23.5 17.62 23.5 12.38 23.5 5.82 18.35.5 12 .5z"/></svg>
         </a>
-        <button id="navToggle" class="md:hidden btn-ghost w-9 h-9 rounded-full flex items-center justify-center" aria-label="Menu" aria-expanded="false">
+        <button id="navToggle" class="md:hidden btn-ghost w-9 h-9 rounded-full flex items-center justify-center" aria-label="Menu" aria-expanded="false" aria-controls="mobileNav">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="1.5" d="M4 7h16M4 12h16M4 17h16"/></svg>
         </button>
       </div>
@@ -923,6 +922,7 @@
         <a href="#skills" class="text-ink-dim hover:text-ink-text">Skills</a>
         <a href="#education" class="text-ink-dim hover:text-ink-text">Education</a>
         <a href="#contact" class="text-ink-dim hover:text-ink-text">Contact</a>
+        <a href="Laxmi_Jupalle_Resume.pdf" download class="text-copper hover:text-copper-light">Resume (PDF)</a>
       </nav>
     </div>
   </header>
@@ -990,7 +990,7 @@
   </section>
 
   <!-- Marquee -->
-  <div class="marquee-wrap border-y border-ink-line py-4 overflow-hidden opacity-60">
+  <div class="marquee-wrap border-y border-ink-line py-4 overflow-hidden" aria-hidden="true">
     <div class="marquee-track font-mono text-xs uppercase tracking-[0.25em] text-ink-dim gap-12">
       <span class="px-6">Rust</span><span class="px-6">Next.js</span><span class="px-6">Python</span><span class="px-6">TypeScript</span><span class="px-6">PyTorch</span><span class="px-6">React</span><span class="px-6">LLM Pipelines</span><span class="px-6">Supabase</span><span class="px-6">Azure</span><span class="px-6">Docker</span>
       <span class="px-6">Rust</span><span class="px-6">Next.js</span><span class="px-6">Python</span><span class="px-6">TypeScript</span><span class="px-6">PyTorch</span><span class="px-6">React</span><span class="px-6">LLM Pipelines</span><span class="px-6">Supabase</span><span class="px-6">Azure</span><span class="px-6">Docker</span>
@@ -2002,12 +2002,17 @@
 
       onScrollY(y => nav.classList.toggle('scrolled', y > 40));
 
-      toggle?.addEventListener('click', () => {
-        const open = mobileNav.classList.toggle('hidden');
-        toggle.setAttribute('aria-expanded', String(!open));
+      const setMenu = (open) => {
+        mobileNav.classList.toggle('hidden', !open);
+        toggle.setAttribute('aria-expanded', String(open));
+      };
+      toggle?.addEventListener('click', () => setMenu(mobileNav.classList.contains('hidden')));
+      mobileNav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !mobileNav.classList.contains('hidden')) { setMenu(false); toggle.focus(); }
       });
 
-      const sections = ['about', 'experience', 'projects', 'skills', 'contact'];
+      const sections = ['about', 'experience', 'projects', 'skills', 'education', 'contact'];
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
@@ -2092,7 +2097,7 @@
         ease: 'power3.out',
       });
 
-      gsap.utils.toArray('#about .tilt-target, #education .tilt-target, #contact .tilt-target').forEach((el, i) => {
+      gsap.utils.toArray('#about .card:not(.about-fact), #education .card, #contact .card').forEach((el, i) => {
         gsap.from(el, {
           scrollTrigger: { trigger: el, start: 'top 92%' },
           y: 24,
@@ -2347,18 +2352,24 @@
     let suppressTilt = false;
 
     function initTiltTargets(selector, { max = 8 } = {}) {
+      if (typeof gsap === 'undefined') return;
       document.querySelectorAll(selector).forEach(el => {
+        gsap.set(el, { transformPerspective: 900 });
+        const toX = gsap.quickTo(el, 'rotationX', { duration: 0.45, ease: 'power2.out' });
+        const toY = gsap.quickTo(el, 'rotationY', { duration: 0.45, ease: 'power2.out' });
         el.addEventListener('mousemove', (e) => {
           if (suppressTilt) return;
           const rect = el.getBoundingClientRect();
           const x = (e.clientX - rect.left) / rect.width - 0.5;
           const y = (e.clientY - rect.top) / rect.height - 0.5;
-          el.style.transform = `perspective(900px) rotateY(${x * max}deg) rotateX(${-y * max}deg) translateZ(0)`;
+          toY(x * max);
+          toX(-y * max);
           el.style.setProperty('--mx', `${(x + 0.5) * 100}%`);
           el.style.setProperty('--my', `${(y + 0.5) * 100}%`);
         });
         el.addEventListener('mouseleave', () => {
-          el.style.transform = '';
+          toX(0);
+          toY(0);
           el.style.setProperty('--mx', '50%');
           el.style.setProperty('--my', '50%');
         });
@@ -2447,7 +2458,7 @@
           let flipState = null;
           if (useFlip) {
             suppressTilt = true;
-            rows.forEach(r => { r.style.transform = ''; });
+            gsap.set(rows, { clearProps: 'transform' });
             list.classList.add('flip-active');
             flipState = Flip.getState(rows);
           }
@@ -2515,7 +2526,7 @@
           let flipState = null;
           if (useFlip) {
             suppressTilt = true;
-            rows.forEach(r => { r.style.transform = ''; });
+            gsap.set(rows, { clearProps: 'transform' });
             list.classList.add('flip-active');
             flipState = Flip.getState(rows);
           }
