@@ -524,51 +524,49 @@
       100% { transform: translateX(-50%); }
     }
 
-    /* Projects — compact accordion list (2-col tablet, 3-col desktop) */
+    /* Projects — card grid. A card's details open in a full-width panel below its row. */
     .projects-list {
       display: grid;
       grid-template-columns: 1fr;
       gap: 0.625rem;
-      align-items: start;
+      align-items: stretch;
     }
     @media (min-width: 768px) {
       .projects-list { grid-template-columns: repeat(2, 1fr); }
-      .project-row.is-open { grid-column: 1 / -1; }
     }
     @media (min-width: 1100px) {
       .projects-list { grid-template-columns: repeat(3, 1fr); }
-      .project-row:not(.is-open) .project-row-toggle { padding: 0.9rem 1rem; }
-      .project-row:not(.is-open) .project-row-title { font-size: 1.05rem; }
     }
     .project-row {
       position: relative;
+      display: flex;
+      flex-direction: column;
       border: 1px solid var(--line);
       border-radius: 0.875rem;
       background: var(--card);
       overflow: hidden;
+      scroll-margin-top: 5.5rem;
       transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
-    .project-row:not(.is-open):hover {
+    .project-row:not(.project-row--static):hover {
       border-color: rgba(200, 135, 74, 0.35);
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
     }
-    .project-row.is-open { border-color: rgba(200, 135, 74, 0.45); }
-    .project-row-toggle {
-      position: relative;
-      width: 100%;
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: start;
-      gap: 0.65rem 0.85rem;
-      padding: 1rem 1.15rem;
-      text-align: left;
-      background: transparent;
-      border: none;
-      color: inherit;
-      cursor: pointer;
-      font-family: inherit;
+    .project-row.is-open { border-color: rgba(200, 135, 74, 0.5); }
+    .project-row:has(.project-row-toggle:focus-visible) {
+      outline: 2px solid var(--copper);
+      outline-offset: 2px;
     }
-    .project-row-toggle::before {
+    .project-row-head {
+      position: relative;
+      flex: 1;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto 1fr auto;
+      gap: 0.6rem 0.85rem;
+      padding: 1rem 1.15rem;
+    }
+    .project-row-head::before {
       content: '';
       position: absolute;
       left: 0;
@@ -580,80 +578,63 @@
       opacity: 0;
       transition: opacity 0.25s ease;
     }
-    .project-row:not(.is-open):hover .project-row-toggle::before,
-    .project-row.is-open .project-row-toggle::before { opacity: 1; }
-    .project-row-toggle:focus-visible {
-      outline: 2px solid var(--copper);
-      outline-offset: -2px;
+    .project-row:not(.project-row--static):hover .project-row-head::before,
+    .project-row.is-open .project-row-head::before { opacity: 1; }
+    /* The title is the real button; its ::after stretches the hit area over the whole card. */
+    .project-row-toggle {
+      all: unset;
+      color: inherit;
+      cursor: pointer;
     }
-    @media (max-width: 640px) {
-      .project-row-toggle {
-        grid-template-columns: auto 1fr;
-        grid-template-rows: auto auto auto;
-      }
-      .project-row-meta { grid-column: 2; }
-      .project-row-action { grid-column: 2; justify-self: end; }
+    .project-row-toggle::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
     }
-    @media (min-width: 768px) {
-      .project-row:not(.is-open) .project-row-toggle {
-        grid-template-columns: auto 1fr;
-        grid-template-rows: auto auto auto;
-      }
-      .project-row:not(.is-open) .project-row-meta {
-        grid-column: 2;
-        text-align: left;
-      }
-      .project-row:not(.is-open) .project-row-action {
-        grid-column: 2;
-        justify-self: end;
-        margin-top: 0.15rem;
-      }
-      .project-row.is-open .project-row-toggle {
-        grid-template-columns: auto 1fr auto auto;
-        align-items: center;
-      }
-      .project-row.is-open .project-row-meta { text-align: right; }
-      .project-row.is-open .project-row-action {
-        grid-column: auto;
-        margin-top: 0;
-      }
-    }
-    .project-row-toggle:hover { background: rgba(255, 255, 255, 0.025); }
     .project-index {
+      grid-row: 1;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
+      font-size: 0.7rem;
       color: var(--dim);
       letter-spacing: 0.15em;
-      align-self: start;
-      padding-top: 0.2rem;
+      padding-top: 0.35rem;
+    }
+    .project-row-main {
+      grid-column: 2;
+      grid-row: 1;
+      min-width: 0;
     }
     .project-row-title {
+      margin: 0;
       font-family: 'Instrument Serif', Georgia, serif;
-      font-size: 1.2rem;
+      font-size: 1.35rem;
       font-weight: 400;
-      line-height: 1.2;
+      line-height: 1.15;
       letter-spacing: -0.02em;
-    }
-    @media (min-width: 768px) {
-      .project-row:not(.is-open) .project-row-title { font-size: 1.1rem; }
     }
     .project-row-tagline {
       font-size: 0.8rem;
       color: var(--dim);
       line-height: 1.45;
-      margin-top: 0.25rem;
+      margin-top: 0.35rem;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
     .project-row-meta {
-      text-align: right;
+      grid-column: 2;
+      grid-row: 2;
       align-self: start;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem 0.6rem;
     }
     .project-row-date {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6rem;
+      font-size: 0.7rem;
       color: var(--dim);
       white-space: nowrap;
     }
@@ -661,25 +642,26 @@
       display: flex;
       flex-wrap: wrap;
       gap: 0.35rem;
-      justify-content: flex-end;
-      margin-top: 0.35rem;
     }
     .project-row-pills .skill-pill {
-      font-size: 0.62rem;
+      font-size: 0.68rem;
       padding: 0.2rem 0.5rem;
     }
     .project-row-action {
+      grid-column: 2;
+      grid-row: 3;
+      justify-self: end;
+      align-self: end;
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      flex-shrink: 0;
-      padding: 0.35rem 0.55rem 0.35rem 0.65rem;
+      padding: 0.35rem 0.55rem 0.35rem 0.7rem;
       border-radius: 999px;
       border: 1px solid rgba(200, 135, 74, 0.35);
       background: rgba(200, 135, 74, 0.08);
       transition: background 0.25s ease, border-color 0.25s ease;
     }
-    .project-row:not(.is-open):hover .project-row-action {
+    .project-row:hover .project-row-action {
       background: rgba(200, 135, 74, 0.14);
       border-color: rgba(200, 135, 74, 0.55);
     }
@@ -689,7 +671,7 @@
     }
     .project-row-action-text {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem;
+      font-size: 0.66rem;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--copper);
@@ -703,21 +685,41 @@
       flex-shrink: 0;
     }
     .project-row.is-open .project-row-chevron { transform: rotate(180deg); }
+
+    /* Details panel: lives collapsed inside its card; when open it is moved after the last
+       card of the same grid row and spans every column. */
     .project-row-panel {
+      grid-column: 1 / -1;
       display: grid;
       grid-template-rows: 0fr;
+      min-height: 0;
       transition: grid-template-rows 0.35s ease;
     }
-    .project-row.is-open .project-row-panel { grid-template-rows: 1fr; }
+    .project-row-panel.is-open { grid-template-rows: 1fr; }
     .projects-list.flip-active .project-row-panel { transition: none; }
     .project-row-panel-inner {
       overflow: hidden;
       min-height: 0;
     }
     .project-row-panel-content {
-      padding: 0 1.25rem 1.25rem;
-      border-top: 1px solid var(--line);
-      padding-top: 1rem;
+      position: relative;
+      margin-top: 8px;
+      padding: 1.25rem 1.35rem 1.35rem;
+      border: 1px solid rgba(200, 135, 74, 0.45);
+      border-radius: 0.875rem;
+      background: #121212;
+    }
+    .project-row-panel-content::before {
+      content: '';
+      position: absolute;
+      top: -7px;
+      left: var(--notch-x, 26px);
+      width: 12px;
+      height: 12px;
+      background: #121212;
+      border-left: 1px solid rgba(200, 135, 74, 0.45);
+      border-top: 1px solid rgba(200, 135, 74, 0.45);
+      transform: rotate(45deg);
     }
     .project-row-panel .loop-preview,
     .project-row-panel .flux-preview {
@@ -725,7 +727,6 @@
       min-height: auto;
     }
     .project-row-panel .loop-preview { min-height: 9rem; }
-    .project-row-panel .flux-preview { min-height: auto; }
     .project-row-links {
       display: flex;
       flex-wrap: wrap;
@@ -768,7 +769,7 @@
       padding: 0.55rem 0.45rem;
       text-align: center;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem;
+      font-size: 0.66rem;
       color: var(--dim);
       line-height: 1.3;
       transition: border-color 0.3s ease, background 0.3s ease, transform 0.3s ease;
@@ -816,7 +817,7 @@
     }
     .loop-tile.sparky .sparky-msg {
       flex: 1;
-      font-size: 0.62rem;
+      font-size: 0.7rem;
       color: var(--text);
       line-height: 1.4;
     }
@@ -827,7 +828,7 @@
       padding: 0.5rem 0.75rem;
       border-top: 1px solid var(--line);
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.58rem;
+      font-size: 0.66rem;
       color: var(--dim);
     }
     .loop-stat-val { color: var(--copper); }
@@ -839,7 +840,7 @@
       background: #0c0c0c;
       overflow: hidden;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem;
+      font-size: 0.7rem;
       line-height: 1.55;
     }
     .flux-preview-bar {
@@ -861,7 +862,7 @@
     .flux-preview-foot {
       padding: 0.45rem 0.75rem;
       border-top: 1px solid var(--line);
-      font-size: 0.55rem;
+      font-size: 0.66rem;
       color: var(--dim);
       display: flex;
       justify-content: space-between;
@@ -1159,44 +1160,39 @@
       </div>
 
       <div class="flex flex-wrap gap-2 mb-6">
-        <button class="proj-filter active font-mono text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-ink-line transition-colors" data-tech="all">All</button>
-        <button class="proj-filter font-mono text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-ink-line transition-colors" data-tech="llm">LLMs</button>
-        <button class="proj-filter font-mono text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-ink-line transition-colors" data-tech="systems">Systems</button>
-        <button class="proj-filter font-mono text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-ink-line transition-colors" data-tech="ml">ML</button>
-        <button class="proj-filter font-mono text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-ink-line transition-colors" data-tech="cv">Vision</button>
-        <button class="proj-filter font-mono text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-ink-line transition-colors" data-tech="health">Health</button>
+        <button class="proj-filter active font-mono text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-ink-line transition-colors" data-tech="all" aria-pressed="true">All</button>
+        <button class="proj-filter font-mono text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-ink-line transition-colors" aria-pressed="false" data-tech="llm">LLMs</button>
+        <button class="proj-filter font-mono text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-ink-line transition-colors" aria-pressed="false" data-tech="systems">Systems</button>
+        <button class="proj-filter font-mono text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-ink-line transition-colors" aria-pressed="false" data-tech="ml">ML</button>
+        <button class="proj-filter font-mono text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-ink-line transition-colors" aria-pressed="false" data-tech="cv">Vision</button>
+        <button class="proj-filter font-mono text-xs uppercase tracking-wider px-4 py-2 rounded-full border border-ink-line transition-colors" aria-pressed="false" data-tech="health">Health</button>
       </div>
 
       <div class="projects-list" id="projectsGrid">
 
-        <article class="project-row" data-tags="llm">
-          <button type="button" class="project-row-toggle" aria-expanded="false">
+        <article class="project-row" id="p-uic-loop" data-tags="llm">
+          <div class="project-row-head">
             <span class="project-index">01</span>
-            <div>
-              <div class="project-row-title">UIC Loop</div>
+            <div class="project-row-main">
+              <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-uic-loop-panel">UIC Loop</button></h3>
               <p class="project-row-tagline">All-in-one student platform for UIC — campus feed, marketplace, notes, study matching, professor reviews, and AI campus assistant.</p>
             </div>
             <div class="project-row-meta">
-              <div class="project-row-date">Apr 2026</div>
-              <div class="project-row-pills">
-                <span class="skill-pill rounded-full">Next.js</span>
-                <span class="skill-pill rounded-full">Supabase</span>
-                <span class="skill-pill rounded-full">Groq</span>
-              </div>
+              <span class="project-row-date">Apr 2026</span>
+              <div class="project-row-pills"><span class="skill-pill rounded-full">Next.js</span><span class="skill-pill rounded-full">Supabase</span><span class="skill-pill rounded-full">Groq</span></div>
             </div>
-            <span class="project-row-action">
+            <span class="project-row-action" aria-hidden="true">
               <span class="project-row-action-text">View details</span>
               <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
             </span>
-          </button>
-          <div class="project-row-panel">
+          </div>
+          <div class="project-row-panel" id="p-uic-loop-panel">
             <div class="project-row-panel-inner">
               <div class="project-row-panel-content">
-                <p class="text-sm text-ink-dim leading-relaxed">All-in-one student platform for UIC with campus feed, marketplace, notes exchange, study matching, professor reviews, and an AI campus assistant.</p>
-                <div class="loop-preview mt-4">
+                <div class="loop-preview">
                   <div class="loop-preview-bar">
                     <span class="dot bg-red-500/50"></span><span class="dot bg-yellow-500/50"></span><span class="dot bg-green-500/50"></span>
-                    <span class="font-mono text-[0.6rem] text-ink-dim ml-2 truncate">uicloop.com</span>
+                    <span class="font-mono text-[0.7rem] text-ink-dim ml-2 truncate">uicloop.com</span>
                   </div>
                   <div class="loop-preview-body">
                     <div class="loop-tile loop-tile-item"><span class="loop-tile-mark"></span>Feed</div>
@@ -1220,9 +1216,6 @@
                   <li>· Solo-built with Next.js 16, React 19, TypeScript, Supabase</li>
                   <li>· 10+ workflows + Groq-powered Sparky AI for campus Q&amp;A</li>
                 </ul>
-                <div class="mt-4 flex flex-wrap gap-2">
-                  <span class="skill-pill rounded-full">Next.js</span><span class="skill-pill rounded-full">Supabase</span><span class="skill-pill rounded-full">Groq</span>
-                </div>
                 <div class="project-row-links">
                   <a href="https://uicloop.com" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">Live site →</a>
                 </div>
@@ -1231,36 +1224,32 @@
           </div>
         </article>
 
-        <article class="project-row" data-tags="llm,systems">
-          <button type="button" class="project-row-toggle" aria-expanded="false">
+        <article class="project-row" id="p-almanac" data-tags="llm,systems">
+          <div class="project-row-head">
             <span class="project-index">02</span>
-            <div>
-              <div class="project-row-title">Almanac</div>
+            <div class="project-row-main">
+              <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-almanac-panel">Almanac</button></h3>
               <p class="project-row-tagline">Local-first daily-briefing desktop agent — Gmail, Calendar, and Slack classified on-device, every item click-through-grounded to its source.</p>
             </div>
             <div class="project-row-meta">
-              <div class="project-row-date">Jul 2026</div>
-              <div class="project-row-pills">
-                <span class="skill-pill rounded-full">Rust</span>
-                <span class="skill-pill rounded-full">Tauri</span>
-                <span class="skill-pill rounded-full">ONNX</span>
-              </div>
+              <span class="project-row-date">Jul 2026</span>
+              <div class="project-row-pills"><span class="skill-pill rounded-full">Rust</span><span class="skill-pill rounded-full">Tauri</span><span class="skill-pill rounded-full">ONNX</span></div>
             </div>
-            <span class="project-row-action">
+            <span class="project-row-action" aria-hidden="true">
               <span class="project-row-action-text">View details</span>
               <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
             </span>
-          </button>
-          <div class="project-row-panel">
+          </div>
+          <div class="project-row-panel" id="p-almanac-panel">
             <div class="project-row-panel-inner">
               <div class="project-row-panel-content">
                 <p class="text-sm text-ink-dim leading-relaxed">Connects to Gmail, Google Calendar, and Slack, then opens to a synthesized "here is your day" briefing — what needs action, what's noise, in what order, and why. Opposite of cloud inbox tools: raw content never leaves the machine, and every briefed item carries a provenance handle to the exact source message or event.</p>
                 <div class="flux-preview mt-4">
                   <div class="flux-preview-bar"><span class="text-sage">●</span> Almanac · today's briefing</div>
                   <div class="flux-preview-body">
-                    <div class="flux-hi">1.</div> Contract waiting for signature <span class="flux-dim">· Gmail</span>
-                    <div class="flux-hi">2.</div> Standup 10:00 <span class="flux-dim">· Calendar</span>
-                    <div class="flux-hi">3.</div> Design review thread <span class="flux-dim">· Slack</span>
+                    <div><span class="flux-hi">1.</span> Contract waiting for signature <span class="flux-dim">· Gmail</span></div>
+                    <div><span class="flux-hi">2.</span> Standup 10:00 <span class="flux-dim">· Calendar</span></div>
+                    <div><span class="flux-hi">3.</span> Design review thread <span class="flux-dim">· Slack</span></div>
                     <div class="mt-2 flux-dim">43 noise filed · click-through to source</div>
                   </div>
                   <div class="flux-preview-foot">
@@ -1275,38 +1264,29 @@
                   <li>· Grounding enforced at four layers (memory, wire, disk, render); an ungrounded item is a hard pipeline failure, not a display glitch</li>
                   <li>· Hybrid classifier (rules + embeddings); SQLite FK-grounded store; Tauri v2 shell consuming string DTOs only — never raw payloads</li>
                 </ul>
-                <div class="mt-4 flex flex-wrap gap-2">
-                  <span class="skill-pill rounded-full">Rust</span><span class="skill-pill rounded-full">Tauri</span><span class="skill-pill rounded-full">React</span><span class="skill-pill rounded-full">SQLite</span><span class="skill-pill rounded-full">ONNX</span><span class="skill-pill rounded-full">Candle</span>
-                </div>
-                <div class="project-row-links">
-                  <a href="https://github.com/ManeeshJupalle/Almanac" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">GitHub →</a>
-                </div>
+                <div class="mt-4 flex flex-wrap gap-2"><span class="skill-pill rounded-full">Rust</span><span class="skill-pill rounded-full">Tauri</span><span class="skill-pill rounded-full">React</span><span class="skill-pill rounded-full">SQLite</span><span class="skill-pill rounded-full">ONNX</span><span class="skill-pill rounded-full">Candle</span></div>
               </div>
             </div>
           </div>
         </article>
 
-        <article class="project-row" data-tags="llm,systems">
-          <button type="button" class="project-row-toggle" aria-expanded="false">
+        <article class="project-row" id="p-argus" data-tags="llm,systems">
+          <div class="project-row-head">
             <span class="project-index">03</span>
-            <div>
-              <div class="project-row-title">Argus</div>
+            <div class="project-row-main">
+              <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-argus-panel">Argus</button></h3>
               <p class="project-row-tagline">Bloomberg-style terminal for the AI model ecosystem — real-time pricing, arena rankings, benchmarks, and news for ~750 LLMs.</p>
             </div>
             <div class="project-row-meta">
-              <div class="project-row-date">Jul 2026</div>
-              <div class="project-row-pills">
-                <span class="skill-pill rounded-full">TypeScript</span>
-                <span class="skill-pill rounded-full">Hono</span>
-                <span class="skill-pill rounded-full">SQLite</span>
-              </div>
+              <span class="project-row-date">Jul 2026</span>
+              <div class="project-row-pills"><span class="skill-pill rounded-full">TypeScript</span><span class="skill-pill rounded-full">Hono</span><span class="skill-pill rounded-full">SQLite</span></div>
             </div>
-            <span class="project-row-action">
+            <span class="project-row-action" aria-hidden="true">
               <span class="project-row-action-text">View details</span>
               <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
             </span>
-          </button>
-          <div class="project-row-panel">
+          </div>
+          <div class="project-row-panel" id="p-argus-panel">
             <div class="project-row-panel-inner">
               <div class="project-row-panel-content">
                 <p class="text-sm text-ink-dim leading-relaxed">A keyboard-first workstation for the AI model market — mnemonic commands, multi-panel layouts, watchlists, two years of historical charts, and a unified entity model. Data from OpenRouter, LMArena, HuggingFace, arXiv, and lab feeds; normalized once on the server, served through a consistent REST + SSE API.</p>
@@ -1331,9 +1311,7 @@
                   <li>· Per-source pollers with independent cadence, backoff, and health — one dead feed goes stale in the status bar while everything else keeps ticking</li>
                   <li>· 12 keyboard functions (<code class="text-ink-text">TOP</code>, <code class="text-ink-text">DES</code>, <code class="text-ink-text">PX</code>, <code class="text-ink-text">ARENA</code>, <code class="text-ink-text">BENCH</code>, <code class="text-ink-text">WATCH</code>, …) with ghost-text autocomplete and inline error bar</li>
                 </ul>
-                <div class="mt-4 flex flex-wrap gap-2">
-                  <span class="skill-pill rounded-full">TypeScript</span><span class="skill-pill rounded-full">Hono</span><span class="skill-pill rounded-full">React</span><span class="skill-pill rounded-full">SQLite</span><span class="skill-pill rounded-full">Zod</span><span class="skill-pill rounded-full">SSE</span><span class="skill-pill rounded-full">Vitest</span>
-                </div>
+                <div class="mt-4 flex flex-wrap gap-2"><span class="skill-pill rounded-full">TypeScript</span><span class="skill-pill rounded-full">Hono</span><span class="skill-pill rounded-full">React</span><span class="skill-pill rounded-full">SQLite</span><span class="skill-pill rounded-full">Zod</span><span class="skill-pill rounded-full">SSE</span><span class="skill-pill rounded-full">Vitest</span></div>
                 <div class="project-row-links">
                   <a href="https://github.com/ManeeshJupalle/ARGUS" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">GitHub →</a>
                 </div>
@@ -1342,27 +1320,23 @@
           </div>
         </article>
 
-        <article class="project-row" data-tags="llm,systems">
-          <button type="button" class="project-row-toggle" aria-expanded="false">
+        <article class="project-row" id="p-auricle" data-tags="llm,systems">
+          <div class="project-row-head">
             <span class="project-index">04</span>
-            <div>
-              <div class="project-row-title">Auricle</div>
+            <div class="project-row-main">
+              <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-auricle-panel">Auricle</button></h3>
               <p class="project-row-tagline">Local-first meeting engine with a desktop copilot — bot-free capture, live transcript, screen-aware answers, REST/WebSocket API.</p>
             </div>
             <div class="project-row-meta">
-              <div class="project-row-date">Jul 2026</div>
-              <div class="project-row-pills">
-                <span class="skill-pill rounded-full">Rust</span>
-                <span class="skill-pill rounded-full">Whisper</span>
-                <span class="skill-pill rounded-full">Tauri</span>
-              </div>
+              <span class="project-row-date">Jul 2026</span>
+              <div class="project-row-pills"><span class="skill-pill rounded-full">Rust</span><span class="skill-pill rounded-full">Whisper</span><span class="skill-pill rounded-full">Tauri</span></div>
             </div>
-            <span class="project-row-action">
+            <span class="project-row-action" aria-hidden="true">
               <span class="project-row-action-text">View details</span>
               <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
             </span>
-          </button>
-          <div class="project-row-panel">
+          </div>
+          <div class="project-row-panel" id="p-auricle-panel">
             <div class="project-row-panel-inner">
               <div class="project-row-panel-content">
                 <p class="text-sm text-ink-dim leading-relaxed">A single ~31 MB Rust binary that captures system loopback + microphone (no bot joining your calls), transcribes in real time through swappable STT backends, and exposes everything over REST/WebSocket. Bundled clients: an embedded web dashboard and an always-on-top copilot overlay that answers from the live transcript and whatever is on your screen. Privacy by default: with local Whisper, no audio leaves your machine.</p>
@@ -1387,9 +1361,7 @@
                   <li>· Copilot overlay (Tauri): hotkey captures active-window OCR + last 10 min of transcript and streams an SSE answer with context chips</li>
                   <li>· No concealment, no continuous surveillance — screen capture only on explicit hotkey; localhost boundary defended against DNS rebinding</li>
                 </ul>
-                <div class="mt-4 flex flex-wrap gap-2">
-                  <span class="skill-pill rounded-full">Rust</span><span class="skill-pill rounded-full">Whisper</span><span class="skill-pill rounded-full">Tauri</span><span class="skill-pill rounded-full">SQLite</span><span class="skill-pill rounded-full">WebSocket</span><span class="skill-pill rounded-full">React</span>
-                </div>
+                <div class="mt-4 flex flex-wrap gap-2"><span class="skill-pill rounded-full">Rust</span><span class="skill-pill rounded-full">Whisper</span><span class="skill-pill rounded-full">Tauri</span><span class="skill-pill rounded-full">SQLite</span><span class="skill-pill rounded-full">WebSocket</span><span class="skill-pill rounded-full">React</span></div>
                 <div class="project-row-links">
                   <a href="https://github.com/ManeeshJupalle/Auricle" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">GitHub →</a>
                 </div>
@@ -1398,27 +1370,23 @@
           </div>
         </article>
 
-        <article class="project-row" data-tags="llm,ml">
-          <button type="button" class="project-row-toggle" aria-expanded="false">
+        <article class="project-row" id="p-fine-tuning-llms" data-tags="llm,ml">
+          <div class="project-row-head">
             <span class="project-index">05</span>
-            <div>
-              <div class="project-row-title">Fine-Tuning LLMs: Mapping the Limits of Adaptation</div>
+            <div class="project-row-main">
+              <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-fine-tuning-llms-panel">Fine-Tuning LLMs: Mapping the Limits of Adaptation</button></h3>
               <p class="project-row-tagline">An empirical study fine-tuning three models of different eras/sizes to map where fine-tuning's power ends and pretraining's begins.</p>
             </div>
             <div class="project-row-meta">
-              <div class="project-row-date">Jul 2026</div>
-              <div class="project-row-pills">
-                <span class="skill-pill rounded-full">PyTorch</span>
-                <span class="skill-pill rounded-full">QLoRA</span>
-                <span class="skill-pill rounded-full">Hugging Face</span>
-              </div>
+              <span class="project-row-date">Jul 2026</span>
+              <div class="project-row-pills"><span class="skill-pill rounded-full">PyTorch</span><span class="skill-pill rounded-full">QLoRA</span><span class="skill-pill rounded-full">Hugging Face</span></div>
             </div>
-            <span class="project-row-action">
+            <span class="project-row-action" aria-hidden="true">
               <span class="project-row-action-text">View details</span>
               <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
             </span>
-          </button>
-          <div class="project-row-panel">
+          </div>
+          <div class="project-row-panel" id="p-fine-tuning-llms-panel">
             <div class="project-row-panel-inner">
               <div class="project-row-panel-content">
                 <p class="text-sm text-ink-dim leading-relaxed">Ran a controlled fine-tuning study across three causal language models to answer one question: how much can fine-tuning alone improve a model, and what sets the ceiling? Built a complete QLoRA pipeline — base model → LoRA adapters → training → automated execution-based benchmarking → adapter merging → GGUF conversion → quantization → local deployment in Ollama.</p>
@@ -1430,35 +1398,29 @@
                   <li>· Adapted the pipeline to each architecture (GPT-2 Conv1D attention, missing chat template, 1024-token context); Drive-checkpointed training resilient to disconnects; solved BF16 vs FP16 and QLoRA-on-Conv1D issues</li>
                   <li>· Key insight: pretraining sets the ceiling; fine-tuning helps you reach it — a modern 1.1B model out-scored a larger 2019 model with zero fine-tuning</li>
                 </ul>
-                <div class="mt-4 flex flex-wrap gap-2">
-                  <span class="skill-pill rounded-full">Python</span><span class="skill-pill rounded-full">PyTorch</span><span class="skill-pill rounded-full">Hugging Face</span><span class="skill-pill rounded-full">PEFT/LoRA</span><span class="skill-pill rounded-full">QLoRA</span><span class="skill-pill rounded-full">TRL</span><span class="skill-pill rounded-full">BitsAndBytes</span><span class="skill-pill rounded-full">llama.cpp</span><span class="skill-pill rounded-full">GGUF</span><span class="skill-pill rounded-full">Ollama</span><span class="skill-pill rounded-full">Google Colab</span>
-                </div>
+                <div class="mt-4 flex flex-wrap gap-2"><span class="skill-pill rounded-full">Python</span><span class="skill-pill rounded-full">PyTorch</span><span class="skill-pill rounded-full">Hugging Face</span><span class="skill-pill rounded-full">PEFT/LoRA</span><span class="skill-pill rounded-full">QLoRA</span><span class="skill-pill rounded-full">TRL</span><span class="skill-pill rounded-full">BitsAndBytes</span><span class="skill-pill rounded-full">llama.cpp</span><span class="skill-pill rounded-full">GGUF</span><span class="skill-pill rounded-full">Ollama</span><span class="skill-pill rounded-full">Google Colab</span></div>
               </div>
             </div>
           </div>
         </article>
 
-        <article class="project-row" data-tags="llm,systems">
-          <button type="button" class="project-row-toggle" aria-expanded="false">
+        <article class="project-row" id="p-proofpilot" data-tags="llm,systems">
+          <div class="project-row-head">
             <span class="project-index">06</span>
-            <div>
-              <div class="project-row-title">ProofPilot</div>
+            <div class="project-row-main">
+              <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-proofpilot-panel">ProofPilot</button></h3>
               <p class="project-row-tagline">Open-source contribution to UI-TARS Desktop — auditable, approval-gated, simulation-first execution for GUI agents.</p>
             </div>
             <div class="project-row-meta">
-              <div class="project-row-date">May 2026 · OSS PR</div>
-              <div class="project-row-pills">
-                <span class="skill-pill rounded-full">TypeScript</span>
-                <span class="skill-pill rounded-full">Electron</span>
-                <span class="skill-pill rounded-full">MCP</span>
-              </div>
+              <span class="project-row-date">May 2026 · OSS PR</span>
+              <div class="project-row-pills"><span class="skill-pill rounded-full">TypeScript</span><span class="skill-pill rounded-full">Electron</span><span class="skill-pill rounded-full">MCP</span></div>
             </div>
-            <span class="project-row-action">
+            <span class="project-row-action" aria-hidden="true">
               <span class="project-row-action-text">View details</span>
               <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
             </span>
-          </button>
-          <div class="project-row-panel">
+          </div>
+          <div class="project-row-panel" id="p-proofpilot-panel">
             <div class="project-row-panel-inner">
               <div class="project-row-panel-content">
                 <p class="text-sm text-ink-dim leading-relaxed">Product layer on top of ByteDance's UI-TARS Desktop for safer, auditable, reproducible GUI agent execution — tamper-evident recording, human approval gates, dry-run simulation, and workflow export. Fully local; no data leaves the machine. Additive and opt-in; recording failures never break a live run.</p>
@@ -1470,9 +1432,7 @@
                   <li>· Team Workspace with roles, governance policies, and exportable audit reports</li>
                   <li>· ~6.4k LOC across 9 commits; 19 new service tests passing; fully backward-compatible with existing agent control flow</li>
                 </ul>
-                <div class="mt-4 flex flex-wrap gap-2">
-                  <span class="skill-pill rounded-full">TypeScript</span><span class="skill-pill rounded-full">Electron</span><span class="skill-pill rounded-full">React</span><span class="skill-pill rounded-full">MCP</span><span class="skill-pill rounded-full">Vitest</span>
-                </div>
+                <div class="mt-4 flex flex-wrap gap-2"><span class="skill-pill rounded-full">TypeScript</span><span class="skill-pill rounded-full">Electron</span><span class="skill-pill rounded-full">React</span><span class="skill-pill rounded-full">MCP</span><span class="skill-pill rounded-full">Vitest</span></div>
                 <div class="project-row-links">
                   <a href="https://github.com/bytedance/UI-TARS-desktop/pull/1911" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">Pull request →</a>
                   <a href="https://github.com/bytedance/UI-TARS-desktop" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">Upstream →</a>
@@ -1482,31 +1442,26 @@
           </div>
         </article>
 
-        <article class="project-row" data-tags="systems">
-          <button type="button" class="project-row-toggle" aria-expanded="false">
+        <article class="project-row" id="p-fluxfs" data-tags="systems">
+          <div class="project-row-head">
             <span class="project-index">07</span>
-            <div>
-              <div class="project-row-title">FluxFS</div>
+            <div class="project-row-main">
+              <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-fluxfs-panel">FluxFS</button></h3>
               <p class="project-row-tagline">Intelligent filesystem autopilot — watch, organize, deduplicate, and search your files automatically. CLI, daemon, tray, and installers.</p>
             </div>
             <div class="project-row-meta">
-              <div class="project-row-date">May 2026 · v0.2</div>
-              <div class="project-row-pills">
-                <span class="skill-pill rounded-full">Rust</span>
-                <span class="skill-pill rounded-full">egui</span>
-                <span class="skill-pill rounded-full">Tokio</span>
-              </div>
+              <span class="project-row-date">May 2026 · v0.2</span>
+              <div class="project-row-pills"><span class="skill-pill rounded-full">Rust</span><span class="skill-pill rounded-full">egui</span><span class="skill-pill rounded-full">Tokio</span></div>
             </div>
-            <span class="project-row-action">
+            <span class="project-row-action" aria-hidden="true">
               <span class="project-row-action-text">View details</span>
               <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
             </span>
-          </button>
-          <div class="project-row-panel">
+          </div>
+          <div class="project-row-panel" id="p-fluxfs-panel">
             <div class="project-row-panel-inner">
               <div class="project-row-panel-content">
-                <p class="text-sm text-ink-dim leading-relaxed">Intelligent filesystem autopilot — watch, organize, deduplicate, and search your files automatically. Cross-platform desktop app with CLI, daemon, tray, and installers.</p>
-                <div class="flux-preview mt-4">
+                <div class="flux-preview">
                   <div class="flux-preview-bar"><span class="text-sage">●</span> flux status</div>
                   <div class="flux-preview-body">
                     <div><span class="flux-ok">●</span> Daemon <span class="flux-dim">· uptime 3h 22m</span></div>
@@ -1524,9 +1479,7 @@
                   <li>· Shipped v0.2 with background agent, system tray, egui settings GUI, and one-click installers (.exe, .dmg, .deb).</li>
                   <li>· Rust engine: real-time <code class="text-ink-text">notify</code> watcher, SHA-256 dedup, rule-based organize, and nucleo fuzzy search across 100k+ files in &lt;50ms.</li>
                 </ul>
-                <div class="mt-4 flex flex-wrap gap-2">
-                  <span class="skill-pill rounded-full">Rust</span><span class="skill-pill rounded-full">Tokio</span><span class="skill-pill rounded-full">egui</span><span class="skill-pill rounded-full">Rayon</span>
-                </div>
+                <div class="mt-4 flex flex-wrap gap-2"><span class="skill-pill rounded-full">Rust</span><span class="skill-pill rounded-full">Tokio</span><span class="skill-pill rounded-full">egui</span><span class="skill-pill rounded-full">Rayon</span></div>
                 <div class="project-row-links">
                   <a href="https://github.com/ManeeshJupalle/FluxFS" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">GitHub →</a>
                   <a href="https://github.com/ManeeshJupalle/FluxFS/releases" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">Releases →</a>
@@ -1536,37 +1489,32 @@
           </div>
         </article>
 
-        <article class="project-row" data-tags="llm">
-          <button type="button" class="project-row-toggle" aria-expanded="false">
+        <article class="project-row" id="p-synapse" data-tags="llm">
+          <div class="project-row-head">
             <span class="project-index">08</span>
-            <div>
-              <div class="project-row-title">Synapse</div>
+            <div class="project-row-main">
+              <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-synapse-panel">Synapse</button></h3>
               <p class="project-row-tagline">Privacy-first Chrome extension — browsing history becomes a local knowledge graph and searchable second brain.</p>
             </div>
             <div class="project-row-meta">
-              <div class="project-row-date">Apr 2026</div>
-              <div class="project-row-pills">
-                <span class="skill-pill rounded-full">Chrome Ext</span>
-                <span class="skill-pill rounded-full">ONNX</span>
-                <span class="skill-pill rounded-full">React</span>
-              </div>
+              <span class="project-row-date">Apr 2026</span>
+              <div class="project-row-pills"><span class="skill-pill rounded-full">Chrome Ext</span><span class="skill-pill rounded-full">ONNX</span><span class="skill-pill rounded-full">React</span></div>
             </div>
-            <span class="project-row-action">
+            <span class="project-row-action" aria-hidden="true">
               <span class="project-row-action-text">View details</span>
               <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
             </span>
-          </button>
-          <div class="project-row-panel">
+          </div>
+          <div class="project-row-panel" id="p-synapse-panel">
             <div class="project-row-panel-inner">
               <div class="project-row-panel-content">
-                <p class="text-sm text-ink-dim leading-relaxed">Privacy-first Chrome extension — browsing history becomes a local knowledge graph and searchable second brain.</p>
-                <ul class="mt-4 space-y-1.5 text-xs text-ink-dim list-none">
-                  <li>· Manifest V3 + IndexedDB memory layer</li>
-                  <li>· On-device semantic search with ONNX WASM embeddings</li>
+                <ul class="space-y-1.5 text-xs text-ink-dim list-none">
+                  <li>· Captures a page only after a real dwell threshold, then extracts the article body with Readability</li>
+                  <li>· Embeds on-device with a bundled all-MiniLM-L6-v2 (ONNX WASM); no model, font, or inference request ever leaves the browser</li>
+                  <li>· IndexedDB store (Dexie) with similarity edges and topic clusters: search by meaning, and related pages resurface while you browse</li>
+                  <li>· Manifest V3, Vitest in CI, JSON export and one-click delete of everything</li>
                 </ul>
-                <div class="mt-4 flex flex-wrap gap-2">
-                  <span class="skill-pill rounded-full">Chrome Ext</span><span class="skill-pill rounded-full">ONNX</span><span class="skill-pill rounded-full">React</span>
-                </div>
+                <div class="mt-4 flex flex-wrap gap-2"><span class="skill-pill rounded-full">Chrome Ext</span><span class="skill-pill rounded-full">React</span><span class="skill-pill rounded-full">ONNX</span><span class="skill-pill rounded-full">IndexedDB</span><span class="skill-pill rounded-full">Vitest</span></div>
                 <div class="project-row-links">
                   <a href="https://github.com/ManeeshJupalle/Synapse" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">GitHub →</a>
                 </div>
@@ -1575,32 +1523,31 @@
           </div>
         </article>
 
-        <article class="project-row" data-tags="llm">
-          <button type="button" class="project-row-toggle" aria-expanded="false">
+        <article class="project-row" id="p-promptforge-cli" data-tags="llm">
+          <div class="project-row-head">
             <span class="project-index">09</span>
-            <div>
-              <div class="project-row-title">PromptForge CLI</div>
+            <div class="project-row-main">
+              <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-promptforge-cli-panel">PromptForge CLI</button></h3>
               <p class="project-row-tagline">"Jest for prompts" — test-driven LLM prompt development with local execution and a self-hosted dashboard.</p>
             </div>
             <div class="project-row-meta">
-              <div class="project-row-date">May 2026</div>
-              <div class="project-row-pills">
-                <span class="skill-pill rounded-full">TypeScript</span>
-                <span class="skill-pill rounded-full">SQLite</span>
-              </div>
+              <span class="project-row-date">May 2026</span>
+              <div class="project-row-pills"><span class="skill-pill rounded-full">TypeScript</span><span class="skill-pill rounded-full">SQLite</span></div>
             </div>
-            <span class="project-row-action">
+            <span class="project-row-action" aria-hidden="true">
               <span class="project-row-action-text">View details</span>
               <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
             </span>
-          </button>
-          <div class="project-row-panel">
+          </div>
+          <div class="project-row-panel" id="p-promptforge-cli-panel">
             <div class="project-row-panel-inner">
               <div class="project-row-panel-content">
-                <p class="text-sm text-ink-dim leading-relaxed">"Jest for prompts" — test-driven LLM prompt development with local-first execution and a self-hosted dashboard.</p>
-                <div class="mt-4 flex flex-wrap gap-2">
-                  <span class="skill-pill rounded-full">TypeScript</span><span class="skill-pill rounded-full">SQLite</span>
-                </div>
+                <ul class="space-y-1.5 text-xs text-ink-dim list-none">
+                  <li>· YAML test files with assertions for JSON schema, contains, semantic similarity, LLM-judge, cost, and latency budgets</li>
+                  <li>· The same test runs against Anthropic, OpenAI, Gemini, and Ollama; local models are first-class so iteration is free</li>
+                  <li>· Self-hosted dashboard bound to 127.0.0.1 with run history, side-by-side compare, and trend charts</li>
+                </ul>
+                <div class="mt-4 flex flex-wrap gap-2"><span class="skill-pill rounded-full">TypeScript</span><span class="skill-pill rounded-full">SQLite</span><span class="skill-pill rounded-full">Ollama</span></div>
                 <div class="project-row-links">
                   <a href="https://github.com/ManeeshJupalle/promptforge-cli" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">GitHub →</a>
                 </div>
@@ -1609,32 +1556,31 @@
           </div>
         </article>
 
-        <article class="project-row" data-tags="llm">
-          <button type="button" class="project-row-toggle" aria-expanded="false">
+        <article class="project-row" id="p-sentinel-mcp" data-tags="llm">
+          <div class="project-row-head">
             <span class="project-index">10</span>
-            <div>
-              <div class="project-row-title">Sentinel MCP</div>
+            <div class="project-row-main">
+              <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-sentinel-mcp-panel">Sentinel MCP</button></h3>
               <p class="project-row-tagline">Zero-config MCP server for instant, local-first codebase health analysis and prioritized reports.</p>
             </div>
             <div class="project-row-meta">
-              <div class="project-row-date">May 2026</div>
-              <div class="project-row-pills">
-                <span class="skill-pill rounded-full">MCP</span>
-                <span class="skill-pill rounded-full">Tree-sitter</span>
-              </div>
+              <span class="project-row-date">May 2026</span>
+              <div class="project-row-pills"><span class="skill-pill rounded-full">MCP</span><span class="skill-pill rounded-full">Tree-sitter</span></div>
             </div>
-            <span class="project-row-action">
+            <span class="project-row-action" aria-hidden="true">
               <span class="project-row-action-text">View details</span>
               <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
             </span>
-          </button>
-          <div class="project-row-panel">
+          </div>
+          <div class="project-row-panel" id="p-sentinel-mcp-panel">
             <div class="project-row-panel-inner">
               <div class="project-row-panel-content">
-                <p class="text-sm text-ink-dim leading-relaxed">Zero-config MCP server for local-first codebase health analysis — complexity, dependencies, dead code, git health.</p>
-                <div class="mt-4 flex flex-wrap gap-2">
-                  <span class="skill-pill rounded-full">MCP</span><span class="skill-pill rounded-full">Tree-sitter</span>
-                </div>
+                <ul class="space-y-1.5 text-xs text-ink-dim list-none">
+                  <li>· Six MCP tools: large files, cyclomatic complexity, dependency audit, dead-code detection, git health, and an aggregate 0–100 health report</li>
+                  <li>· Tree-sitter AST analysis for TypeScript, JavaScript, and Python; runs on demand, no background indexing</li>
+                  <li>· Works with Claude Desktop, Cursor, Windsurf, and Claude Code from one npx command; no databases or API keys</li>
+                </ul>
+                <div class="mt-4 flex flex-wrap gap-2"><span class="skill-pill rounded-full">MCP</span><span class="skill-pill rounded-full">Tree-sitter</span><span class="skill-pill rounded-full">TypeScript</span><span class="skill-pill rounded-full">Node.js</span></div>
                 <div class="project-row-links">
                   <a href="https://github.com/ManeeshJupalle/sentinel-mcp" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">GitHub →</a>
                 </div>
@@ -1643,32 +1589,31 @@
           </div>
         </article>
 
-        <article class="project-row" data-tags="ml">
-          <button type="button" class="project-row-toggle" aria-expanded="false">
+        <article class="project-row" id="p-cashpulse" data-tags="ml">
+          <div class="project-row-head">
             <span class="project-index">11</span>
-            <div>
-              <div class="project-row-title">CashPulse</div>
+            <div class="project-row-main">
+              <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-cashpulse-panel">CashPulse</button></h3>
               <p class="project-row-tagline">Privacy-first local cash flow forecasting and financial anomaly detection — fully on-device.</p>
             </div>
             <div class="project-row-meta">
-              <div class="project-row-date">May 2026</div>
-              <div class="project-row-pills">
-                <span class="skill-pill rounded-full">PyTorch</span>
-                <span class="skill-pill rounded-full">XGBoost</span>
-              </div>
+              <span class="project-row-date">May 2026</span>
+              <div class="project-row-pills"><span class="skill-pill rounded-full">PyTorch</span><span class="skill-pill rounded-full">XGBoost</span></div>
             </div>
-            <span class="project-row-action">
+            <span class="project-row-action" aria-hidden="true">
               <span class="project-row-action-text">View details</span>
               <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
             </span>
-          </button>
-          <div class="project-row-panel">
+          </div>
+          <div class="project-row-panel" id="p-cashpulse-panel">
             <div class="project-row-panel-inner">
               <div class="project-row-panel-content">
-                <p class="text-sm text-ink-dim leading-relaxed">Privacy-first local cash flow forecasting and financial anomaly detection — 533 tests, fully on-device.</p>
-                <div class="mt-4 flex flex-wrap gap-2">
-                  <span class="skill-pill rounded-full">PyTorch</span><span class="skill-pill rounded-full">XGBoost</span>
-                </div>
+                <ul class="space-y-1.5 text-xs text-ink-dim list-none">
+                  <li>· Ingests CSV, OFX, and QFX bank exports, dedupes them, and auto-categorizes with a hybrid rules + ML engine</li>
+                  <li>· 30-day cash-flow forecasts with confidence intervals; detectors for subscription creep, zombie subscriptions, spending drift, lifestyle inflation, and overdraft risk, with SHAP-backed explanations</li>
+                  <li>· Terminal vital-signs panel, dashboard, and PDF report; 533 tests, ruff and mypy --strict clean</li>
+                </ul>
+                <div class="mt-4 flex flex-wrap gap-2"><span class="skill-pill rounded-full">Python</span><span class="skill-pill rounded-full">PyTorch</span><span class="skill-pill rounded-full">XGBoost</span><span class="skill-pill rounded-full">SHAP</span></div>
                 <div class="project-row-links">
                   <a href="https://github.com/ManeeshJupalle/CashPulse" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">GitHub →</a>
                 </div>
@@ -1677,157 +1622,116 @@
           </div>
         </article>
 
-        <article class="project-row" data-tags="llm,health">
-          <button type="button" class="project-row-toggle" aria-expanded="false">
+        <article class="project-row" id="p-golden-bridge" data-tags="llm,health">
+          <div class="project-row-head">
             <span class="project-index">12</span>
-            <div>
-              <div class="project-row-title">Golden Bridge</div>
+            <div class="project-row-main">
+              <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-golden-bridge-panel">Golden Bridge</button></h3>
               <p class="project-row-tagline">Ambulance pre-arrival system — 1st place, Microsoft-sponsored Hack with Chicago.</p>
             </div>
             <div class="project-row-meta">
-              <div class="project-row-date">Dec 2025</div>
-              <div class="project-row-pills">
-                <span class="skill-pill rounded-full">LangChain</span>
-                <span class="skill-pill rounded-full">Kafka</span>
-              </div>
+              <span class="project-row-date">Dec 2025</span>
+              <div class="project-row-pills"><span class="skill-pill rounded-full">LangChain</span><span class="skill-pill rounded-full">Kafka</span></div>
             </div>
-            <span class="project-row-action">
+            <span class="project-row-action" aria-hidden="true">
               <span class="project-row-action-text">View details</span>
               <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
             </span>
-          </button>
-          <div class="project-row-panel">
+          </div>
+          <div class="project-row-panel" id="p-golden-bridge-panel">
             <div class="project-row-panel-inner">
               <div class="project-row-panel-content">
-                <p class="text-sm text-ink-dim leading-relaxed">Ambulance pre-arrival system — 1st place, Microsoft-sponsored Hack with Chicago.</p>
-                <div class="mt-4 flex flex-wrap gap-2">
-                  <span class="skill-pill rounded-full">LangChain</span><span class="skill-pill rounded-full">Kafka</span>
-                </div>
+                <p class="text-sm text-ink-dim leading-relaxed">Pre-arrival triage system for ambulances, built at the Microsoft-sponsored Hack with Chicago, where it took 1st place.</p>
+                <ul class="mt-4 space-y-1.5 text-xs text-ink-dim list-none">
+                  <li>· Multi-agent orchestration with LangChain and GPT-4: coordinated diagnostic, severity-scoring, and treatment agents for triage automation</li>
+                  <li>· Real-time streaming with Pathway, Kafka, FastAPI, and WebSockets for sub-second EMS data transmission; deployed on Azure with Docker</li>
+                </ul>
+                <div class="mt-4 flex flex-wrap gap-2"><span class="skill-pill rounded-full">LangChain</span><span class="skill-pill rounded-full">GPT-4</span><span class="skill-pill rounded-full">Kafka</span><span class="skill-pill rounded-full">Pathway</span><span class="skill-pill rounded-full">FastAPI</span><span class="skill-pill rounded-full">Azure</span></div>
               </div>
             </div>
           </div>
         </article>
 
-        <article class="project-row" data-tags="llm">
-          <button type="button" class="project-row-toggle" aria-expanded="false">
+        <article class="project-row" id="p-insurease" data-tags="llm">
+          <div class="project-row-head">
             <span class="project-index">13</span>
-            <div>
-              <div class="project-row-title">Insurease</div>
+            <div class="project-row-main">
+              <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-insurease-panel">Insurease</button></h3>
               <p class="project-row-tagline">LLM-powered insurance document extraction, comparison, and simplification with vector/graph search.</p>
             </div>
             <div class="project-row-meta">
-              <div class="project-row-date">—</div>
-              <div class="project-row-pills">
-                <span class="skill-pill rounded-full">Qdrant</span>
-                <span class="skill-pill rounded-full">Neo4j</span>
-              </div>
+              <span class="project-row-date">May 2025</span>
+              <div class="project-row-pills"><span class="skill-pill rounded-full">Qdrant</span><span class="skill-pill rounded-full">Neo4j</span></div>
             </div>
-            <span class="project-row-action">
+            <span class="project-row-action" aria-hidden="true">
               <span class="project-row-action-text">View details</span>
               <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
             </span>
-          </button>
-          <div class="project-row-panel">
+          </div>
+          <div class="project-row-panel" id="p-insurease-panel">
             <div class="project-row-panel-inner">
               <div class="project-row-panel-content">
-                <p class="text-sm text-ink-dim leading-relaxed">LLM-powered website using GPT-Nano/Gemini Flash with vector/graph search (Qdrant/Neo4j) to extract, compare, and simplify insurance documents.</p>
-                <div class="mt-4 flex flex-wrap gap-2">
-                  <span class="skill-pill rounded-full">Qdrant</span><span class="skill-pill rounded-full">Neo4j</span>
-                </div>
+                <ul class="space-y-1.5 text-xs text-ink-dim list-none">
+                  <li>· LLM document analysis with GPT-Nano and Gemini Flash; vector and graph search over Qdrant and Neo4j</li>
+                  <li>· Modular Extract, Query, Analyze, and Compare pipelines so decisions come from structured comparisons, not a single prompt</li>
+                </ul>
+                <div class="mt-4 flex flex-wrap gap-2"><span class="skill-pill rounded-full">Qdrant</span><span class="skill-pill rounded-full">Neo4j</span><span class="skill-pill rounded-full">Gemini Flash</span></div>
               </div>
             </div>
           </div>
         </article>
 
-        <article class="project-row" data-tags="llm">
-          <button type="button" class="project-row-toggle" aria-expanded="false">
+        <article class="project-row" id="p-researchai" data-tags="llm">
+          <div class="project-row-head">
             <span class="project-index">14</span>
-            <div>
-              <div class="project-row-title">ResearchAI</div>
+            <div class="project-row-main">
+              <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-researchai-panel">ResearchAI</button></h3>
               <p class="project-row-tagline">Full-stack AI research assistant — upload papers and chat with summaries and Q&amp;A.</p>
             </div>
             <div class="project-row-meta">
-              <div class="project-row-date">—</div>
-              <div class="project-row-pills">
-                <span class="skill-pill rounded-full">React</span>
-                <span class="skill-pill rounded-full">Supabase</span>
-              </div>
+              <span class="project-row-date">Jan 2025</span>
+              <div class="project-row-pills"><span class="skill-pill rounded-full">React</span><span class="skill-pill rounded-full">Supabase</span></div>
             </div>
-            <span class="project-row-action">
+            <span class="project-row-action" aria-hidden="true">
               <span class="project-row-action-text">View details</span>
               <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
             </span>
-          </button>
-          <div class="project-row-panel">
+          </div>
+          <div class="project-row-panel" id="p-researchai-panel">
             <div class="project-row-panel-inner">
               <div class="project-row-panel-content">
-                <p class="text-sm text-ink-dim leading-relaxed">Full-stack AI research assistant — upload papers, chat with summaries and Q&amp;A.</p>
-                <div class="mt-4 flex flex-wrap gap-2">
-                  <span class="skill-pill rounded-full">React</span><span class="skill-pill rounded-full">Supabase</span>
-                </div>
+                <ul class="space-y-1.5 text-xs text-ink-dim list-none">
+                  <li>· Multi-LLM pipeline for extractive and abstractive summarization, citation-aware retrieval, and contextual Q&amp;A over uploaded papers</li>
+                  <li>· React, TypeScript, Node.js, and Supabase with JWT auth and row-level security; independent research project at UIC</li>
+                </ul>
+                <div class="mt-4 flex flex-wrap gap-2"><span class="skill-pill rounded-full">React</span><span class="skill-pill rounded-full">TypeScript</span><span class="skill-pill rounded-full">Node.js</span><span class="skill-pill rounded-full">Supabase</span></div>
               </div>
             </div>
           </div>
         </article>
 
-        <article class="project-row" data-tags="cv">
-          <button type="button" class="project-row-toggle" aria-expanded="false">
+        <article class="project-row project-row--static" id="p-shesecure" data-tags="cv">
+          <div class="project-row-head">
             <span class="project-index">15</span>
-            <div>
-              <div class="project-row-title">SheSecure</div>
+            <div class="project-row-main">
+              <h3 class="project-row-title">SheSecure</h3>
               <p class="project-row-tagline">YOLOv5 pipeline for assault incident detection in CCTV footage — ~92% precision.</p>
             </div>
             <div class="project-row-meta">
-              <div class="project-row-date">—</div>
-              <div class="project-row-pills">
-                <span class="skill-pill rounded-full">YOLOv5</span>
-                <span class="skill-pill rounded-full">Python</span>
-              </div>
-            </div>
-            <span class="project-row-action">
-              <span class="project-row-action-text">View details</span>
-              <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
-            </span>
-          </button>
-          <div class="project-row-panel">
-            <div class="project-row-panel-inner">
-              <div class="project-row-panel-content">
-                <p class="text-sm text-ink-dim leading-relaxed">YOLOv5 pipeline detecting potential assault incidents in CCTV footage.</p>
-                <div class="mt-4 flex flex-wrap gap-2">
-                  <span class="skill-pill rounded-full">YOLOv5</span><span class="skill-pill rounded-full">Python</span>
-                </div>
-              </div>
+              <div class="project-row-pills"><span class="skill-pill rounded-full">YOLOv5</span><span class="skill-pill rounded-full">Python</span></div>
             </div>
           </div>
         </article>
 
-        <article class="project-row" data-tags="health">
-          <button type="button" class="project-row-toggle" aria-expanded="false">
+        <article class="project-row project-row--static" id="p-jan-swasthya" data-tags="health">
+          <div class="project-row-head">
             <span class="project-index">16</span>
-            <div>
-              <div class="project-row-title">Jan Swasthya</div>
+            <div class="project-row-main">
+              <h3 class="project-row-title">Jan Swasthya</h3>
               <p class="project-row-tagline">Healthcare app with CNN + chatbot for faster initial assessment — ~85% accuracy.</p>
             </div>
             <div class="project-row-meta">
-              <div class="project-row-date">—</div>
-              <div class="project-row-pills">
-                <span class="skill-pill rounded-full">Django</span>
-                <span class="skill-pill rounded-full">CNN</span>
-              </div>
-            </div>
-            <span class="project-row-action">
-              <span class="project-row-action-text">View details</span>
-              <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
-            </span>
-          </button>
-          <div class="project-row-panel">
-            <div class="project-row-panel-inner">
-              <div class="project-row-panel-content">
-                <p class="text-sm text-ink-dim leading-relaxed">Healthcare app using a CNN and chatbot for faster initial assessment.</p>
-                <div class="mt-4 flex flex-wrap gap-2">
-                  <span class="skill-pill rounded-full">Django</span><span class="skill-pill rounded-full">CNN</span>
-                </div>
-              </div>
+              <div class="project-row-pills"><span class="skill-pill rounded-full">Django</span><span class="skill-pill rounded-full">CNN</span></div>
             </div>
           </div>
         </article>
@@ -2013,8 +1917,7 @@
       initNav();
       initScrollLine();
       initContactForm();
-      initProjectFilter();
-      initProjectAccordion();
+      initProjectFilter(initProjectAccordion());
       initBackToTop();
       initSpaceField();
       initVisualEffects();
@@ -2522,120 +2425,127 @@
       if (label) label.textContent = isOpen ? 'Close' : 'View details';
     }
 
-    function setProjectRowAria(toggle, title, isOpen) {
-      if (isOpen) {
-        toggle.setAttribute('aria-label', `Collapse ${title} — hide details`);
-      } else {
-        toggle.setAttribute('aria-label', `Expand ${title} — view details, demos, and links`);
-      }
-    }
-
     function initProjectAccordion() {
       const list = document.getElementById('projectsGrid');
-      const rows = document.querySelectorAll('.project-row');
-      rows.forEach(row => {
-        const toggle = row.querySelector('.project-row-toggle');
-        if (!toggle) return;
-        const title = row.querySelector('.project-row-title')?.textContent?.trim() || 'project';
-        toggle.setAttribute('aria-expanded', 'false');
-        setProjectRowAria(toggle, title, false);
-        setProjectRowAction(row, false);
+      const rows = Array.from(document.querySelectorAll('.project-row'));
+      const panels = new Map(rows.map(row => [row, row.querySelector('.project-row-panel')]));
+      let openRow = null;
+      const canFlip = () => !reducedMotion && typeof gsap !== 'undefined' && typeof Flip !== 'undefined';
 
-        toggle.addEventListener('click', () => {
-          const willOpen = !row.classList.contains('is-open');
-          const useFlip = !reducedMotion && typeof gsap !== 'undefined' && typeof Flip !== 'undefined';
-          let flipState = null;
-          if (useFlip) {
-            suppressTilt = true;
-            gsap.set(rows, { clearProps: 'transform' });
-            list.classList.add('flip-active');
-            flipState = Flip.getState(rows);
-          }
-          rows.forEach(r => {
-            r.classList.remove('is-open');
-            const t = r.querySelector('.project-row-toggle');
-            const rt = r.querySelector('.project-row-title')?.textContent?.trim() || 'project';
-            if (t) {
-              t.setAttribute('aria-expanded', 'false');
-              setProjectRowAria(t, rt, false);
-            }
-            setProjectRowAction(r, false);
-          });
-          if (willOpen) {
-            row.classList.add('is-open');
-            toggle.setAttribute('aria-expanded', 'true');
-            setProjectRowAria(toggle, title, true);
-            setProjectRowAction(row, true);
-            const tiles = row.querySelectorAll('.loop-tile-item');
-            if (tiles.length && typeof gsap !== 'undefined' && !reducedMotion) {
-              gsap.from(tiles, {
-                y: 10,
-                opacity: 0,
-                duration: 0.35,
-                stagger: 0.04,
-                ease: 'power2.out',
-              });
-            }
-          }
-          if (useFlip) {
-            if (willOpen) {
-              const content = row.querySelector('.project-row-panel-content');
-              if (content) gsap.from(content, { opacity: 0, duration: 0.35, delay: 0.1, ease: 'power1.out', overwrite: true });
-            }
-            Flip.from(flipState, {
-              duration: 0.45,
-              ease: 'power3.inOut',
-              overwrite: true,
-              onComplete: () => {
-                list.classList.remove('flip-active');
-                suppressTilt = false;
-                if (willOpen) row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
-              },
-            });
-          } else {
-            if (willOpen) row.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'nearest' });
-            if (!reducedMotion && typeof ScrollTrigger !== 'undefined') {
-              setTimeout(() => ScrollTrigger.refresh(), 420);
-            }
-          }
+      function close(row) {
+        const panel = panels.get(row);
+        row.classList.remove('is-open');
+        row.querySelector('.project-row-toggle')?.setAttribute('aria-expanded', 'false');
+        setProjectRowAction(row, false);
+        if (panel) {
+          panel.classList.remove('is-open');
+          row.appendChild(panel);
+        }
+        if (openRow === row) openRow = null;
+      }
+
+      // The card keeps its grid cell; its panel moves after the last card of the same
+      // visual row and spans the full width, so no card is pushed sideways.
+      function open(row) {
+        const panel = panels.get(row);
+        row.classList.add('is-open');
+        row.querySelector('.project-row-toggle')?.setAttribute('aria-expanded', 'true');
+        setProjectRowAction(row, true);
+        let last = row;
+        rows.forEach(r => {
+          if (r.style.display !== 'none' && Math.abs(r.offsetTop - row.offsetTop) < 2 && r.offsetLeft > last.offsetLeft) last = r;
         });
+        last.after(panel);
+        panel.style.setProperty('--notch-x', `${row.getBoundingClientRect().left - list.getBoundingClientRect().left + 26}px`);
+        panel.classList.add('is-open');
+        openRow = row;
+      }
+
+      function reveal(row) {
+        const r = row.getBoundingClientRect();
+        const p = panels.get(row).getBoundingClientRect();
+        if (r.top < 80 || p.bottom > window.innerHeight) {
+          window.scrollTo({ top: window.scrollY + r.top - 88, behavior: reducedMotion ? 'auto' : 'smooth' });
+        }
+      }
+
+      function toggle(row) {
+        const willOpen = openRow !== row;
+        const useFlip = canFlip();
+        let state = null;
+        if (useFlip) {
+          list.classList.add('flip-active');
+          state = Flip.getState(rows);
+        }
+        if (openRow) close(openRow);
+        if (willOpen) open(row);
+        if (useFlip) {
+          if (willOpen) {
+            const panel = panels.get(row);
+            gsap.from(panel.querySelector('.project-row-panel-content'), { opacity: 0, y: -10, duration: 0.4, delay: 0.1, ease: 'power2.out', overwrite: true });
+            const tiles = panel.querySelectorAll('.loop-tile-item');
+            if (tiles.length) gsap.from(tiles, { y: 10, opacity: 0, duration: 0.35, stagger: 0.04, delay: 0.15, ease: 'power2.out' });
+          }
+          Flip.from(state, {
+            duration: 0.45,
+            ease: 'power3.inOut',
+            overwrite: true,
+            onComplete: () => {
+              list.classList.remove('flip-active');
+              if (willOpen) reveal(row);
+              if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+            },
+          });
+        } else {
+          if (willOpen) reveal(row);
+          if (!reducedMotion && typeof ScrollTrigger !== 'undefined') setTimeout(() => ScrollTrigger.refresh(), 420);
+        }
+      }
+
+      rows.forEach(row => {
+        const btn = row.querySelector('.project-row-toggle');
+        if (!btn || !panels.get(row)) return;
+        btn.setAttribute('aria-expanded', 'false');
+        setProjectRowAction(row, false);
+        btn.addEventListener('click', () => toggle(row));
       });
+
+      // A #p-<project> hash (e.g. from the Skills section) opens that card.
+      function openFromHash() {
+        const row = location.hash.length > 1 && document.getElementById(location.hash.slice(1));
+        if (row && panels.get(row) && openRow !== row) toggle(row);
+      }
+      window.addEventListener('hashchange', openFromHash);
+      openFromHash();
+
+      return { closeAll: () => { if (openRow) close(openRow); } };
     }
 
-    function initProjectFilter() {
+    function initProjectFilter(accordion) {
       const filters = document.querySelectorAll('.proj-filter');
       const list = document.getElementById('projectsGrid');
-      const rows = document.querySelectorAll('#projectsGrid .project-row');
+      const rows = Array.from(document.querySelectorAll('#projectsGrid .project-row'));
       filters.forEach(btn => {
         btn.addEventListener('click', () => {
           const tech = btn.dataset.tech;
-          filters.forEach(b => b.classList.toggle('active', b === btn));
+          filters.forEach(b => {
+            const on = b === btn;
+            b.classList.toggle('active', on);
+            b.setAttribute('aria-pressed', String(on));
+          });
           const useFlip = !reducedMotion && typeof gsap !== 'undefined' && typeof Flip !== 'undefined';
-          let flipState = null;
+          let state = null;
           if (useFlip) {
-            suppressTilt = true;
-            gsap.set(rows, { clearProps: 'transform' });
             list.classList.add('flip-active');
-            flipState = Flip.getState(rows);
+            state = Flip.getState(rows);
           }
+          accordion.closeAll();
           rows.forEach(row => {
             const tags = (row.dataset.tags || '').split(',').map(t => t.trim()).filter(Boolean);
-            const show = tech === 'all' || tags.includes(tech);
-            row.style.display = show ? '' : 'none';
-            if (!show) {
-              row.classList.remove('is-open');
-              const t = row.querySelector('.project-row-toggle');
-              const rt = row.querySelector('.project-row-title')?.textContent?.trim() || 'project';
-              if (t) {
-                t.setAttribute('aria-expanded', 'false');
-                setProjectRowAria(t, rt, false);
-              }
-              setProjectRowAction(row, false);
-            }
+            row.style.display = tech === 'all' || tags.includes(tech) ? '' : 'none';
           });
           if (useFlip) {
-            Flip.from(flipState, {
+            Flip.from(state, {
               duration: 0.4,
               ease: 'power2.inOut',
               overwrite: true,
@@ -2645,7 +2555,6 @@
               ),
               onComplete: () => {
                 list.classList.remove('flip-active');
-                suppressTilt = false;
                 if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
               },
             });
