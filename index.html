@@ -288,13 +288,11 @@
       text-shadow: 0 0 20px rgba(200, 135, 74, 0.25);
     }
 
-    .timeline-dot {
-      box-shadow: 0 0 0 4px rgba(200, 135, 74, 0.15), 0 0 24px rgba(200, 135, 74, 0.35);
-    }
-
     .hr-accent {
       position: relative;
       overflow: visible;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--line), transparent);
     }
     .hr-accent::after {
       content: '';
@@ -463,21 +461,53 @@
       border-radius: 50%;
       background: var(--ink);
       border: 2px solid var(--copper);
+      box-shadow: 0 0 0 4px rgba(200, 135, 74, 0.15), 0 0 24px rgba(200, 135, 74, 0.35);
       z-index: 2;
     }
 
     /* Skills */
-    .skill-bar-track {
-      height: 3px;
-      background: var(--line);
-      border-radius: 2px;
-      overflow: hidden;
+    .skill-proof-row {
+      display: grid;
+      grid-template-columns: 9.5rem 1fr;
+      gap: 0.5rem 1rem;
+      align-items: baseline;
+      padding: 0.85rem 0;
+      border-top: 1px solid var(--line);
     }
-    .skill-bar-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--copper), var(--sage));
-      border-radius: 2px;
+    .skill-proof-row:last-child { border-bottom: 1px solid var(--line); }
+    @media (max-width: 480px) {
+      .skill-proof-row { grid-template-columns: 1fr; gap: 0.4rem; }
+    }
+    .skill-proof-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text);
+    }
+    .skill-proof-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 0.5rem;
+    }
+    .skill-proof-link {
+      font-size: 0.8rem;
+      line-height: 1.2;
+      color: var(--dim);
+      padding: 0.35rem 0.7rem;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    }
+    .skill-proof-link:hover {
+      color: var(--text);
+      border-color: rgba(200, 135, 74, 0.5);
+      background: rgba(200, 135, 74, 0.08);
+    }
+    .skill-proof-note {
+      margin-top: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      color: var(--dim);
     }
     .skill-pill {
       font-family: 'JetBrains Mono', monospace;
@@ -499,7 +529,7 @@
     }
     .skill-group-title {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
+      font-size: 0.7rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--copper);
@@ -879,7 +909,7 @@
     .code-panel .kw { color: #c8874a; }
     .code-panel .prop { color: #6db89e; }
     .code-panel .str { color: #d4b896; }
-    .code-panel .cm { color: #555; }
+    .code-panel .cm { color: var(--dim); }
     .code-cursor {
       display: inline-block;
       width: 8px;
@@ -896,21 +926,19 @@
     .js .hero-meta { visibility: hidden; }
 
     /* Contact */
-    .contact-input {
-      background: #0d0d0d;
-      border: 1px solid var(--line);
-      transition: border-color 0.25s ease;
+    .contact-email {
+      display: block;
+      margin-top: 0.75rem;
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      overflow-wrap: anywhere;
+      transition: color 0.25s ease;
     }
-    .contact-input:focus {
-      outline: none;
-      border-color: var(--copper);
-    }
-
-    /* Footer rule */
-    .hr-accent {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--line), transparent);
-    }
+    .contact-email:hover { color: var(--copper-light, #e8b882); }
+    #copyEmail.is-done { border-color: var(--sage); color: var(--sage-light, #6db89e); }
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
@@ -999,38 +1027,40 @@
           <div class="grid grid-cols-2 gap-4 hero-meta">
             <div class="stat-block depth-card tilt-target">
               <div class="stat-num" data-count="3.80">0</div>
-              <p class="font-mono text-[0.65rem] uppercase tracking-wider text-ink-dim mt-1">MS CS · UIC Grad</p>
+              <p class="font-mono text-[0.7rem] uppercase tracking-wider text-ink-dim mt-1">GPA · MS CS, UIC</p>
             </div>
             <div class="stat-block depth-card tilt-target">
               <div class="stat-num" data-count="10" data-suffix="+">0</div>
-              <p class="font-mono text-[0.65rem] uppercase tracking-wider text-ink-dim mt-1">Projects shipped</p>
+              <p class="font-mono text-[0.7rem] uppercase tracking-wider text-ink-dim mt-1">Projects shipped</p>
             </div>
             <div class="stat-block depth-card tilt-target">
               <div class="stat-num" data-count="2" data-suffix=" yr">0</div>
-              <p class="font-mono text-[0.65rem] uppercase tracking-wider text-ink-dim mt-1">VMware · Broadcom</p>
+              <p class="font-mono text-[0.7rem] uppercase tracking-wider text-ink-dim mt-1">VMware · Broadcom</p>
             </div>
             <div class="stat-block depth-card tilt-target">
               <div class="stat-num" data-count="1" data-suffix="st">0</div>
-              <p class="font-mono text-[0.65rem] uppercase tracking-wider text-ink-dim mt-1">Hackathon win</p>
+              <p class="font-mono text-[0.7rem] uppercase tracking-wider text-ink-dim mt-1">Hackathon win</p>
             </div>
           </div>
           <div class="code-panel depth-card tilt-target rounded-xl p-5 hero-meta">
-            <div class="text-ink-dim text-[0.65rem] mb-3 flex gap-2">
+            <div class="text-ink-dim text-[0.7rem] mb-3 flex gap-2 items-center">
               <span class="w-2.5 h-2.5 rounded-full bg-red-500/60"></span>
               <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/60"></span>
               <span class="w-2.5 h-2.5 rounded-full bg-green-500/60"></span>
-              <span class="ml-2">profile.ts</span>
+              <span class="ml-2">~ · things I shipped</span>
             </div>
-            <pre class="whitespace-pre-wrap" id="codeBlock"><span class="kw">const</span> <span class="prop">engineer</span> = {
-  <span class="prop">stack</span>: [<span class="str">'Web'</span>, <span class="str">'ML'</span>, <span class="str">'LLMs'</span>],
-  <span class="prop">status</span>: <span class="str">'Open to opportunities'</span>,
-  <span class="prop">location</span>: <span class="str">'Chicago'</span>
-};<span class="code-cursor"></span></pre>
+            <pre class="whitespace-pre-wrap" id="terminalOut"><span class="kw">$</span> flux find "assignment"
+<span class="prop">→</span> 4 results in 12ms
+<span class="kw">$</span> auricle serve
+<span class="prop">●</span> daemon on 127.0.0.1:4820 <span class="cm">· local whisper</span>
+<span class="kw">$</span> promptforge-cli run
+<span class="prop">✓</span> triage.test.yaml <span class="cm">· anthropic · openai · ollama</span>
+<span class="kw">$</span> <span class="code-cursor"></span></pre>
           </div>
         </div>
       </div>
       <div class="mt-20 flex items-center gap-3 text-ink-dim hero-meta">
-        <span class="font-mono text-[0.65rem] uppercase tracking-widest">Scroll</span>
+        <span class="font-mono text-[0.7rem] uppercase tracking-widest">Scroll</span>
         <div class="flex-1 h-px bg-ink-line max-w-[120px]"></div>
         <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
       </div>
@@ -1101,7 +1131,7 @@
                 <p class="font-mono text-xs text-ink-dim mt-1">Jan 2026 – May 2026 · Chicago, IL</p>
                 <p class="text-sm text-copper mt-1">Graduate Assistant – GenAI Team</p>
               </div>
-              <span class="font-mono text-[0.65rem] uppercase tracking-wider border border-ink-line px-3 py-1 rounded-full text-ink-dim">GenAI · Healthcare</span>
+              <span class="font-mono text-[0.7rem] uppercase tracking-wider border border-ink-line px-3 py-1 rounded-full text-ink-dim">GenAI · Healthcare</span>
             </div>
             <ul class="space-y-2 text-ink-dim text-sm leading-relaxed list-none">
               <li class="flex gap-3"><span class="text-copper shrink-0">—</span>Architecting an end-to-end RAG-based clinical AI system using Python, Azure AI Foundry, and open-source LLMs (LLaMA, Mistral) with vector-database retrieval to automate medical justification reports for assistive technology equipment.</li>
@@ -1119,7 +1149,7 @@
                 <p class="font-mono text-xs text-ink-dim mt-1">Aug 2022 – Jul 2024 · Bengaluru, India</p>
                 <p class="text-sm text-ink-dim mt-1">Software Engineer (May 2023 – Jul 2024) · Associate Software Engineer (Aug 2022 – Apr 2023)</p>
               </div>
-              <span class="font-mono text-[0.65rem] uppercase tracking-wider border border-ink-line px-3 py-1 rounded-full text-ink-dim">Enterprise · APIs</span>
+              <span class="font-mono text-[0.7rem] uppercase tracking-wider border border-ink-line px-3 py-1 rounded-full text-ink-dim">Enterprise · APIs</span>
             </div>
             <ul class="space-y-2 text-ink-dim text-sm leading-relaxed list-none">
               <li class="flex gap-3"><span class="text-copper shrink-0">—</span>Leveraged expertise in APIs, certificates, and XML to streamline profile integration and enhance system performance.</li>
@@ -1139,7 +1169,7 @@
                 <h3 class="text-xl font-semibold">Full Stack Developer Intern · Ifortis Corporate</h3>
                 <p class="font-mono text-xs text-ink-dim mt-1">May 2020 – Aug 2020 · Bengaluru, Karnataka, India</p>
               </div>
-              <span class="font-mono text-[0.65rem] uppercase tracking-wider border border-ink-line px-3 py-1 rounded-full text-ink-dim">Ed-Tech · Full Stack</span>
+              <span class="font-mono text-[0.7rem] uppercase tracking-wider border border-ink-line px-3 py-1 rounded-full text-ink-dim">Ed-Tech · Full Stack</span>
             </div>
             <ul class="space-y-2 text-ink-dim text-sm leading-relaxed list-none">
               <li class="flex gap-3"><span class="text-copper shrink-0">—</span>Built and deployed the company’s ed-tech web platform using full-stack technologies including Python backend services and responsive frontend interfaces, enabling scalable delivery of online workshops and coding sessions.</li>
@@ -1749,27 +1779,50 @@
       </div>
 
       <div class="grid lg:grid-cols-2 gap-12 mb-16">
-        <div class="space-y-6">
-          <div class="skill-row">
-            <div class="flex justify-between font-mono text-xs mb-2"><span>Full-Stack Web</span><span class="text-ink-dim">Expert</span></div>
-            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="92"></div></div>
+        <div>
+          <div class="skill-proof">
+            <div class="skill-proof-row">
+              <div class="skill-proof-label">Full-Stack Web</div>
+              <div class="skill-proof-links">
+                <a href="#p-uic-loop" class="skill-proof-link">UIC Loop</a>
+                <a href="#p-argus" class="skill-proof-link">Argus</a>
+                <a href="#p-researchai" class="skill-proof-link">ResearchAI</a>
+              </div>
+            </div>
+            <div class="skill-proof-row">
+              <div class="skill-proof-label">Python / ML</div>
+              <div class="skill-proof-links">
+                <a href="#p-fine-tuning-llms" class="skill-proof-link">Fine-Tuning LLMs study</a>
+                <a href="#p-cashpulse" class="skill-proof-link">CashPulse</a>
+                <a href="#publications" class="skill-proof-link">Retinopathy paper</a>
+              </div>
+            </div>
+            <div class="skill-proof-row">
+              <div class="skill-proof-label">LLM Systems &amp; RAG</div>
+              <div class="skill-proof-links">
+                <a href="#experience" class="skill-proof-link">Clinical RAG at UIC</a>
+                <a href="#p-almanac" class="skill-proof-link">Almanac</a>
+                <a href="#p-auricle" class="skill-proof-link">Auricle</a>
+              </div>
+            </div>
+            <div class="skill-proof-row">
+              <div class="skill-proof-label">Cloud &amp; DevOps</div>
+              <div class="skill-proof-links">
+                <a href="#experience" class="skill-proof-link">Azure AI Foundry at UIC</a>
+                <a href="#p-golden-bridge" class="skill-proof-link">Golden Bridge on Azure</a>
+                <a href="#p-fluxfs" class="skill-proof-link">FluxFS installers</a>
+              </div>
+            </div>
+            <div class="skill-proof-row">
+              <div class="skill-proof-label">Computer Vision</div>
+              <div class="skill-proof-links">
+                <a href="#p-shesecure" class="skill-proof-link">SheSecure</a>
+                <a href="#publications" class="skill-proof-link">Retinopathy CNN</a>
+                <a href="#p-jan-swasthya" class="skill-proof-link">Jan Swasthya</a>
+              </div>
+            </div>
           </div>
-          <div class="skill-row">
-            <div class="flex justify-between font-mono text-xs mb-2"><span>Python / ML</span><span class="text-ink-dim">Expert</span></div>
-            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="90"></div></div>
-          </div>
-          <div class="skill-row">
-            <div class="flex justify-between font-mono text-xs mb-2"><span>LLM Systems &amp; RAG</span><span class="text-ink-dim">Advanced</span></div>
-            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="88"></div></div>
-          </div>
-          <div class="skill-row">
-            <div class="flex justify-between font-mono text-xs mb-2"><span>Cloud &amp; DevOps</span><span class="text-ink-dim">Advanced</span></div>
-            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="82"></div></div>
-          </div>
-          <div class="skill-row">
-            <div class="flex justify-between font-mono text-xs mb-2"><span>Computer Vision</span><span class="text-ink-dim">Proficient</span></div>
-            <div class="skill-bar-track"><div class="skill-bar-fill" data-width="78"></div></div>
-          </div>
+          <p class="skill-proof-note">Every claim links to the thing that shows it.</p>
         </div>
         <div class="grid sm:grid-cols-2 gap-5">
           <div class="skill-group">
@@ -1824,14 +1877,14 @@
       </div>
       <div class="grid lg:grid-cols-2 gap-6">
         <div id="publications" class="edu-card card rounded-2xl p-6 sm:p-8">
-          <p class="font-mono text-[0.65rem] uppercase tracking-wider text-copper mb-3">Publication</p>
+          <p class="font-mono text-[0.7rem] uppercase tracking-wider text-copper mb-3">Publication</p>
           <h3 class="font-semibold">Diabetic Retinopathy Detection using ML</h3>
           <p class="font-mono text-xs text-ink-dim mt-1">Jan 2022 – Jun 2022</p>
           <p class="text-sm text-ink-dim mt-3">5-layer CNN with 94.5% accuracy. Awarded International Best Researcher by ISSN.</p>
           <a href="https://www.ijariit.com/manuscript/diabetic-retinopathy-detection-using-machine-learning/" target="_blank" rel="noopener" class="inline-flex mt-4 text-sm text-copper hover:text-copper-light">Read paper →</a>
         </div>
         <div id="awards" class="edu-card card rounded-2xl p-6 sm:p-8">
-          <p class="font-mono text-[0.65rem] uppercase tracking-wider text-copper mb-3">Award</p>
+          <p class="font-mono text-[0.7rem] uppercase tracking-wider text-copper mb-3">Award</p>
           <h3 class="font-semibold">VMware vExpert</h3>
           <p class="font-mono text-xs text-ink-dim mt-1">2023</p>
           <p class="text-sm text-ink-dim mt-3">Recognized for expertise and community contributions in virtualization and cloud infrastructure.</p>
@@ -1868,11 +1921,19 @@
             </a>
           </div>
         </div>
-        <form id="contactForm" class="contact-col card rounded-2xl p-6 sm:p-8">
-          <label class="font-mono text-xs uppercase tracking-wider text-ink-dim">Message</label>
-          <textarea id="msg" name="message" class="contact-input mt-3 w-full rounded-xl p-4 min-h-[160px] text-sm text-ink-text resize-none" placeholder="Say hello..." required></textarea>
-          <button type="submit" class="btn-primary mt-5 inline-flex items-center px-6 py-3 rounded-full text-sm">Send email</button>
-        </form>
+        <div class="contact-col card rounded-2xl p-6 sm:p-8 self-start">
+          <p class="font-mono text-[0.7rem] uppercase tracking-wider text-ink-dim">Email</p>
+          <a href="mailto:maneeshreddy28@gmail.com?subject=Hi%20Laxmi!" class="contact-email">maneeshreddy28@gmail.com</a>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a href="mailto:maneeshreddy28@gmail.com?subject=Hi%20Laxmi!" class="btn-primary inline-flex items-center px-6 py-3 rounded-full text-sm">Email me</a>
+            <button type="button" id="copyEmail" class="btn-ghost inline-flex items-center gap-2 px-5 py-3 rounded-full text-sm" data-email="maneeshreddy28@gmail.com">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2M5 9h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z"/></svg>
+              <span>Copy address</span>
+            </button>
+            <a href="https://www.linkedin.com/in/laxmi-sai-maneesh-reddy-j-a52935106/" target="_blank" rel="noopener" class="btn-ghost inline-flex items-center px-5 py-3 rounded-full text-sm">LinkedIn</a>
+          </div>
+          <p class="mt-6 text-sm text-ink-dim leading-relaxed">Full-time roles, collaborations, or a question about any project above. A short note is enough.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -1916,7 +1977,8 @@
 
       initNav();
       initScrollLine();
-      initContactForm();
+      initCopyEmail();
+      initTerminal();
       initProjectFilter(initProjectAccordion());
       initBackToTop();
       initSpaceField();
@@ -1933,9 +1995,6 @@
           el.style.opacity = '1';
           el.style.transform = 'none';
           el.style.visibility = 'visible';
-        });
-        document.querySelectorAll('.skill-bar-fill').forEach(bar => {
-          bar.style.width = bar.dataset.width + '%';
         });
         document.querySelectorAll('[data-count]').forEach(el => {
           const suffix = el.dataset.suffix || '';
@@ -2107,16 +2166,7 @@
         }),
       });
 
-      gsap.utils.toArray('.skill-bar-fill').forEach(bar => {
-        gsap.to(bar, {
-          scrollTrigger: { trigger: bar, start: 'top 90%' },
-          width: bar.dataset.width + '%',
-          duration: 1.2,
-          ease: 'power2.out',
-        });
-      });
-
-      ScrollTrigger.batch('.skill-pill-item', {
+      ScrollTrigger.batch('.skill-proof-row, .skill-pill-item', {
         start: 'top 95%',
         once: true,
         onEnter: batch => gsap.from(batch, {
@@ -2565,13 +2615,73 @@
       });
     }
 
-    function initContactForm() {
-      document.getElementById('contactForm')?.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const body = document.getElementById('msg').value.trim();
-        if (!body) return;
-        window.location.href = `mailto:maneeshreddy28@gmail.com?subject=${encodeURIComponent('Hi Laxmi!')}&body=${encodeURIComponent(body)}`;
+    function initCopyEmail() {
+      const btn = document.getElementById('copyEmail');
+      if (!btn) return;
+      const label = btn.querySelector('span');
+      let timer = null;
+      async function copy(text) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return true;
+        } catch (err) { /* fall through to the legacy path */ }
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.cssText = 'position:fixed;opacity:0;pointer-events:none';
+        document.body.appendChild(ta);
+        ta.select();
+        let ok = false;
+        try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+        ta.remove();
+        return ok;
+      }
+      btn.addEventListener('click', async () => {
+        const ok = await copy(btn.dataset.email);
+        label.textContent = ok ? 'Copied' : 'Copy failed';
+        btn.classList.toggle('is-done', ok);
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          label.textContent = 'Copy address';
+          btn.classList.remove('is-done');
+        }, 1800);
       });
+    }
+
+    // Hero terminal: the static markup is the finished state; with motion allowed we retype it.
+    const TERMINAL_LINES = [
+      { cmd: 'flux find "assignment"', out: '<span class="prop">→</span> 4 results in 12ms' },
+      { cmd: 'auricle serve', out: '<span class="prop">●</span> daemon on 127.0.0.1:4820 <span class="cm">· local whisper</span>' },
+      { cmd: 'promptforge-cli run', out: '<span class="prop">✓</span> triage.test.yaml <span class="cm">· anthropic · openai · ollama</span>' },
+    ];
+
+    function initTerminal() {
+      const pre = document.getElementById('terminalOut');
+      if (!pre || reducedMotion) return;
+      const wait = ms => new Promise(r => setTimeout(r, ms));
+      const prompt = () => Object.assign(document.createElement('span'), { className: 'kw', textContent: '$' });
+      const cursor = Object.assign(document.createElement('span'), { className: 'code-cursor' });
+
+      async function run() {
+        pre.style.minHeight = pre.offsetHeight + 'px';
+        pre.textContent = '';
+        for (const line of TERMINAL_LINES) {
+          const typed = document.createTextNode('');
+          pre.append(prompt(), ' ', typed, cursor);
+          for (const ch of line.cmd) {
+            typed.textContent += ch;
+            await wait(28 + Math.random() * 40);
+          }
+          await wait(260);
+          cursor.remove();
+          const out = document.createElement('span');
+          out.innerHTML = line.out;
+          pre.append('\n', out, '\n');
+          await wait(650);
+        }
+        pre.append(prompt(), ' ', cursor);
+      }
+      setTimeout(run, 1500);
     }
 
     function initBackToTop() {
