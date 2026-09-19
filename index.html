@@ -910,6 +910,8 @@
       font-size: 0.66rem;
       color: var(--dim);
       display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 0.75rem;
       justify-content: space-between;
     }
 
@@ -1085,12 +1087,12 @@
               <span class="w-2.5 h-2.5 rounded-full bg-green-500/60"></span>
               <span class="ml-2">~ · things I shipped</span>
             </div>
-            <pre class="whitespace-pre-wrap" id="terminalOut"><span class="kw">$</span> flux find "assignment"
-<span class="prop">→</span> 4 results in 12ms
+            <pre class="whitespace-pre-wrap" id="terminalOut"><span class="kw">$</span> aqueduct chat --budget 11G --spec 3
+<span class="prop">→</span> Qwen3.8-27B · 0.63 tok/s · identical ids
 <span class="kw">$</span> auricle serve
 <span class="prop">●</span> daemon on 127.0.0.1:4820 <span class="cm">· local whisper</span>
-<span class="kw">$</span> promptforge-cli run
-<span class="prop">✓</span> triage.test.yaml <span class="cm">· anthropic · openai · ollama</span>
+<span class="kw">$</span> flux find "assignment"
+<span class="prop">→</span> 4 results in 12ms
 <span class="kw">$</span> <span class="code-cursor"></span></pre>
           </div>
         </div>
@@ -1236,9 +1238,59 @@
 
       <div class="projects-list" id="projectsGrid">
 
-        <article class="project-row" id="p-uic-loop" data-tags="llm">
+        <article class="project-row" id="p-aqueduct" data-tags="llm,systems">
           <div class="project-row-head">
             <span class="project-index">01</span>
+            <div class="project-row-main">
+              <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-aqueduct-panel">Qwen-3.8 in Rust</button></h3>
+              <p class="project-row-tagline">CPU inference engine for Qwen3.8-27B — full Q4_K_M quality on a 16 GB laptop by streaming what does not fit, instead of dropping to a worse quant.</p>
+            </div>
+            <div class="project-row-meta">
+              <span class="project-row-date">Sep 2026</span>
+              <div class="project-row-pills"><span class="skill-pill rounded-full">Rust</span><span class="skill-pill rounded-full">AVX2</span><span class="skill-pill rounded-full">GGUF</span></div>
+            </div>
+            <span class="project-row-action" aria-hidden="true">
+              <span class="project-row-action-text">View details</span>
+              <svg class="project-row-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M19 9l-7 7-7-7"/></svg>
+            </span>
+          </div>
+          <div class="project-row-panel" id="p-aqueduct-panel">
+            <div class="project-row-panel-inner">
+              <div class="project-row-panel-content">
+                <p class="text-sm text-ink-dim leading-relaxed"><code class="text-ink-text">aqueduct</code> runs bartowski's 17.8 GB Qwen3.8-27B Q4_K_M GGUF on a CPU-only machine with 8 to 16 GB of RAM. Layers that fit stay pinned; the rest stream from NVMe on every token. Greedy output is the same at every memory budget, thread count, and speculative <code class="text-ink-text">k</code> — no BLAS, no Python, no GPU.</p>
+                <div class="flux-preview mt-4">
+                  <div class="flux-preview-bar"><span class="text-sage">●</span> aqueduct doctor · 11 GiB plan</div>
+                  <div class="flux-preview-body">
+                    <div><span class="flux-ok">●</span> AVX2 <span class="flux-dim">· i7-9750H · 30 GB/s RAM · 3.3 GB/s NVMe</span></div>
+                    <div class="flux-hi">pin 48 layers · stream the rest · ring prefetch</div>
+                    <div class="mt-2 flux-dim">$ aqueduct chat --budget 11G --spec 3</div>
+                    <div>0.63 tok/s <span class="flux-dim">· identical ids vs resident</span></div>
+                    <div class="flux-hi">→ 1.78× vs plain decode · llama.cpp cannot load at 5–8 GiB</div>
+                  </div>
+                  <div class="flux-preview-foot">
+                    <span><span class="flux-hi">2.5–3.6×</span> vs llama.cpp</span>
+                    <span>gated DeltaNet + GQA</span>
+                    <span>same tokens every rung</span>
+                  </div>
+                </div>
+                <ul class="mt-4 space-y-1.5 text-xs text-ink-dim list-none">
+                  <li>· Plan-before-allocate: from the GGUF header alone, pin whole layers from 0 until the budget fills, then stream the rest through a two-slot prefetch ring; refuse a budget the plan cannot meet</li>
+                  <li>· Hand-written AVX2 K-quant kernels (Q4_K / Q5_K / Q6_K) against Q8_K activations; bit-identical greedy ids at every thread count and at every memory cap</li>
+                  <li>· <code class="text-ink-text">--spec 3</code> drafts with the checkpoint's own MTP head and verifies in one batched pass — 2.27× at 5 GiB, 1.78× at 11 GiB, no quality cost</li>
+                  <li>· Faster than llama.cpp's official AVX2 build at every rung on the same file; as shipped, llama.cpp cannot load this model in 5 or 8 GiB</li>
+                </ul>
+                <div class="mt-4 flex flex-wrap gap-2"><span class="skill-pill rounded-full">Rust</span><span class="skill-pill rounded-full">AVX2</span><span class="skill-pill rounded-full">GGUF</span><span class="skill-pill rounded-full">SIMD</span><span class="skill-pill rounded-full">DeltaNet</span><span class="skill-pill rounded-full">GQA</span></div>
+                <div class="project-row-links">
+                  <a href="https://github.com/ManeeshJupalle/Qwen-3.8-in-Rust" target="_blank" rel="noopener" class="text-copper hover:text-copper-light transition-colors">GitHub →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-row" id="p-uic-loop" data-tags="llm">
+          <div class="project-row-head">
+            <span class="project-index">02</span>
             <div class="project-row-main">
               <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-uic-loop-panel">UIC Loop</button></h3>
               <p class="project-row-tagline">All-in-one student platform for UIC — campus feed, marketplace, notes, study matching, professor reviews, and AI campus assistant.</p>
@@ -1292,7 +1344,7 @@
 
         <article class="project-row" id="p-almanac" data-tags="llm,systems">
           <div class="project-row-head">
-            <span class="project-index">02</span>
+            <span class="project-index">03</span>
             <div class="project-row-main">
               <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-almanac-panel">Almanac</button></h3>
               <p class="project-row-tagline">Local-first daily-briefing desktop agent — Gmail, Calendar, and Slack classified on-device, every item click-through-grounded to its source.</p>
@@ -1338,7 +1390,7 @@
 
         <article class="project-row" id="p-argus" data-tags="llm,systems">
           <div class="project-row-head">
-            <span class="project-index">03</span>
+            <span class="project-index">04</span>
             <div class="project-row-main">
               <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-argus-panel">Argus</button></h3>
               <p class="project-row-tagline">Bloomberg-style terminal for the AI model ecosystem — real-time pricing, arena rankings, benchmarks, and news for ~750 LLMs.</p>
@@ -1388,7 +1440,7 @@
 
         <article class="project-row" id="p-auricle" data-tags="llm,systems">
           <div class="project-row-head">
-            <span class="project-index">04</span>
+            <span class="project-index">05</span>
             <div class="project-row-main">
               <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-auricle-panel">Auricle</button></h3>
               <p class="project-row-tagline">Local-first meeting engine with a desktop copilot — bot-free capture, live transcript, screen-aware answers, REST/WebSocket API.</p>
@@ -1438,7 +1490,7 @@
 
         <article class="project-row" id="p-fine-tuning-llms" data-tags="llm,ml">
           <div class="project-row-head">
-            <span class="project-index">05</span>
+            <span class="project-index">06</span>
             <div class="project-row-main">
               <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-fine-tuning-llms-panel">Fine-Tuning LLMs: Mapping the Limits of Adaptation</button></h3>
               <p class="project-row-tagline">An empirical study fine-tuning three models of different eras/sizes to map where fine-tuning's power ends and pretraining's begins.</p>
@@ -1472,7 +1524,7 @@
 
         <article class="project-row" id="p-proofpilot" data-tags="llm,systems">
           <div class="project-row-head">
-            <span class="project-index">06</span>
+            <span class="project-index">07</span>
             <div class="project-row-main">
               <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-proofpilot-panel">ProofPilot</button></h3>
               <p class="project-row-tagline">Open-source contribution to UI-TARS Desktop — auditable, approval-gated, simulation-first execution for GUI agents.</p>
@@ -1510,7 +1562,7 @@
 
         <article class="project-row" id="p-fluxfs" data-tags="systems">
           <div class="project-row-head">
-            <span class="project-index">07</span>
+            <span class="project-index">08</span>
             <div class="project-row-main">
               <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-fluxfs-panel">FluxFS</button></h3>
               <p class="project-row-tagline">Intelligent filesystem autopilot — watch, organize, deduplicate, and search your files automatically. CLI, daemon, tray, and installers.</p>
@@ -1557,7 +1609,7 @@
 
         <article class="project-row" id="p-synapse" data-tags="llm">
           <div class="project-row-head">
-            <span class="project-index">08</span>
+            <span class="project-index">09</span>
             <div class="project-row-main">
               <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-synapse-panel">Synapse</button></h3>
               <p class="project-row-tagline">Privacy-first Chrome extension — browsing history becomes a local knowledge graph and searchable second brain.</p>
@@ -1591,7 +1643,7 @@
 
         <article class="project-row" id="p-promptforge-cli" data-tags="llm">
           <div class="project-row-head">
-            <span class="project-index">09</span>
+            <span class="project-index">10</span>
             <div class="project-row-main">
               <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-promptforge-cli-panel">PromptForge CLI</button></h3>
               <p class="project-row-tagline">"Jest for prompts" — test-driven LLM prompt development with local execution and a self-hosted dashboard.</p>
@@ -1624,7 +1676,7 @@
 
         <article class="project-row" id="p-sentinel-mcp" data-tags="llm">
           <div class="project-row-head">
-            <span class="project-index">10</span>
+            <span class="project-index">11</span>
             <div class="project-row-main">
               <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-sentinel-mcp-panel">Sentinel MCP</button></h3>
               <p class="project-row-tagline">Zero-config MCP server for instant, local-first codebase health analysis and prioritized reports.</p>
@@ -1657,7 +1709,7 @@
 
         <article class="project-row" id="p-cashpulse" data-tags="ml">
           <div class="project-row-head">
-            <span class="project-index">11</span>
+            <span class="project-index">12</span>
             <div class="project-row-main">
               <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-cashpulse-panel">CashPulse</button></h3>
               <p class="project-row-tagline">Privacy-first local cash flow forecasting and financial anomaly detection — fully on-device.</p>
@@ -1690,7 +1742,7 @@
 
         <article class="project-row" id="p-golden-bridge" data-tags="llm,health">
           <div class="project-row-head">
-            <span class="project-index">12</span>
+            <span class="project-index">13</span>
             <div class="project-row-main">
               <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-golden-bridge-panel">Golden Bridge</button></h3>
               <p class="project-row-tagline">Ambulance pre-arrival system — 1st place, Microsoft-sponsored Hack with Chicago.</p>
@@ -1720,7 +1772,7 @@
 
         <article class="project-row" id="p-insurease" data-tags="llm">
           <div class="project-row-head">
-            <span class="project-index">13</span>
+            <span class="project-index">14</span>
             <div class="project-row-main">
               <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-insurease-panel">Insurease</button></h3>
               <p class="project-row-tagline">LLM-powered insurance document extraction, comparison, and simplification with vector/graph search.</p>
@@ -1749,7 +1801,7 @@
 
         <article class="project-row" id="p-researchai" data-tags="llm">
           <div class="project-row-head">
-            <span class="project-index">14</span>
+            <span class="project-index">15</span>
             <div class="project-row-main">
               <h3 class="project-row-title"><button type="button" class="project-row-toggle" aria-expanded="false" aria-controls="p-researchai-panel">ResearchAI</button></h3>
               <p class="project-row-tagline">Full-stack AI research assistant — upload papers and chat with summaries and Q&amp;A.</p>
@@ -1778,7 +1830,7 @@
 
         <article class="project-row project-row--static" id="p-shesecure" data-tags="cv">
           <div class="project-row-head">
-            <span class="project-index">15</span>
+            <span class="project-index">16</span>
             <div class="project-row-main">
               <h3 class="project-row-title">SheSecure</h3>
               <p class="project-row-tagline">YOLOv5 pipeline for assault incident detection in CCTV footage — ~92% precision.</p>
@@ -1791,7 +1843,7 @@
 
         <article class="project-row project-row--static" id="p-jan-swasthya" data-tags="health">
           <div class="project-row-head">
-            <span class="project-index">16</span>
+            <span class="project-index">17</span>
             <div class="project-row-main">
               <h3 class="project-row-title">Jan Swasthya</h3>
               <p class="project-row-tagline">Healthcare app with CNN + chatbot for faster initial assessment — ~85% accuracy.</p>
@@ -1836,7 +1888,7 @@
             <div class="skill-proof-row">
               <div class="skill-proof-label">LLM Systems &amp; RAG</div>
               <div class="skill-proof-links">
-                <a href="#experience" class="skill-proof-link">Clinical RAG at UIC</a>
+                <a href="#p-aqueduct" class="skill-proof-link">Qwen-3.8 in Rust</a>
                 <a href="#p-almanac" class="skill-proof-link">Almanac</a>
                 <a href="#p-auricle" class="skill-proof-link">Auricle</a>
               </div>
@@ -2695,9 +2747,9 @@
 
     // Hero terminal: the static markup is the finished state; with motion allowed we retype it.
     const TERMINAL_LINES = [
-      { cmd: 'flux find "assignment"', out: '<span class="prop">→</span> 4 results in 12ms' },
+      { cmd: 'aqueduct chat --budget 11G --spec 3', out: '<span class="prop">→</span> Qwen3.8-27B · 0.63 tok/s · identical ids' },
       { cmd: 'auricle serve', out: '<span class="prop">●</span> daemon on 127.0.0.1:4820 <span class="cm">· local whisper</span>' },
-      { cmd: 'promptforge-cli run', out: '<span class="prop">✓</span> triage.test.yaml <span class="cm">· anthropic · openai · ollama</span>' },
+      { cmd: 'flux find "assignment"', out: '<span class="prop">→</span> 4 results in 12ms' },
     ];
 
     function initTerminal() {
