@@ -124,7 +124,7 @@
     }
 
     html { scroll-behavior: smooth; }
-    section[id], #publications, #awards, .xp[id] { scroll-margin-top: 5rem; }
+    section[id], .xp[id], .award[id] { scroll-margin-top: 5rem; }
 
     body {
       background: var(--ink);
@@ -576,6 +576,16 @@
     /* In-panel previews */
     .loop-preview, .flux-preview { border: 1px solid var(--line); border-radius: 0.75rem; background: #0c0c0c; overflow: hidden; }
     .project-row-panel .loop-preview, .project-row-panel .flux-preview { margin-bottom: 1rem; }
+
+    /* On phones the featured card drops the terminal mock-up and the paragraph its tagline and figures already cover. */
+    @media (max-width: 767px) {
+      .feature-copy .proj-desc, .feature-visual .flux-preview { display: none; }
+    }
+    .proj-more-wrap { display: flex; justify-content: center; margin-top: 1rem; }
+    .proj-more-wrap[hidden] { display: none; }
+    .proj-more { width: 100%; }
+    .proj-more svg { width: 0.95rem; height: 0.95rem; color: var(--copper); transition: transform 0.3s var(--ease-out); }
+    .proj-more[aria-expanded="true"] svg { transform: rotate(180deg); }
     .loop-preview-bar, .flux-preview-bar {
       display: flex; align-items: center; gap: 6px; padding: 0.5rem 0.75rem;
       border-bottom: 1px solid var(--line); background: rgba(255, 255, 255, 0.02); color: var(--dim);
@@ -647,6 +657,42 @@
     .ledger-sub { font-size: 0.9375rem; color: var(--text); }
     .ledger-note { font-size: 0.875rem; line-height: 1.6; color: var(--dim); max-width: 34rem; }
     .ledger-item .proj-link { justify-self: start; margin-top: 0.6rem; }
+    .edu-grid { display: grid; column-gap: 4rem; }
+    @media (min-width: 1024px) { .edu-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+    /* Recognition */
+    .awards { display: grid; gap: 0.9rem; margin: 1.5rem 0 4rem; perspective: 1400px; }
+    @media (min-width: 900px) { .awards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    .award {
+      position: relative; display: flex; flex-direction: column;
+      padding: 1.5rem 1.5rem 1.4rem; border-radius: 1.1rem; overflow: hidden;
+      border: 1px solid rgba(200, 135, 74, 0.3);
+      background:
+        radial-gradient(110% 80% at 100% 0%, rgba(200, 135, 74, 0.13), transparent 55%),
+        radial-gradient(70% 70% at 0% 100%, rgba(74, 143, 122, 0.06), transparent 60%),
+        var(--card);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, translate 0.35s var(--ease-out);
+    }
+    .award::before {
+      content: ''; position: absolute; inset: 0 0 auto; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(232, 184, 130, 0.7), transparent);
+    }
+    .award:hover { border-color: rgba(200, 135, 74, 0.65); translate: 0 -3px; box-shadow: 0 28px 60px -32px rgba(200, 135, 74, 0.5); }
+    .award-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .award-ico {
+      width: 2.6rem; height: 2.6rem; border-radius: 0.8rem; display: grid; place-items: center; flex-shrink: 0;
+      color: var(--copper-light); background: rgba(200, 135, 74, 0.1);
+      border: 1px solid rgba(200, 135, 74, 0.38); box-shadow: 0 0 26px rgba(200, 135, 74, 0.2);
+    }
+    .award-ico svg { width: 1.2rem; height: 1.2rem; }
+    .award-when { font-family: var(--mono); font-size: 0.72rem; color: var(--copper); text-align: right; }
+    .award-value { margin-top: 1.6rem; font-family: var(--serif); font-size: clamp(2.5rem, 4.4vw, 3.25rem); line-height: 1; letter-spacing: -0.03em; color: var(--text); }
+    .award-value em { font-style: italic; color: var(--copper); }
+    .award-title { margin-top: 0.75rem; font-size: 1.0625rem; font-weight: 500; line-height: 1.35; color: var(--text); }
+    .award-org { margin-top: 0.2rem; font-size: 0.875rem; color: var(--copper-light); }
+    .award-note { margin-top: 0.85rem; font-size: 0.875rem; line-height: 1.6; color: var(--dim); }
+    .award .proj-link { align-self: flex-start; margin-top: 1.25rem; }
+    .award-spacer { flex: 1; }
 
     /* ---------- Contact ---------- */
     .contact-panel {
@@ -805,7 +851,7 @@
         <a href="#experience" class="m-link">Work <span>4 roles</span></a>
         <a href="#projects" class="m-link">Projects <span>17 builds</span></a>
         <a href="#skills" class="m-link">Skills <span>With proof</span></a>
-        <a href="#education" class="m-link">Background <span>Degrees, awards</span></a>
+        <a href="#education" class="m-link">Background <span>Awards, degrees</span></a>
         <a href="#contact" class="m-link">Contact <span>Say hello</span></a>
       </nav>
       <div class="mt-6 flex flex-wrap gap-2">
@@ -1602,6 +1648,12 @@
           </div>
         </article>
       </div>
+      <div class="proj-more-wrap" id="projMoreWrap" hidden>
+        <button type="button" class="btn btn-ghost proj-more" id="projMore" aria-controls="projectsGrid" aria-expanded="false">
+          <span>Show all projects</span>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.6" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+      </div>
     </div>
   </section>
 
@@ -1696,15 +1748,57 @@
     </div>
   </section>
 
-  <!-- Education + Publications + Awards -->
+  <!-- Recognition + Education -->
   <section id="education" class="section bg-ink-soft/70 border-y border-ink-line">
     <div class="max-w-6xl mx-auto px-5 sm:px-8">
-      <div class="section-head">
-        <h2 class="section-title" data-split>Education and recognition</h2>
+      <div class="section-head section-head--split">
+        <h2 class="section-title" data-split>Recognition and education</h2>
+        <p class="section-lead">A hackathon win, an international research award, and VMware vExpert, backed by two computer science degrees.</p>
       </div>
-      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16">
-        <div class="reveal-up">
-          <h3 class="col-title">Education</h3>
+
+      <h3 class="col-title">Recognition</h3>
+      <div class="awards">
+        <article class="award" id="hackathon">
+          <div class="award-top">
+            <span class="award-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></span>
+            <span class="award-when">Hackathon, 2025</span>
+          </div>
+          <p class="award-value">1st <em>place</em></p>
+          <h4 class="award-title">Hack with Chicago</h4>
+          <p class="award-org">Sponsored by Microsoft</p>
+          <p class="award-note">Won with Golden Bridge, a multi-agent pre-arrival triage system for ambulances with sub-second EMS data streaming.</p>
+          <span class="award-spacer"></span>
+          <a href="#p-golden-bridge" class="proj-link">See Golden Bridge</a>
+        </article>
+
+        <article class="award" id="publications">
+          <div class="award-top">
+            <span class="award-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></span>
+            <span class="award-when">Research award, 2022</span>
+          </div>
+          <p class="award-value">Best <em>Researcher</em></p>
+          <h4 class="award-title">International Best Researcher</h4>
+          <p class="award-org">Awarded by ISSN</p>
+          <p class="award-note">For my published paper, Diabetic Retinopathy Detection using ML: a 5-layer CNN that reached 94.5% accuracy.</p>
+          <span class="award-spacer"></span>
+          <a href="https://www.ijariit.com/manuscript/diabetic-retinopathy-detection-using-machine-learning/" target="_blank" rel="noopener" class="proj-link">Read the paper</a>
+        </article>
+
+        <article class="award" id="awards">
+          <div class="award-top">
+            <span class="award-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+            <span class="award-when">Community award, 2023</span>
+          </div>
+          <p class="award-value">v<em>Expert</em></p>
+          <h4 class="award-title">VMware vExpert</h4>
+          <p class="award-org">VMware</p>
+          <p class="award-note">Recognized for expertise and community contributions in virtualization and cloud infrastructure.</p>
+        </article>
+      </div>
+
+      <div class="reveal-up">
+        <h3 class="col-title">Education</h3>
+        <div class="edu-grid">
           <div class="ledger-item">
             <p class="ledger-when">Aug 2024 – May 2026</p>
             <h4 class="ledger-title">MS Computer Science</h4>
@@ -1716,20 +1810,6 @@
             <h4 class="ledger-title">B.Tech CST (AI)</h4>
             <p class="ledger-sub">Jain University, GPA 3.72</p>
             <p class="ledger-note">ML, deep learning, NLP, HCI, data structures, DBMS, data science</p>
-          </div>
-        </div>
-        <div class="reveal-up">
-          <h3 class="col-title">Recognition</h3>
-          <div class="ledger-item" id="publications">
-            <p class="ledger-when">Publication, 2022</p>
-            <h4 class="ledger-title">Diabetic Retinopathy Detection using ML</h4>
-            <p class="ledger-note">A 5-layer CNN with 94.5% accuracy. Awarded International Best Researcher by ISSN.</p>
-            <a href="https://www.ijariit.com/manuscript/diabetic-retinopathy-detection-using-machine-learning/" target="_blank" rel="noopener" class="proj-link">Read the paper</a>
-          </div>
-          <div class="ledger-item" id="awards">
-            <p class="ledger-when">Award, 2023</p>
-            <h4 class="ledger-title">VMware vExpert</h4>
-            <p class="ledger-note">Recognized for expertise and community contributions in virtualization and cloud infrastructure.</p>
           </div>
         </div>
       </div>
@@ -1843,6 +1923,8 @@
       requestAnimationFrame(() => setTimeout(() => {
         const accordion = initProjectAccordion();
         const filter = initProjectFilter(accordion);
+        accordion.setEnsureVisible(filter.ensureVisible);
+        accordion.openFromHash();
         initCommandPalette(accordion, filter);
         initBackToTop();
         initCopyEmail();
@@ -1998,6 +2080,22 @@
           transformOrigin: '50% 0%',
           duration: 0.9,
           stagger: 0.08,
+          ease: 'power3.out',
+          overwrite: true,
+          clearProps: 'transform',
+        }),
+      });
+
+      ScrollTrigger.batch('.award', {
+        start: 'top 90%',
+        once: true,
+        onEnter: batch => gsap.from(batch, {
+          y: 50,
+          rotateX: -18,
+          opacity: 0,
+          transformOrigin: '50% 0%',
+          duration: 0.9,
+          stagger: 0.1,
           ease: 'power3.out',
           overwrite: true,
           clearProps: 'transform',
@@ -2578,16 +2676,26 @@
         row.querySelector('.project-row-toggle')?.focus({ preventScroll: true });
       });
 
-      // A #p-<project> hash (e.g. from the Skills section) opens that card.
+      // A #p-<project> hash (e.g. from the Skills section) opens that card. The card may be
+      // hidden by a filter or the phone limit, in which case the browser could not jump to it.
+      let ensureVisible = () => {};
       function openFromHash() {
         const row = location.hash.length > 1 && document.getElementById(location.hash.slice(1));
-        if (row && panels.get(row) && openRow !== row) toggle(row);
+        if (!row || !rows.includes(row)) return;
+        const wasHidden = row.style.display === 'none';
+        ensureVisible(row);
+        if (panels.get(row)) {
+          if (openRow !== row) toggle(row);
+        } else if (wasHidden) {
+          row.scrollIntoView({ block: 'start' });
+        }
       }
       window.addEventListener('hashchange', openFromHash);
-      openFromHash();
 
       return {
         rows,
+        openFromHash,
+        setEnsureVisible: (fn) => { ensureVisible = fn; },
         closeAll: () => { if (openRow) close(openRow); },
         openRow: (row) => {
           if (panels.get(row)) {
@@ -2603,11 +2711,19 @@
 
     function initProjectFilter(accordion) {
       const filters = document.querySelectorAll('.proj-filter');
+      const allFilter = document.querySelector('.proj-filter[data-tech="all"]');
       const list = document.getElementById('projectsGrid');
       const status = document.getElementById('projStatus');
+      const moreWrap = document.getElementById('projMoreWrap');
+      const moreBtn = document.getElementById('projMore');
       const rows = accordion.rows;
       const tagsOf = row => (row.dataset.tags || '').split(',').map(t => t.trim()).filter(Boolean);
       const matches = (row, tech) => tech === 'all' || tagsOf(row).includes(tech);
+      // On phones the list is one card wide, so it stops after a few until asked for the rest.
+      const phone = window.matchMedia('(max-width: 767px)');
+      const PHONE_LIMIT = 6;
+      let tech = 'all';
+      let expanded = false;
 
       filters.forEach(btn => {
         const count = rows.filter(r => matches(r, btn.dataset.tech)).length;
@@ -2618,27 +2734,39 @@
         btn.append(badge);
       });
 
-      function apply(btn) {
-        const tech = btn.dataset.tech;
+      function setActive(btn) {
         filters.forEach(b => {
           const on = b === btn;
           b.classList.toggle('active', on);
           b.setAttribute('aria-pressed', String(on));
         });
+      }
+
+      function layout() {
+        const matched = rows.filter(r => matches(r, tech));
+        const cap = phone.matches && !expanded ? PHONE_LIMIT : matched.length;
+        rows.forEach(row => {
+          const i = matched.indexOf(row);
+          row.style.display = i !== -1 && i < cap ? '' : 'none';
+        });
+        const shown = Math.min(cap, matched.length);
+        status.textContent = shown === rows.length ? `Showing all ${shown}` : `Showing ${shown} of ${rows.length}`;
+        const extra = matched.length - PHONE_LIMIT;
+        moreWrap.hidden = !phone.matches || extra <= 0;
+        moreBtn.firstElementChild.textContent = expanded ? 'Show fewer' : `Show ${extra} more`;
+        moreBtn.setAttribute('aria-expanded', String(expanded));
+      }
+
+      // Applies a change to which cards are visible, animating them between layouts.
+      function update(change) {
         const useFlip = !reducedMotion && typeof gsap !== 'undefined' && typeof Flip !== 'undefined';
         let state = null;
         if (useFlip) {
           list.classList.add('flip-active');
           state = Flip.getState(rows);
         }
-        accordion.closeAll();
-        let shown = 0;
-        rows.forEach(row => {
-          const on = matches(row, tech);
-          row.style.display = on ? '' : 'none';
-          if (on) shown++;
-        });
-        status.textContent = tech === 'all' ? `Showing all ${shown}` : `Showing ${shown} of ${rows.length}`;
+        change();
+        layout();
         if (useFlip) {
           Flip.from(state, {
             duration: 0.45,
@@ -2657,12 +2785,42 @@
           ScrollTrigger.refresh();
         }
       }
-      filters.forEach(btn => btn.addEventListener('click', () => apply(btn)));
+
+      filters.forEach(btn => btn.addEventListener('click', () => update(() => {
+        tech = btn.dataset.tech;
+        setActive(btn);
+        accordion.closeAll();
+      })));
+
+      moreBtn.addEventListener('click', () => {
+        const collapsing = expanded;
+        update(() => {
+          expanded = !expanded;
+          if (collapsing) accordion.closeAll();
+        });
+        // The cards above the button just went away; bring it back under the reader's thumb.
+        if (collapsing) moreBtn.scrollIntoView({ block: 'center' });
+      });
+
+      phone.addEventListener('change', () => {
+        if (phone.matches && !expanded) accordion.closeAll();
+        layout();
+        if (!reducedMotion && typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+      });
+      layout();
 
       return {
-        showAll: () => {
-          const all = document.querySelector('.proj-filter[data-tech="all"]');
-          if (!all.classList.contains('active')) apply(all);
+        // Before something jumps to a card, clear a filter that hides it and lift the phone limit.
+        ensureVisible: (row) => {
+          if (row.style.display !== 'none') return;
+          if (!matches(row, tech)) {
+            tech = 'all';
+            setActive(allFilter);
+          }
+          expanded = true;
+          accordion.closeAll();
+          layout();
+          if (!reducedMotion && typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
         },
       };
     }
@@ -2694,7 +2852,7 @@
         { group: 'Sections', icon: 'section', title: 'Work experience', sub: 'HirecraftApp, UIC GenAI team, VMware by Broadcom, Ifortis', keys: 'jobs career hirecraft founding startup', run: go('#experience') },
         { group: 'Sections', icon: 'section', title: 'Projects', sub: 'All seventeen builds', run: go('#projects') },
         { group: 'Sections', icon: 'section', title: 'Skills', sub: 'Languages, frameworks, and proof', keys: 'stack tech', run: go('#skills') },
-        { group: 'Sections', icon: 'section', title: 'Education and recognition', sub: 'Degrees, publication, awards', keys: 'background degree paper', run: go('#education') },
+        { group: 'Sections', icon: 'section', title: 'Recognition and education', sub: 'Hackathon win, research award, vExpert, degrees', keys: 'background degree paper awards hackathon', run: go('#education') },
         { group: 'Sections', icon: 'section', title: 'Contact', sub: 'Email, phone, LinkedIn', keys: 'hire reach', run: go('#contact') },
       ];
       accordion.rows.forEach(row => {
@@ -2705,7 +2863,7 @@
         items.push({
           group: 'Projects', icon: 'project', title, sub, keys: `${pills} ${row.dataset.tags || ''}`,
           run: () => {
-            if (row.style.display === 'none') filter.showAll();
+            filter.ensureVisible(row);
             setTimeout(() => accordion.openRow(row), 30);
           },
         });
