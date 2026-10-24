@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Laxmi Sai Maneesh Reddy Jupalle – Full Stack Developer</title>
-  <meta name="description" content="Full Stack Developer building web products, ML systems, and LLM pipelines. MS CS Graduate · UIC · Ex-VMware · Chicago." />
+  <title>Laxmi Sai Maneesh Reddy Jupalle – Founding Engineer at HirecraftApp</title>
+  <meta name="description" content="Founding engineer at HirecraftApp, an AI agent that finds, tailors, and submits job applications. Full stack across web products, ML systems, and LLM pipelines. MS CS · UIC · Ex-VMware · Chicago." />
   <link rel="canonical" href="https://buildwithmaneesh.com/" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://buildwithmaneesh.com/" />
   <meta property="og:site_name" content="buildwithmaneesh.com" />
-  <meta property="og:title" content="Laxmi Sai Maneesh Reddy Jupalle – Full Stack Developer" />
-  <meta property="og:description" content="Full Stack Developer building web products, ML systems, and LLM pipelines. MS CS · UIC · Ex-VMware · Chicago." />
-  <meta property="og:image" content="https://buildwithmaneesh.com/assets/og-image.jpg" />
+  <meta property="og:title" content="Laxmi Sai Maneesh Reddy Jupalle – Founding Engineer at HirecraftApp" />
+  <meta property="og:description" content="Founding engineer at HirecraftApp, an AI agent that finds, tailors, and submits job applications. MS CS · UIC · Ex-VMware · Chicago." />
+  <meta property="og:image" content="https://buildwithmaneesh.com/assets/og-image.jpg?v=2" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Laxmi Sai Maneesh Reddy Jupalle. Full Stack Developer, AI and LLMs, Chicago." />
+  <meta property="og:image:alt" content="Laxmi Sai Maneesh Reddy Jupalle. Founding Engineer at HirecraftApp, AI and LLMs, Chicago." />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Laxmi Sai Maneesh Reddy Jupalle – Full Stack Developer" />
-  <meta name="twitter:description" content="Full Stack Developer building web products, ML systems, and LLM pipelines. MS CS · UIC · Ex-VMware · Chicago." />
-  <meta name="twitter:image" content="https://buildwithmaneesh.com/assets/og-image.jpg" />
+  <meta name="twitter:title" content="Laxmi Sai Maneesh Reddy Jupalle – Founding Engineer at HirecraftApp" />
+  <meta name="twitter:description" content="Founding engineer at HirecraftApp, an AI agent that finds, tailors, and submits job applications. MS CS · UIC · Ex-VMware · Chicago." />
+  <meta name="twitter:image" content="https://buildwithmaneesh.com/assets/og-image.jpg?v=2" />
   <meta name="theme-color" content="#0a0a0a" />
 
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
@@ -124,7 +124,7 @@
     }
 
     html { scroll-behavior: smooth; }
-    section[id], #publications, #awards { scroll-margin-top: 5rem; }
+    section[id], #publications, #awards, .xp[id] { scroll-margin-top: 5rem; }
 
     body {
       background: var(--ink);
@@ -274,6 +274,8 @@
       font-size: 0.8125rem; color: var(--dim);
     }
     .status strong { color: var(--text); font-weight: 500; }
+    .status-link { color: var(--copper-light); text-decoration: underline; text-decoration-color: rgba(200, 135, 74, 0.4); text-underline-offset: 3px; transition: text-decoration-color 0.2s ease; }
+    .status-link:hover { text-decoration-color: var(--copper-light); }
     .status-dot { position: relative; width: 8px; height: 8px; border-radius: 50%; background: var(--sage-light); flex-shrink: 0; }
     .status-dot::after {
       content: ''; position: absolute; inset: -4px; border-radius: 50%;
@@ -382,6 +384,8 @@
 
     /* About */
     .about-body { font-size: clamp(1.0625rem, 1.3vw, 1.1875rem); line-height: 1.75; color: var(--text); max-width: 40rem; font-weight: 300; }
+    .about-link { color: var(--copper-light); text-decoration: underline; text-decoration-color: rgba(200, 135, 74, 0.4); text-underline-offset: 4px; transition: text-decoration-color 0.2s ease; }
+    .about-link:hover { text-decoration-color: var(--copper-light); }
     .facts { margin-top: 2.25rem; max-width: 40rem; }
     .fact { display: grid; grid-template-columns: 7.5rem 1fr; gap: 1rem; padding: 0.95rem 0; border-top: 1px solid var(--line); }
     .fact:last-child { border-bottom: 1px solid var(--line); }
@@ -410,6 +414,7 @@
     .xp-role-sub { margin-top: 0.15rem; font-size: 0.8125rem; color: var(--dim); }
     .xp-tag { font-size: 0.75rem; color: var(--dim); border: 1px solid var(--line); border-radius: 999px; padding: 0.25rem 0.7rem; white-space: nowrap; }
     .xp-points { margin-top: 1.1rem; display: grid; gap: 0.6rem; max-width: 46rem; }
+    .xp-links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem; }
     .xp-points li, .proj-bullets li { position: relative; padding-left: 1.25rem; color: var(--dim); line-height: 1.65; }
     .xp-points li { font-size: 0.9375rem; }
     .xp-points li::before, .proj-bullets li::before {
@@ -734,7 +739,8 @@
     "alternateName": "Maneesh Jupalle",
     "url": "https://buildwithmaneesh.com/",
     "image": "https://buildwithmaneesh.com/assets/og-image.jpg",
-    "jobTitle": "Full Stack Developer",
+    "jobTitle": "Founding Engineer",
+    "worksFor": { "@type": "Organization", "name": "HirecraftApp", "url": "https://hirecraftapp.com/" },
     "email": "mailto:maneeshreddy28@gmail.com",
     "address": { "@type": "PostalAddress", "addressLocality": "Chicago", "addressRegion": "IL", "addressCountry": "US" },
     "alumniOf": [
@@ -796,7 +802,7 @@
     <div id="mobileNav" class="mobile-nav lg:hidden hidden">
       <nav aria-label="Sections">
         <a href="#about" class="m-link">About <span>Who I am</span></a>
-        <a href="#experience" class="m-link">Work <span>3 roles</span></a>
+        <a href="#experience" class="m-link">Work <span>4 roles</span></a>
         <a href="#projects" class="m-link">Projects <span>17 builds</span></a>
         <a href="#skills" class="m-link">Skills <span>With proof</span></a>
         <a href="#education" class="m-link">Background <span>Degrees, awards</span></a>
@@ -818,14 +824,14 @@
     <div class="hero-inner max-w-6xl mx-auto px-5 sm:px-8 w-full pt-28 pb-12 lg:pt-32">
       <div class="grid lg:grid-cols-12 gap-12 lg:gap-10 items-center">
         <div class="lg:col-span-7">
-          <p class="status hero-meta"><span class="status-dot" aria-hidden="true"></span><span><strong>Open to full-time roles</strong>, based in Chicago</span></p>
+          <p class="status hero-meta"><span class="status-dot" aria-hidden="true"></span><span><strong>Founding engineer at <a href="https://hirecraftapp.com" target="_blank" rel="noopener" class="status-link">HirecraftApp</a></strong><span class="hidden sm:inline">, based in Chicago</span></span></p>
           <h1 class="hero-name mt-7">
             <span class="hero-word"><span class="hero-word-inner">Laxmi Sai</span></span>
             <span class="hero-word"><span class="hero-word-inner">Maneesh Reddy</span></span>
             <span class="hero-word"><span class="hero-word-inner"><em>Jupalle</em></span></span>
           </h1>
           <p class="hero-intro hero-meta mt-7">
-            Full stack developer. I build <strong>web products</strong>, <strong>machine learning systems</strong>, and <strong>LLM tooling</strong>, from a campus platform for UIC students to AI that runs entirely on your own machine.
+            Founding engineer building <strong>HirecraftApp</strong>, an AI agent that finds, tailors, and submits job applications. I work across <strong>web products</strong>, <strong>machine learning systems</strong>, and <strong>LLM tooling</strong>, from a campus platform for UIC students to AI that runs entirely on your own machine.
           </p>
           <div class="hero-meta mt-9 flex flex-wrap gap-3">
             <a href="#projects" class="btn btn-primary">See my work</a>
@@ -847,10 +853,10 @@
         </div>
       </div>
       <dl class="creds hero-meta mt-16 lg:mt-20">
+        <div class="cred"><dt class="sr-only">Now</dt><dd><p class="cred-value">Founding engineer</p><p class="cred-label">HirecraftApp, 2026 to present</p></dd></div>
         <div class="cred"><dt class="sr-only">Degree</dt><dd><p class="cred-value">MS CS, 3.80</p><p class="cred-label">University of Illinois Chicago, 2026</p></dd></div>
         <div class="cred"><dt class="sr-only">Industry</dt><dd><p class="cred-value">2 years</p><p class="cred-label">Software engineer at VMware by Broadcom</p></dd></div>
         <div class="cred"><dt class="sr-only">Hackathon</dt><dd><p class="cred-value">1st place</p><p class="cred-label">Hack with Chicago, sponsored by Microsoft</p></dd></div>
-        <div class="cred"><dt class="sr-only">Recognition</dt><dd><p class="cred-value">vExpert</p><p class="cred-label">VMware community award, 2023</p></dd></div>
       </dl>
     </div>
   </section>
@@ -863,12 +869,14 @@
           <h2 class="section-title" data-split>Reliable products, with real depth behind the interface.</h2>
         </div>
         <div class="lg:col-span-7">
-          <p class="about-body reveal-up">I graduated with an MS in Computer Science from the University of Illinois Chicago, with coursework in AI, ML, data science, generative AI, and systems. Before that I spent two years at VMware by Broadcom solving integration issues at enterprise scale and tightening the loop between developers and testers.</p>
-          <p class="about-body reveal-up mt-5 text-ink-dim">Now I'm looking for a full-time role where I can build reliable, user-centred products with web and AI/LLM technology: interfaces that feel fast and accessible, backed by data and models that hold up.</p>
+          <p class="about-body reveal-up">I founded <a href="https://hirecraftapp.com" target="_blank" rel="noopener" class="about-link">HirecraftApp</a> and build it as its founding engineer. It is a job-application agent: it watches company career pages, scores each new role against your profile, tailors your résumé without inventing anything, and submits the real application, keeping a receipt for every one. The work runs from job-board ingestion and browser automation to the LLM pipeline and the product people use every day.</p>
+          <p class="about-body reveal-up mt-5">Before that I earned an MS in Computer Science from the University of Illinois Chicago, where I built a RAG-based clinical AI system on the GenAI team, and spent two years at VMware by Broadcom solving integration issues at enterprise scale and tightening the loop between developers and testers.</p>
+          <p class="about-body reveal-up mt-5 text-ink-dim">What I care about hasn't changed: reliable, user-centred products built with web and AI/LLM technology. Interfaces that feel fast and accessible, backed by data and models that hold up.</p>
           <dl class="facts reveal-up">
+            <div class="fact"><dt>Building</dt><dd>HirecraftApp, founding engineer</dd></div>
             <div class="fact"><dt>Studied</dt><dd>MS Computer Science, UIC, graduated May 2026</dd></div>
             <div class="fact"><dt>Worked</dt><dd>VMware by Broadcom, UIC GenAI team</dd></div>
-            <div class="fact"><dt>Focus</dt><dd>Full-stack web, machine learning, LLM systems</dd></div>
+            <div class="fact"><dt>Focus</dt><dd>AI agents, full-stack web, LLM systems</dd></div>
             <div class="fact"><dt>Based</dt><dd>Chicago, IL</dd></div>
           </dl>
         </div>
@@ -881,11 +889,38 @@
     <div class="max-w-6xl mx-auto px-5 sm:px-8">
       <div class="section-head section-head--split">
         <h2 class="section-title" data-split>Where I've worked</h2>
-        <p class="section-lead">From enterprise device management to clinical AI: shipping inside real constraints like scale, compliance, and uptime.</p>
+        <p class="section-lead">From enterprise device management to clinical AI to a company of my own: shipping inside real constraints like scale, compliance, and uptime.</p>
       </div>
       <div class="xp-list">
         <div class="xp-rail" aria-hidden="true"></div>
         <div class="xp-fill" id="timelineFill" aria-hidden="true"></div>
+
+        <article class="xp" id="xp-hirecraftapp">
+          <span class="xp-dot" aria-hidden="true"></span>
+          <div class="xp-grid">
+            <p class="xp-when"><b>2026 – Present</b>Chicago, IL</p>
+            <div>
+              <div class="xp-head">
+                <div>
+                  <h3 class="xp-org">HirecraftApp</h3>
+                  <p class="xp-role">Founding Engineer</p>
+                  <p class="xp-role-sub">An AI agent that finds, tailors, and submits job applications</p>
+                </div>
+                <span class="xp-tag">Startup, AI agents</span>
+              </div>
+              <ul class="xp-points">
+                <li>Founded and built HirecraftApp, a job-application agent that watches company career pages, scores new roles against a candidate's profile, tailors the résumé for each posting, and submits the real application on the company's own site.</li>
+                <li>Built the ingestion layer that reads 548 companies' career boards on Greenhouse, Ashby, Gem, Breezy, and Pinpoint every 15 minutes from their public JSON feeds, so new roles surface within minutes of posting.</li>
+                <li>Engineered a browser-based application engine that fills forms, uploads a résumé PDF rebuilt per posting, handles emailed verification codes, and saves a receipt for every submission: the confirmation page, URL, exact fields sent, and the uploaded file.</li>
+                <li>Scoped the LLM to four jobs (résumé parsing, posting scoring, bullet rewrites, screener drafts) with guardrails in code: rewrites that add or remove numbers are blocked, legally sensitive answers come only from the profile, and no model ever presses submit.</li>
+                <li>Designed the human-in-the-loop flow: review each application or run autopilot within away hours and a nightly cap, with unanswered screener questions routed to the user on Telegram or WhatsApp instead of guessed.</li>
+              </ul>
+              <div class="xp-links">
+                <a href="https://hirecraftapp.com" target="_blank" rel="noopener" class="proj-link">Visit hirecraftapp.com</a>
+              </div>
+            </div>
+          </div>
+        </article>
 
         <article class="xp">
           <span class="xp-dot" aria-hidden="true"></span>
@@ -900,8 +935,8 @@
                 <span class="xp-tag">GenAI, healthcare</span>
               </div>
               <ul class="xp-points">
-                <li>Architecting an end-to-end RAG-based clinical AI system using Python, Azure AI Foundry, and open-source LLMs (LLaMA, Mistral) with vector-database retrieval to automate medical justification reports for assistive technology equipment.</li>
-                <li>Developing secure, HIPAA-compliant data workflows to process, anonymize, and validate patient records from protected file servers, grounding AI-generated clinical documentation in verified inventory and patient datasets.</li>
+                <li>Architected an end-to-end RAG-based clinical AI system using Python, Azure AI Foundry, and open-source LLMs (LLaMA, Mistral) with vector-database retrieval to automate medical justification reports for assistive technology equipment.</li>
+                <li>Developed secure, HIPAA-compliant data workflows to process, anonymize, and validate patient records from protected file servers, grounding AI-generated clinical documentation in verified inventory and patient datasets.</li>
               </ul>
             </div>
           </div>
@@ -1606,6 +1641,14 @@
               </div>
             </div>
             <div class="skill-proof-row">
+              <div class="skill-proof-label">Agents and automation</div>
+              <div class="skill-proof-links">
+                <a href="#xp-hirecraftapp" class="skill-proof-link">HirecraftApp</a>
+                <a href="#p-proofpilot" class="skill-proof-link">ProofPilot</a>
+                <a href="#p-sentinel-mcp" class="skill-proof-link">Sentinel MCP</a>
+              </div>
+            </div>
+            <div class="skill-proof-row">
               <div class="skill-proof-label">Cloud and DevOps</div>
               <div class="skill-proof-links">
                 <a href="#experience" class="skill-proof-link">Azure AI Foundry at UIC</a>
@@ -1700,7 +1743,7 @@
         <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-end">
           <div class="lg:col-span-7">
             <h2 class="section-title" data-split>Let's build something useful.</h2>
-            <p class="section-lead mt-5">I'm looking for full-time roles and I'm open to collaborations. A short note is enough.</p>
+            <p class="section-lead mt-5">I'm building HirecraftApp and always open to collaborations, feedback, and good conversations. A short note is enough.</p>
             <div class="contact-email-row">
               <a href="mailto:maneeshreddy28@gmail.com?subject=Hi%20Maneesh" class="contact-email">maneeshreddy28@gmail.com</a>
             </div>
@@ -1715,6 +1758,7 @@
           </div>
           <dl class="contact-list lg:col-span-5">
             <div class="contact-item"><dt>Phone</dt><dd><a href="tel:+18723577484">(872) 357-7484</a></dd></div>
+            <div class="contact-item"><dt>Building</dt><dd><a href="https://hirecraftapp.com" target="_blank" rel="noopener">hirecraftapp.com</a></dd></div>
             <div class="contact-item"><dt>Location</dt><dd>Chicago, IL<small id="localTime">Central Time</small></dd></div>
             <div class="contact-item"><dt>LinkedIn</dt><dd><a href="https://www.linkedin.com/in/maneeshjupalle/" target="_blank" rel="noopener">in/maneeshjupalle</a></dd></div>
             <div class="contact-item"><dt>GitHub</dt><dd><a href="https://github.com/ManeeshJupalle" target="_blank" rel="noopener">@ManeeshJupalle</a></dd></div>
@@ -2642,7 +2686,7 @@
 
       const items = [
         { group: 'Sections', icon: 'section', title: 'About', sub: 'Who I am and what I focus on', run: go('#about') },
-        { group: 'Sections', icon: 'section', title: 'Work experience', sub: 'UIC GenAI team, VMware by Broadcom, Ifortis', keys: 'jobs career', run: go('#experience') },
+        { group: 'Sections', icon: 'section', title: 'Work experience', sub: 'HirecraftApp, UIC GenAI team, VMware by Broadcom, Ifortis', keys: 'jobs career hirecraft founding startup', run: go('#experience') },
         { group: 'Sections', icon: 'section', title: 'Projects', sub: 'All seventeen builds', run: go('#projects') },
         { group: 'Sections', icon: 'section', title: 'Skills', sub: 'Languages, frameworks, and proof', keys: 'stack tech', run: go('#skills') },
         { group: 'Sections', icon: 'section', title: 'Education and recognition', sub: 'Degrees, publication, awards', keys: 'background degree paper', run: go('#education') },
@@ -2666,6 +2710,7 @@
         { group: 'Actions', icon: 'copy', title: 'Copy email address', sub: email, keys: 'mail', run: async () => showToast(await copyText(email) ? 'Email address copied' : 'Copy failed. The address is ' + email) },
         { group: 'Actions', icon: 'mail', title: 'Send an email', sub: 'Opens your mail app', keys: 'contact mail', run: () => { location.href = `mailto:${email}?subject=Hi%20Maneesh`; } },
         { group: 'Actions', icon: 'file', title: 'Download résumé', sub: 'PDF', keys: 'resume cv pdf', run: () => { const a = document.createElement('a'); a.href = 'Laxmi_Jupalle_Resume.pdf'; a.download = ''; a.click(); showToast('Résumé download started'); } },
+        { group: 'Actions', icon: 'link', title: 'Open HirecraftApp', sub: 'hirecraftapp.com', keys: 'hirecraft startup company founding agent', run: openUrl('https://hirecraftapp.com') },
         { group: 'Actions', icon: 'link', title: 'Open GitHub profile', sub: 'github.com/ManeeshJupalle', keys: 'code repos', run: openUrl('https://github.com/ManeeshJupalle') },
         { group: 'Actions', icon: 'link', title: 'Open LinkedIn profile', sub: 'linkedin.com/in/maneeshjupalle', run: openUrl('https://www.linkedin.com/in/maneeshjupalle/') },
       );
