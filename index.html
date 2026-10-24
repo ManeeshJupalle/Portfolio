@@ -1933,9 +1933,14 @@
     }
 
     function initScrollAnimations() {
-      // Hero content lifts away as the planet recedes.
+      // Hero content lifts away as the planet recedes. Below lg the hero is taller
+      // than the screen, so wait until all of it has been seen and finish only as
+      // it leaves the top, or the credentials fade while still being read.
       gsap.to('#home .hero-inner', {
-        scrollTrigger: { trigger: '#home', start: 'top top', end: 'bottom 30%', scrub: 0.4 },
+        scrollTrigger: {
+          trigger: '#home', start: 'bottom bottom', scrub: 0.4,
+          end: () => (window.innerWidth < 1024 ? 'bottom top' : 'bottom 30%'),
+        },
         y: -70,
         opacity: 0,
         ease: 'none',
