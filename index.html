@@ -2286,9 +2286,11 @@
         last = now;
         tiltX += (targetTiltX - tiltX) * 0.05;
         tiltY += (targetTiltY - tiltY) * 0.05;
-        const speed = 0.00012 + scrollP * 0.0009;
+        // Scrolling nudges the spin to at most twice its resting speed; more reads as
+        // the dots racing past the slow starfield behind them.
+        const speed = 0.00012 + scrollP * 0.00012;
         rotY += dt * speed;
-        spin += dt * scrollP * 0.002;
+        spin += dt * scrollP * 0.0003;
         draw(now);
         requestAnimationFrame(frame);
       }
