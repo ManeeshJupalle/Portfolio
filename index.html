@@ -224,6 +224,15 @@
       transition: transform 0.35s var(--ease-out);
     }
     .nav-link.active::after { transform: scaleX(1); }
+    /* With JS, one indicator glides between links instead of each link drawing its own. */
+    .nav-links { position: relative; }
+    .nav-indicator {
+      position: absolute; left: 0; bottom: -2px; width: 1px; height: 1px;
+      background: var(--copper);
+      transform-origin: left; opacity: 0; pointer-events: none;
+      transition: transform 0.55s var(--ease-out), opacity 0.3s ease;
+    }
+    .has-indicator .nav-link::after { display: none; }
     :where(.cmdk-trigger) { display: inline-flex; }
     .cmdk-trigger {
       align-items: center; gap: 0.6rem;
@@ -721,6 +730,68 @@
     .contact-item a:hover { color: var(--copper-light); }
     .contact-item small { display: block; color: var(--dim); font-size: 0.8125rem; margin-top: 0.15rem; }
 
+    /* ---------- Motion details ---------- */
+    /* About copy lights up word by word as it is read (JS splits it into .fw spans). */
+    .fw { display: inline; }
+
+    /* Section intros rise line by line out of a clip, then return to plain text. */
+    .line-mask { display: block; overflow: hidden; padding-bottom: 0.1em; margin-bottom: -0.1em; }
+    .line-inner { display: block; }
+
+    /* Mono labels decode from noise once; the real text stays readable to screen readers. */
+    .scramble-noise { color: var(--muted); }
+
+    /* Experience dots ignite as the rail's fill reaches them. */
+    .xp-dot { transition: background-color 0.45s ease, box-shadow 0.45s ease; }
+    .xp-dot::after {
+      content: ''; position: absolute; inset: -2px; border-radius: 50%;
+      border: 1px solid var(--copper-light); opacity: 0; pointer-events: none;
+    }
+    .xp.lit .xp-dot {
+      background: var(--copper);
+      box-shadow: 0 0 0 5px rgba(200, 135, 74, 0.2), 0 0 28px rgba(200, 135, 74, 0.65);
+    }
+    .xp.lit .xp-dot::after { animation: dot-ping 1.2s var(--ease-out) 1; }
+    @keyframes dot-ping { from { transform: scale(1); opacity: 0.9; } to { transform: scale(3.4); opacity: 0; } }
+
+    /* A strip of light crosses each award once when it arrives, and again on hover. */
+    .award-shine { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; pointer-events: none; }
+    .award-shine::before {
+      content: ''; position: absolute; top: -40%; bottom: -40%; left: -70%; width: 45%;
+      transform: skewX(-20deg); opacity: 0;
+      background: linear-gradient(90deg, transparent, rgba(232, 184, 130, 0.1) 30%, rgba(255, 236, 214, 0.2) 50%, rgba(232, 184, 130, 0.1) 70%, transparent);
+    }
+    .award.shine .award-shine::before { animation: award-shine 1.5s var(--ease-out) forwards; animation-delay: var(--shine-delay, 0s); }
+    .award.shine:hover .award-shine::before { animation: award-shine-again 1.1s var(--ease-out) forwards; }
+    @keyframes award-shine { 0% { left: -70%; opacity: 1; } 100% { left: 135%; opacity: 1; } }
+    @keyframes award-shine-again { 0% { left: -70%; opacity: 1; } 100% { left: 135%; opacity: 1; } }
+
+    /* Pointer glow: a copper light that follows a fine pointer along a card's edge. */
+    .glow::after {
+      content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
+      background: radial-gradient(280px circle at var(--gx, 50%) var(--gy, 0%), rgba(232, 184, 130, 0.6), rgba(200, 135, 74, 0.14) 40%, transparent 70%);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      opacity: 0; transition: opacity 0.35s ease;
+    }
+    .glow.is-lit::after { opacity: 1; }
+    .project-row.glow::before {
+      content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+      background: radial-gradient(340px circle at var(--gx, 50%) var(--gy, 0%), rgba(200, 135, 74, 0.07), transparent 60%);
+      opacity: 0; transition: opacity 0.35s ease;
+    }
+    .project-row.glow.is-lit::before { opacity: 1; }
+
+    /* Magnetic buttons drift toward a fine pointer; uses `translate` so it never fights `transform`. */
+    .magnetic { will-change: translate; }
+
+    /* Back-to-top ring fills with page progress. */
+    .to-top-ring { position: absolute; inset: -1px; width: calc(100% + 2px); height: calc(100% + 2px); transform: rotate(-90deg); pointer-events: none; }
+    .to-top-ring circle {
+      fill: none; stroke: var(--copper); stroke-width: 1.5; stroke-linecap: round;
+      stroke-dasharray: 135.1; stroke-dashoffset: calc(135.1 * (1 - var(--progress, 0)));
+    }
+
     /* ---------- Toast ---------- */
     .toast {
       position: fixed; left: 50%; bottom: 1.5rem; z-index: 300;
@@ -819,7 +890,7 @@
   <header class="site-nav fixed top-0 inset-x-0 z-50 border-b border-transparent">
     <div class="max-w-6xl mx-auto px-5 sm:px-8 flex items-center justify-between h-16 gap-4">
       <a href="#home" class="brand" aria-label="Maneesh Jupalle, back to top">Maneesh <span class="brand-mark">Jupalle</span></a>
-      <nav class="hidden lg:flex items-center gap-7" aria-label="Sections">
+      <nav class="nav-links hidden lg:flex items-center gap-7" aria-label="Sections">
         <a href="#about" class="nav-link" data-section="about">About</a>
         <a href="#experience" class="nav-link" data-section="experience">Work</a>
         <a href="#projects" class="nav-link" data-section="projects">Projects</a>
@@ -915,9 +986,9 @@
           <h2 class="section-title" data-split>Reliable products, with real depth behind the interface.</h2>
         </div>
         <div class="lg:col-span-7">
-          <p class="about-body reveal-up">I founded <a href="https://hirecraftapp.com" target="_blank" rel="noopener" class="about-link">HirecraftApp</a> and build it as its founding engineer. It is a job-application agent: it watches company career pages, scores each new role against your profile, tailors your résumé without inventing anything, and submits the real application, keeping a receipt for every one. The work runs from job-board ingestion and browser automation to the LLM pipeline and the product people use every day.</p>
-          <p class="about-body reveal-up mt-5">Before that I earned an MS in Computer Science from the University of Illinois Chicago, where I built a RAG-based clinical AI system on the GenAI team, and spent two years at VMware by Broadcom solving integration issues at enterprise scale and tightening the loop between developers and testers.</p>
-          <p class="about-body reveal-up mt-5 text-ink-dim">What I care about hasn't changed: reliable, user-centred products built with web and AI/LLM technology. Interfaces that feel fast and accessible, backed by data and models that hold up.</p>
+          <p class="about-body" data-fill>I founded <a href="https://hirecraftapp.com" target="_blank" rel="noopener" class="about-link">HirecraftApp</a> and build it as its founding engineer. It is a job-application agent: it watches company career pages, scores each new role against your profile, tailors your résumé without inventing anything, and submits the real application, keeping a receipt for every one. The work runs from job-board ingestion and browser automation to the LLM pipeline and the product people use every day.</p>
+          <p class="about-body mt-5" data-fill>Before that I earned an MS in Computer Science from the University of Illinois Chicago, where I built a RAG-based clinical AI system on the GenAI team, and spent two years at VMware by Broadcom solving integration issues at enterprise scale and tightening the loop between developers and testers.</p>
+          <p class="about-body mt-5 text-ink-dim" data-fill>What I care about hasn't changed: reliable, user-centred products built with web and AI/LLM technology. Interfaces that feel fast and accessible, backed by data and models that hold up.</p>
           <dl class="facts reveal-up">
             <div class="fact"><dt>Building</dt><dd>HirecraftApp, founding engineer</dd></div>
             <div class="fact"><dt>Studied</dt><dd>MS Computer Science, UIC, graduated May 2026</dd></div>
@@ -1859,6 +1930,7 @@
 
   <button id="toTop" type="button" class="fixed bottom-6 right-6 z-40 w-11 h-11 rounded-full border border-ink-line bg-ink-card items-center justify-center opacity-0 pointer-events-none hover:border-copper hidden sm:flex" aria-label="Back to top">
     <svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-width="1.5" d="M5 15l7-7 7 7"/></svg>
+    <svg class="to-top-ring" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="21.5"/></svg>
   </button>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -1912,6 +1984,8 @@
       initPlanet();
       if (motion) {
         gsap.registerPlugin(ScrollTrigger);
+        // Phone address bars resize the viewport on scroll; re-measuring then causes jumps.
+        ScrollTrigger.config({ ignoreMobileResize: true });
         if (typeof Flip !== 'undefined') gsap.registerPlugin(Flip);
         initHeroAnimations();
       } else {
@@ -1931,9 +2005,12 @@
         initLocalTime();
         initTerminal();
         initVisualEffects();
+        initCardGlow();
         if (motion) {
           initScrollAnimations();
           initMilkywayParallax();
+          initScramble();
+          initMagnetic();
         }
       }, 0));
     });
@@ -1970,10 +2047,35 @@
       });
       window.matchMedia('(min-width: 1024px)').addEventListener('change', e => { if (e.matches) setMenu(false); });
 
+      // One indicator glides to the active link, and previews a hovered one.
+      const linkBar = document.querySelector('.nav-links');
+      const indicator = Object.assign(document.createElement('span'), { className: 'nav-indicator' });
+      indicator.setAttribute('aria-hidden', 'true');
+      linkBar.append(indicator);
+      linkBar.classList.add('has-indicator');
+      const moveIndicator = (link = linkBar.querySelector('.nav-link.active')) => {
+        if (!link) { indicator.style.opacity = '0'; return; }
+        const to = `translateX(${link.offsetLeft}px) scaleX(${link.offsetWidth})`;
+        if (indicator.style.opacity !== '1') {
+          // Appear in place rather than sliding in from the left edge.
+          indicator.style.transition = 'none';
+          indicator.style.transform = to;
+          void indicator.offsetWidth;
+          indicator.style.transition = '';
+          indicator.style.opacity = '1';
+        }
+        indicator.style.transform = to;
+      };
+      links.forEach(l => l.addEventListener('mouseenter', () => moveIndicator(l)));
+      linkBar.addEventListener('mouseleave', () => moveIndicator());
+      document.fonts?.ready.then(() => moveIndicator());
+      window.addEventListener('resize', () => moveIndicator());
+
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             links.forEach(l => l.classList.toggle('active', l.dataset.section === entry.target.id));
+            if (!linkBar.matches(':hover')) moveIndicator();
           }
         });
       }, { rootMargin: '-40% 0px -50% 0px' });
@@ -1985,9 +2087,12 @@
 
     function initScrollLine() {
       const line = document.getElementById('scrollLine');
+      const toTop = document.getElementById('toTop');
       onScrollY(y => {
         const h = document.documentElement.scrollHeight - window.innerHeight;
-        line.style.transform = `scaleX(${h > 0 ? y / h : 0})`;
+        const progress = h > 0 ? y / h : 0;
+        line.style.transform = `scaleX(${progress})`;
+        toTop.style.setProperty('--progress', progress.toFixed(4));
       });
     }
 
@@ -2012,6 +2117,51 @@
         if (i < words.length - 1) el.append(' ');
       });
       return el.querySelectorAll('.w');
+    }
+
+    // Wraps each word of an element's text in a span, leaving inline elements such as links in place.
+    function wrapWords(el) {
+      const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+      const nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+      const words = [];
+      nodes.forEach(node => {
+        const frag = document.createDocumentFragment();
+        node.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.append(part); return; }
+          const span = Object.assign(document.createElement('span'), { className: 'fw', textContent: part });
+          frag.append(span);
+          words.push(span);
+        });
+        node.replaceWith(frag);
+      });
+      return words;
+    }
+
+    // Rises plain text in one line at a time from behind a clip, then puts the original text
+    // back so later resizes reflow normally.
+    function revealLines(el) {
+      const original = el.textContent;
+      const lines = [];
+      let top = null;
+      wrapWords(el).forEach(word => {
+        if (word.offsetTop !== top) {
+          lines.push([]);
+          top = word.offsetTop;
+        }
+        lines[lines.length - 1].push(word.textContent);
+      });
+      el.replaceChildren(...lines.map(words => {
+        const mask = Object.assign(document.createElement('span'), { className: 'line-mask' });
+        mask.append(Object.assign(document.createElement('span'), { className: 'line-inner', textContent: words.join(' ') }));
+        return mask;
+      }));
+      gsap.set(el, { opacity: 1 });
+      gsap.from(el.querySelectorAll('.line-inner'), {
+        yPercent: 110, duration: 1, stagger: 0.09, delay: 0.15, ease: 'expo.out',
+        onComplete: () => { el.textContent = original; },
+      });
     }
 
     function initScrollAnimations() {
@@ -2043,9 +2193,23 @@
       });
 
       gsap.utils.toArray('.section-head .section-lead, .contact-panel .section-lead').forEach(lead => {
-        gsap.from(lead, {
-          scrollTrigger: { trigger: lead, start: 'top 90%' },
-          y: 22, opacity: 0, duration: 0.9, delay: 0.2, ease: 'power3.out',
+        if (lead.children.length) {
+          gsap.from(lead, {
+            scrollTrigger: { trigger: lead, start: 'top 90%' },
+            y: 22, opacity: 0, duration: 0.9, delay: 0.2, ease: 'power3.out',
+          });
+          return;
+        }
+        // Split at reveal time so line breaks come from the loaded fonts.
+        gsap.set(lead, { opacity: 0 });
+        ScrollTrigger.create({ trigger: lead, start: 'top 90%', once: true, onEnter: () => revealLines(lead) });
+      });
+
+      // About copy lights up word by word as it is read.
+      document.querySelectorAll('[data-fill]').forEach(p => {
+        gsap.fromTo(wrapWords(p), { opacity: 0.3 }, {
+          opacity: 1, ease: 'none', stagger: 0.1,
+          scrollTrigger: { trigger: p, start: 'top 85%', end: 'bottom 55%', scrub: 0.4 },
         });
       });
 
@@ -2062,6 +2226,12 @@
         ease: 'none',
       });
       gsap.utils.toArray('.xp').forEach(item => {
+        // The rail's leading edge sits near 68% of the viewport; light each dot as it passes.
+        ScrollTrigger.create({
+          trigger: item.querySelector('.xp-dot'), start: 'center 68%', end: 'max',
+          onEnter: () => item.classList.add('lit'),
+          onLeaveBack: () => item.classList.remove('lit'),
+        });
         const st = { trigger: item, start: 'top 82%' };
         gsap.from(item.querySelector('.xp-dot'), { scrollTrigger: st, scale: 0, duration: 0.6, ease: 'back.out(2.2)' });
         gsap.from(item.querySelectorAll('.xp-when, .xp-head, .xp-points li'), {
@@ -2086,20 +2256,31 @@
         }),
       });
 
+      document.querySelectorAll('.award').forEach(card => {
+        const shine = Object.assign(document.createElement('span'), { className: 'award-shine' });
+        shine.setAttribute('aria-hidden', 'true');
+        card.append(shine);
+      });
       ScrollTrigger.batch('.award', {
         start: 'top 90%',
         once: true,
-        onEnter: batch => gsap.from(batch, {
-          y: 50,
-          rotateX: -18,
-          opacity: 0,
-          transformOrigin: '50% 0%',
-          duration: 0.9,
-          stagger: 0.1,
-          ease: 'power3.out',
-          overwrite: true,
-          clearProps: 'transform',
-        }),
+        onEnter: batch => {
+          gsap.from(batch, {
+            y: 50,
+            rotateX: -18,
+            opacity: 0,
+            transformOrigin: '50% 0%',
+            duration: 0.9,
+            stagger: 0.1,
+            ease: 'power3.out',
+            overwrite: true,
+            clearProps: 'transform',
+          });
+          batch.forEach((card, i) => {
+            card.style.setProperty('--shine-delay', `${0.5 + i * 0.14}s`);
+            card.classList.add('shine');
+          });
+        },
       });
 
       ScrollTrigger.batch('.skill-proof-row, .skill-pill-item, .ledger-item', {
@@ -2498,6 +2679,112 @@
       } else {
         onScrollY(() => applyOrbTransforms());
       }
+    }
+
+    // Mono labels (dates, award lines) decode from noise the first time they scroll in.
+    // Screen readers get the real text from a visually hidden copy throughout.
+    function initScramble() {
+      const glyphs = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789/<>+=*#';
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          io.unobserve(entry.target);
+          scramble(entry.target);
+        });
+      }, { rootMargin: '0px 0px -12% 0px' });
+      document.querySelectorAll('.xp-when b, .ledger-when, .award-when, .project-row-date').forEach(el => io.observe(el));
+
+      function scramble(el) {
+        const text = el.textContent;
+        const chars = [...text];
+        const real = Object.assign(document.createElement('span'), { className: 'sr-only', textContent: text });
+        const shown = document.createElement('span');
+        shown.setAttribute('aria-hidden', 'true');
+        const done = document.createElement('span');
+        const noise = Object.assign(document.createElement('span'), { className: 'scramble-noise' });
+        shown.append(done, noise);
+        el.replaceChildren(real, shown);
+        const start = performance.now();
+        let lastShuffle = -1;
+        (function frame(now) {
+          const t = now - start;
+          const locked = Math.min(chars.length, Math.floor(Math.max(0, t - 140) / 34));
+          if (locked >= chars.length) { el.textContent = text; return; }
+          done.textContent = chars.slice(0, locked).join('');
+          const shuffle = Math.floor(t / 55);
+          if (shuffle !== lastShuffle) {
+            lastShuffle = shuffle;
+            noise.textContent = chars.slice(locked).map(c => (/\s/.test(c) ? c : glyphs[(Math.random() * glyphs.length) | 0])).join('');
+          }
+          requestAnimationFrame(frame);
+        })(start);
+      }
+    }
+
+    // A copper light follows a fine pointer along the edge of the card under it.
+    function initCardGlow() {
+      if (!canHover) return;
+      document.querySelectorAll('.project-row:not(.project-row--feature), .award, .contact-panel').forEach(el => el.classList.add('glow'));
+      let card = null;
+      let x = 0;
+      let y = 0;
+      let raf = 0;
+      const paint = () => {
+        raf = 0;
+        if (!card) return;
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--gx', `${x - r.left}px`);
+        card.style.setProperty('--gy', `${y - r.top}px`);
+      };
+      document.addEventListener('pointermove', (e) => {
+        const next = e.target instanceof Element ? e.target.closest('.glow') : null;
+        if (next !== card) {
+          card?.classList.remove('is-lit');
+          card = next;
+          card?.classList.add('is-lit');
+        }
+        x = e.clientX;
+        y = e.clientY;
+        if (card && !raf) raf = requestAnimationFrame(paint);
+      }, { passive: true });
+      document.documentElement.addEventListener('pointerleave', () => {
+        card?.classList.remove('is-lit');
+        card = null;
+      });
+    }
+
+    // Primary buttons lean toward a fine pointer, then settle back.
+    function initMagnetic() {
+      if (!canHover) return;
+      const clamp = (v, m) => Math.max(-m, Math.min(m, v));
+      document.querySelectorAll('.hero-inner .btn, .contact-panel .btn-primary, #toTop').forEach(el => {
+        el.classList.add('magnetic');
+        let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
+        const tick = () => {
+          cx += (tx - cx) * 0.2;
+          cy += (ty - cy) * 0.2;
+          if (Math.abs(tx - cx) + Math.abs(ty - cy) < 0.05) {
+            cx = tx;
+            cy = ty;
+            raf = 0;
+          } else {
+            raf = requestAnimationFrame(tick);
+          }
+          el.style.translate = cx || cy ? `${cx.toFixed(2)}px ${cy.toFixed(2)}px` : '';
+        };
+        el.addEventListener('pointermove', (e) => {
+          const r = el.getBoundingClientRect();
+          // Measure from the resting centre, not the already-shifted one.
+          tx = clamp((e.clientX - (r.left - cx + r.width / 2)) * 0.25, 10);
+          ty = clamp((e.clientY - (r.top - cy + r.height / 2)) * 0.35, 7);
+          if (!raf) raf = requestAnimationFrame(tick);
+        });
+        el.addEventListener('pointerleave', () => {
+          tx = 0;
+          ty = 0;
+          if (!raf) raf = requestAnimationFrame(tick);
+        });
+      });
     }
 
     function applyOrbTransforms(pointerX = 0.5, pointerY = 0.3) {
