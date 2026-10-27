@@ -21,9 +21,11 @@
   <meta name="twitter:image" content="https://buildwithmaneesh.com/assets/og-image.jpg?v=2" />
   <meta name="theme-color" content="#0a0a0a" />
 
-  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-  <link rel="icon" href="favicon.svg" sizes="any" />
-  <link rel="apple-touch-icon" href="favicon.svg" />
+  <!-- PNG and ICO copies are rendered from favicon.svg: Google Search wants a raster icon (multiple of 48px), iOS ignores SVG touch icons -->
+  <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml" />
+  <link rel="icon" href="favicon-96x96.png" type="image/png" sizes="96x96" />
+  <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180" />
 
   <link rel="preload" href="assets/fonts/instrument-serif-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/fonts/instrument-serif-italic-latin.woff2" as="font" type="font/woff2" crossorigin />
