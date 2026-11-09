@@ -258,6 +258,19 @@
       font-family: var(--serif); font-size: 2rem; line-height: 1.1; color: var(--text);
     }
     .mobile-nav a.m-link span { font-family: 'Outfit', sans-serif; font-size: 0.8125rem; color: var(--dim); }
+    /* Opening the menu fades the sheet in and brings its rows up one after another. */
+    .mobile-nav:not(.hidden) { animation: sheet-in 0.3s ease both; }
+    .mobile-nav:not(.hidden) a.m-link, .mobile-nav:not(.hidden) .m-actions {
+      animation: m-link-in 0.55s var(--ease-out) both; animation-delay: calc(40ms + var(--i, 6) * 45ms);
+    }
+    .mobile-nav a.m-link:nth-child(1) { --i: 0; }
+    .mobile-nav a.m-link:nth-child(2) { --i: 1; }
+    .mobile-nav a.m-link:nth-child(3) { --i: 2; }
+    .mobile-nav a.m-link:nth-child(4) { --i: 3; }
+    .mobile-nav a.m-link:nth-child(5) { --i: 4; }
+    .mobile-nav a.m-link:nth-child(6) { --i: 5; }
+    @keyframes sheet-in { from { opacity: 0; } }
+    @keyframes m-link-in { from { opacity: 0; transform: translateY(1.1rem); } }
     html.menu-lock, html.menu-lock body { overflow: hidden; }
 
     /* ---------- Hero ---------- */
@@ -273,8 +286,12 @@
       right: max(-15vw, -215px); top: -14%;
     }
     #planet { width: 100%; height: 100%; display: block; }
+    /* Below lg the copy runs full width, so the planet sits in the top-right corner, clear of the name. */
     @media (max-width: 1023px) {
-      .planet-wrap { width: min(140vw, 680px); right: -52%; top: -2rem; opacity: 0.55; }
+      .planet-wrap { width: 760px; right: -200px; top: -9rem; opacity: 0.8; }
+    }
+    @media (max-width: 639px) {
+      .planet-wrap { width: 140vw; right: -50%; top: -7rem; opacity: 0.75; }
     }
 
     .status {
@@ -416,7 +433,11 @@
     }
     .xp-grid { display: grid; gap: 0.75rem 2.5rem; padding-block: 2rem 2.25rem; border-top: 1px solid var(--line); }
     .xp:last-child .xp-grid { border-bottom: 1px solid var(--line); }
-    @media (min-width: 1024px) { .xp-grid { grid-template-columns: 13rem minmax(0, 1fr); } }
+    @media (min-width: 1024px) {
+      .xp-grid { grid-template-columns: 13rem minmax(0, 1fr); }
+      /* The dates stay beside a long role while its bullets scroll past. */
+      .xp-when { position: sticky; top: 6rem; align-self: start; }
+    }
     .xp-when { font-family: var(--mono); font-size: 0.75rem; line-height: 1.7; color: var(--dim); }
     .xp-when b { display: block; color: var(--text); font-weight: 500; }
     .xp-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem 1.5rem; align-items: flex-start; }
@@ -472,6 +493,8 @@
       translate: 0 -3px;
     }
     .project-row.is-open { border-color: rgba(200, 135, 74, 0.6); translate: 0 0; }
+    /* Touch has no hover, so a press answers with the border instead. */
+    .project-row:has(.project-row-toggle):active { border-color: rgba(200, 135, 74, 0.6); }
     .project-row:has(.project-row-toggle:focus-visible) { outline: 2px solid var(--copper); outline-offset: 2px; }
     .project-row-head { position: relative; flex: 1; display: flex; flex-direction: column; gap: 0.85rem; padding: 1.3rem 1.3rem 1.1rem; }
     .project-row-head::before {
@@ -794,6 +817,123 @@
       stroke-dasharray: 135.1; stroke-dashoffset: calc(135.1 * (1 - var(--progress, 0)));
     }
 
+    /* ---------- Kinetic band ---------- */
+    /* Project names drift under the hero; scrolling pushes the band along and leans it.
+       Its height is reserved up front so filling it from JS never shifts the page. */
+    .band {
+      --band-size: clamp(2.25rem, 6.4vw, 5rem);
+      position: relative; overflow: hidden;
+      height: calc(var(--band-size) + 2 * clamp(1.1rem, 2.6vw, 2rem));
+      display: flex; align-items: center;
+      border-block: 1px solid var(--line);
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+              mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    }
+    html:not(.js) .band { display: none; }
+    .band-track { display: flex; width: max-content; transform-origin: 0 50%; will-change: transform; }
+    .band-group { display: flex; align-items: center; flex-shrink: 0; }
+    .band-item {
+      font-family: var(--serif); font-size: var(--band-size); line-height: 1; letter-spacing: -0.025em;
+      white-space: nowrap; color: var(--text);
+    }
+    .band-item:nth-child(6n + 3) { font-style: italic; color: var(--copper); }
+    .band-item:nth-child(6n + 5) { color: transparent; -webkit-text-stroke: 1px rgba(232, 230, 225, 0.42); }
+    /* The separator is the hero's ringed planet at the size of a full stop. */
+    .band-sep {
+      position: relative; flex-shrink: 0;
+      width: calc(var(--band-size) * 0.2); height: calc(var(--band-size) * 0.2);
+      margin-inline: calc(var(--band-size) * 0.5); border-radius: 50%;
+      background: radial-gradient(circle at 34% 30%, var(--copper-light), var(--copper) 55%, #6a4320);
+    }
+    .band-sep::after {
+      content: ''; position: absolute; left: 50%; top: 50%; width: 210%; height: 62%;
+      border: 1px solid rgba(109, 184, 158, 0.75); border-radius: 50%;
+      transform: translate(-50%, -50%) rotate(-18deg);
+    }
+
+    /* ---------- Section edges ---------- */
+    /* Banded sections open with a line of light that spreads from the centre as they arrive. */
+    .section--band::before {
+      content: ''; position: absolute; inset: -1px 0 auto; height: 1px; pointer-events: none;
+      background: linear-gradient(90deg, transparent, rgba(200, 135, 74, 0.5) 28%, rgba(232, 184, 130, 0.9) 50%, rgba(74, 143, 122, 0.5) 72%, transparent);
+      transition: transform 1.6s var(--ease-out), opacity 0.8s ease;
+    }
+    .section--band::after {
+      content: ''; position: absolute; inset: 0 0 auto; height: 10rem; pointer-events: none;
+      background: radial-gradient(55% 100% at 50% 0%, rgba(200, 135, 74, 0.075), transparent 70%);
+      transition: opacity 1.6s ease;
+    }
+    .js .section--band:not(.in-view)::before { transform: scaleX(0); opacity: 0; }
+    .js .section--band:not(.in-view)::after { opacity: 0; }
+
+    /* ---------- Constellations ---------- */
+    /* Each project gets its own small constellation, generated from its id. It draws itself
+       when the card arrives and retraces under the pointer. */
+    .constel {
+      position: absolute; left: 1.3rem; bottom: 1.05rem; width: 8.25rem; height: 2.5rem;
+      overflow: visible; pointer-events: none;
+    }
+    .project-row--static .project-row-head { padding-bottom: 4.1rem; }
+    .constel-line {
+      stroke: var(--copper); stroke-width: 1; stroke-linecap: round;
+      stroke-dasharray: 1; opacity: 0.4; transition: opacity 0.35s ease;
+    }
+    .constel-star { fill: var(--text); opacity: 0.6; transform-box: fill-box; transform-origin: center; transition: opacity 0.35s ease; }
+    .constel-star.is-lead { fill: var(--copper-light); opacity: 1; }
+    .constel-star.is-sage { fill: var(--sage-light); opacity: 0.85; }
+    .constel-star.is-loose { opacity: 0.32; }
+    .constel-halo { fill: var(--copper); opacity: 0.16; }
+    .project-row:hover .constel-line, .project-row.is-open .constel-line { opacity: 0.9; }
+    .project-row:hover .constel-star:not(.is-loose), .project-row.is-open .constel-star:not(.is-loose) { opacity: 1; }
+    .constel.is-pending > * { visibility: hidden; }
+    .constel.is-drawing .constel-line,
+    .project-row:has(.project-row-toggle):hover .constel.is-idle .constel-line {
+      animation: constel-trace 0.75s var(--ease-out) both; animation-delay: calc(var(--i) * 85ms + 120ms);
+    }
+    .constel.is-drawing .constel-star, .constel.is-drawing .constel-halo {
+      animation: constel-pop 0.55s var(--ease-out) both; animation-delay: calc(var(--i) * 70ms);
+    }
+    @keyframes constel-trace { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+    @keyframes constel-pop { from { opacity: 0; transform: scale(0); } }
+
+    /* ---------- Footer: the planet's horizon ---------- */
+    /* The page ends where it began: the hero's planet, now close enough that only its limb fits. */
+    .site-footer {
+      --mark: clamp(3.2rem, 17vw, 12.5rem);
+      --rise: clamp(3.5rem, 9vw, 7rem);
+      --limb: calc(var(--rise) + var(--mark) * 0.64);  /* where the planet's edge crosses the name */
+      --air: clamp(3.5rem, 10vw, 7rem);
+      position: relative; overflow: hidden; isolation: isolate; padding-top: var(--rise);
+    }
+    .footer-glow {
+      position: absolute; z-index: 0; left: 50%; top: var(--limb);
+      width: min(96vw, 70rem); aspect-ratio: 2.1; translate: -50% -50%; pointer-events: none;
+      background: radial-gradient(closest-side, rgba(200, 135, 74, 0.34), rgba(200, 135, 74, 0.1) 48%, transparent 72%);
+    }
+    .footer-mark {
+      position: relative; z-index: 0; margin: 0; text-align: center;
+      font-family: var(--serif); font-size: var(--mark); line-height: 0.9; letter-spacing: -0.04em;
+      white-space: nowrap; color: var(--text);
+    }
+    .footer-mark-inner { display: inline-block; }
+    .footer-mark em { font-style: italic; color: var(--copper); }
+    .horizon {
+      position: absolute; z-index: 1; left: 50%; top: var(--limb);
+      width: 240%; aspect-ratio: 1; translate: -50% 0; border-radius: 50%; pointer-events: none;
+      background: radial-gradient(50% 11% at 50% 0%, #1f150c, #0e0d0c 55%, var(--ink));
+      box-shadow:
+        inset 0 1.5px 0 rgba(232, 184, 130, 0.8),
+        inset 0 16px 44px -16px rgba(200, 135, 74, 0.5),
+        0 -2px 22px rgba(232, 184, 130, 0.28),
+        0 -34px 120px rgba(200, 135, 74, 0.2);
+    }
+    .horizon-dots {
+      position: absolute; z-index: 1; left: 0; width: 100%; pointer-events: none;
+      /* It starts above the limb so grains still falling have room to show. */
+      top: calc(var(--limb) - var(--air)); height: calc(100% - var(--limb) + var(--air));
+    }
+    .footer-row { position: relative; z-index: 2; margin-top: clamp(3.75rem, 8.5vw, 7.5rem); padding-bottom: 2.5rem; }
+
     /* ---------- Toast ---------- */
     .toast {
       position: fixed; left: 50%; bottom: 1.5rem; z-index: 300;
@@ -927,7 +1067,7 @@
         <a href="#education" class="m-link">Background <span>Awards, degrees</span></a>
         <a href="#contact" class="m-link">Contact <span>Say hello</span></a>
       </nav>
-      <div class="mt-6 flex flex-wrap gap-2">
+      <div class="m-actions mt-6 flex flex-wrap gap-2">
         <a href="Laxmi_Jupalle_Resume.pdf" download class="btn btn-primary">Download résumé</a>
         <a href="https://github.com/ManeeshJupalle" target="_blank" rel="noopener" class="btn btn-ghost">GitHub</a>
         <a href="https://www.linkedin.com/in/maneeshjupalle/" target="_blank" rel="noopener" class="btn btn-ghost">LinkedIn</a>
@@ -979,6 +1119,9 @@
       </dl>
     </div>
   </section>
+
+  <!-- Project names, filled in from the cards below by initBand -->
+  <div class="band" id="band" aria-hidden="true"><div class="band-track" id="bandTrack"></div></div>
 
   <!-- About -->
   <section id="about" class="section">
@@ -1109,7 +1252,7 @@
   </section>
 
   <!-- Projects -->
-  <section id="projects" class="section bg-ink-soft/70 border-y border-ink-line">
+  <section id="projects" class="section section--band bg-ink-soft/70 border-y border-ink-line">
     <div class="max-w-6xl mx-auto px-5 sm:px-8">
       <div class="section-head section-head--split">
         <h2 class="section-title" data-split>Selected work</h2>
@@ -1822,7 +1965,7 @@
   </section>
 
   <!-- Recognition + Education -->
-  <section id="education" class="section bg-ink-soft/70 border-y border-ink-line">
+  <section id="education" class="section section--band bg-ink-soft/70 border-y border-ink-line">
     <div class="max-w-6xl mx-auto px-5 sm:px-8">
       <div class="section-head section-head--split">
         <h2 class="section-title" data-split>Recognition and education</h2>
@@ -1922,8 +2065,12 @@
   </section>
   </main>
 
-  <footer class="py-10 border-t border-ink-line">
-    <div class="max-w-6xl mx-auto px-5 sm:px-8 flex flex-wrap items-center justify-between gap-4 text-sm text-ink-dim">
+  <footer class="site-footer">
+    <div class="footer-glow" aria-hidden="true"></div>
+    <p class="footer-mark" aria-hidden="true"><span class="footer-mark-inner">Maneesh <em>Jupalle</em></span></p>
+    <div class="horizon" aria-hidden="true"></div>
+    <canvas class="horizon-dots" id="horizonCanvas" aria-hidden="true"></canvas>
+    <div class="footer-row max-w-6xl mx-auto px-5 sm:px-8 flex flex-wrap items-center justify-between gap-4 text-sm text-ink-dim">
       <span>© <span id="year"></span> Laxmi Sai Maneesh Reddy Jupalle</span>
       <span class="hidden md:inline">Hand-built and self-hosted. No trackers, no third-party requests.</span>
       <button type="button" class="inline-flex items-center gap-2 hover:text-ink-text transition-colors" data-cmdk-open>Press <kbd>/</kbd> to jump anywhere</button>
@@ -2002,6 +2149,10 @@
         accordion.setEnsureVisible(filter.ensureVisible);
         accordion.openFromHash();
         initCommandPalette(accordion, filter);
+        initBand(accordion.rows);
+        initConstellations(accordion.rows);
+        initSectionEdges();
+        initHorizon();
         initBackToTop();
         initCopyEmail();
         initLocalTime();
@@ -2304,6 +2455,11 @@
         duration: 1.2,
         ease: 'power3.out',
       });
+
+      // The name rises from behind the horizon as the last of the page scrolls in.
+      const closing = { trigger: '.site-footer', start: 'top bottom', end: 'bottom bottom', scrub: 0.6 };
+      gsap.from('.footer-mark-inner', { scrollTrigger: closing, yPercent: 45, ease: 'none' });
+      gsap.from('.footer-glow', { scrollTrigger: closing, opacity: 0.1, scale: 0.65, ease: 'none' });
     }
 
     function initMilkywayParallax() {
@@ -2343,6 +2499,20 @@
       }
       const trail = [];
 
+      // Every dot and ring grain is a particle on a damped spring to its place on the planet
+      // (sphere first, then ring). The pointer pushes grains aside and drags them in its wake,
+      // a press sends a shockwave through them, and they swing back with a little overshoot.
+      // Arriving and scrolling away are not simulated: those follow paths fixed per grain.
+      const COUNT = N + M;
+      const ox = new Float32Array(COUNT), oy = new Float32Array(COUNT);  // offset from home
+      const vx = new Float32Array(COUNT), vy = new Float32Array(COUNT);  // velocity, px per 60fps frame
+      const rndA = new Float32Array(COUNT), rndB = new Float32Array(COUNT), rndC = new Float32Array(COUNT);
+      for (let i = 0; i < COUNT; i++) { rndA[i] = Math.random(); rndB[i] = Math.random(); rndC[i] = Math.random(); }
+      const STIFF = 0.035, DAMP = 0.84;  // about half of critical damping: one visible overshoot
+      const ptr = { on: false, x: 0, y: 0, vx: 0, vy: 0 };
+      let clientX = -1, clientY = -1, burst = null;
+      let px = 0, py = 0, pa = 1;  // place() writes its result here to avoid allocating per grain
+
       let size = 0, dpr = 1, rotY = 0.6, last = 0, running = false, visible = true;
       let tiltX = 0, tiltY = 0, targetTiltX = 0, targetTiltY = 0;
       let scrollP = 0, spin = 0;
@@ -2369,10 +2539,73 @@
         return [cx + x1 * R * s, cy + y2 * R * s, z2, s, x1, y2];
       }
 
-      function draw(now) {
+      // Moves grain i for this frame and leaves where to draw it in px/py, and how faint in pa.
+      // (hx, hy) is its place on the planet right now; h is the step in 60fps frames, 0 for a still.
+      function place(i, hx, hy, R, cx, cy, h, gather, away) {
+        if (h) {
+          let fx = -STIFF * ox[i], fy = -STIFF * oy[i];
+          const gx = hx + ox[i], gy = hy + oy[i];
+          if (ptr.on) {
+            const dx = gx - ptr.x, dy = gy - ptr.y;
+            const reach = R * 0.6;
+            const d2 = dx * dx + dy * dy;
+            if (d2 < reach * reach) {
+              const d = Math.sqrt(d2) || 1;
+              const near = 1 - d / reach;
+              fx += (dx / d) * near * near * 1.7 + ptr.vx * near * 0.06;
+              fy += (dy / d) * near * near * 1.7 + ptr.vy * near * 0.06;
+            }
+          }
+          if (burst) {
+            const dx = gx - burst.x, dy = gy - burst.y;
+            const d = Math.hypot(dx, dy) || 1;
+            const near = 1 - d / (R * 1.5);
+            if (near > 0) {
+              vx[i] += (dx / d) * near * near * 12;
+              vy[i] += (dy / d) * near * near * 12;
+            }
+          }
+          const drag = Math.pow(DAMP, h);
+          vx[i] = (vx[i] + fx * h) * drag;
+          vy[i] = (vy[i] + fy * h) * drag;
+          ox[i] += vx[i] * h;
+          oy[i] += vy[i] * h;
+        }
+        px = hx + ox[i];
+        py = hy + oy[i];
+        pa = 1;
+        // Arriving: each grain spirals in from a loose cloud, the stragglers a beat behind.
+        if (gather < 1) {
+          const g = Math.max(0, Math.min(1, (gather - rndA[i] * 0.35) / 0.65));
+          const rest = Math.pow(1 - g, 3);
+          const a = rndB[i] * 6.2832 + rest * 2.4;
+          const r = R * (0.5 + 1.4 * rndC[i]) * rest;
+          px += Math.cos(a) * r;
+          py += Math.sin(a) * r;
+          pa = 1 - rest;
+        }
+        // Scrolling away: the underside lets go first and the grains fall, picking up speed
+        // as if under gravity, spreading and wavering as they go.
+        if (away > 0) {
+          const ny = Math.max(-1, Math.min(1, (hy - cy) / R));
+          const t = (away - 0.03 - 0.2 * (1 - ny) - rndA[i] * 0.15) / 0.42;
+          if (t > 0) {
+            const s = t >= 1 ? 1 : t * t * (3 - 2 * t);
+            px += (((hx - cx) / R) * 0.55 + (rndB[i] - 0.5) * 0.9) * R * s + Math.sin(s * 3.1416 + rndC[i] * 6.2832) * R * 0.12 * s;
+            py += (0.5 + rndC[i] * 1.5) * R * s * s;
+            pa *= 1 - s;
+          }
+        }
+      }
+
+      function draw(now, h = 0) {
         if (!size) return;
         const intro = reducedMotion ? 1 : Math.min(1, (now - start) / 1800);
+        const away = reducedMotion ? 0 : scrollP;
+        // The solid body goes as the grains that cover it start to fall.
+        const hold = 1 - Math.max(0, Math.min(1, (away - 0.05) / 0.5));
         const e = 1 - Math.pow(1 - intro, 3);
+        const solid = e * hold;
         ctx.clearRect(0, 0, size, size);
         const cx = size / 2, cy = size / 2;
         const R = size * 0.2 * (0.86 + 0.14 * e);
@@ -2384,48 +2617,68 @@
 
         // Body: a dark disc so stars do not show through, with a copper rim light.
         const body = ctx.createRadialGradient(cx - R * 0.35, cy - R * 0.4, R * 0.1, cx, cy, R * 1.02);
-        body.addColorStop(0, `rgba(40, 28, 18, ${0.9 * e})`);
-        body.addColorStop(0.7, `rgba(12, 12, 12, ${0.94 * e})`);
-        body.addColorStop(1, `rgba(10, 10, 10, ${0.96 * e})`);
+        body.addColorStop(0, `rgba(40, 28, 18, ${0.9 * solid})`);
+        body.addColorStop(0.7, `rgba(12, 12, 12, ${0.94 * solid})`);
+        body.addColorStop(1, `rgba(10, 10, 10, ${0.96 * solid})`);
         ctx.fillStyle = body;
         ctx.beginPath(); ctx.arc(cx, cy, R * 1.01, 0, Math.PI * 2); ctx.fill();
         const halo = ctx.createRadialGradient(cx, cy, R * 0.95, cx, cy, R * 1.6);
-        halo.addColorStop(0, `rgba(200, 135, 74, ${0.14 * e})`);
-        halo.addColorStop(0.4, `rgba(200, 135, 74, ${0.04 * e})`);
+        halo.addColorStop(0, `rgba(200, 135, 74, ${0.14 * solid})`);
+        halo.addColorStop(0.4, `rgba(200, 135, 74, ${0.04 * solid})`);
         halo.addColorStop(1, 'rgba(200, 135, 74, 0)');
         ctx.fillStyle = halo;
         ctx.beginPath(); ctx.arc(cx, cy, R * 1.6, 0, Math.PI * 2); ctx.fill();
 
+        // Atmosphere: a thin lit crescent on the limb that faces the light, brightest at its middle.
+        const lit = Math.atan2(L[1], L[0]);
+        ctx.lineWidth = 1.25;
+        for (const [span, a] of [[1.3, 0.07], [1.0, 0.1], [0.7, 0.14], [0.42, 0.2]]) {
+          ctx.strokeStyle = `rgba(232, 184, 130, ${a * solid})`;
+          ctx.beginPath(); ctx.arc(cx, cy, R * 1.012, lit - span, lit + span); ctx.stroke();
+        }
+
+        // Ring grains: projected to their place, then moved by place(). q[6] carries their fade.
         const ringPts = [];
         const spread = 1 + (1 - e) * 0.9;
-        for (const p of ring) {
+        for (let j = 0; j < M; j++) {
+          const p = ring[j];
           const a = p.a + rotY * 0.35;
           const q = project(Math.cos(a) * p.rr * spread, p.y, Math.sin(a) * p.rr * spread, 1, 0, cosXr, sinXr, R, cx, cy);
+          place(N + j, q[0], q[1], R, cx, cy, h, intro, away);
+          q[0] = px;
+          q[1] = py;
+          q[6] = pa;
           ringPts.push([q, p]);
         }
-        const occluded = (q) => q[2] < 0 && Math.hypot(q[0] - cx, q[1] - cy) < R * 1.0;
+        const occluded = (q) => solid > 0.5 && q[2] < 0 && Math.hypot(q[0] - cx, q[1] - cy) < R * 1.0;
 
         // Ring behind the planet first.
         drawRing(ringPts, false, occluded, e);
 
         // Sphere dots, lit side copper, terminator fading to sage.
-        for (const [x, y, z] of sphere) {
-          const q = project(x, y, z, cosY, sinY, cosX, sinX, R, cx, cy);
-          if (q[2] < -0.05) continue;
+        for (let i = 0; i < N; i++) {
+          const q = project(sphere[i][0], sphere[i][1], sphere[i][2], cosY, sinY, cosX, sinX, R, cx, cy);
+          if (q[2] < -0.05) {
+            // Out of sight on the far side: come to rest so it returns in place.
+            ox[i] = oy[i] = vx[i] = vy[i] = 0;
+            continue;
+          }
+          place(i, q[0], q[1], R, cx, cy, h, intro, away);
           const nx = q[4], ny = q[5], nz = q[2];
           const lum = Math.max(0, nx * L[0] + ny * L[1] + nz * L[2]);
           const facing = Math.max(0, nz);
-          const alpha = (0.1 + lum * 0.85) * (0.35 + facing * 0.65) * e;
+          const alpha = (0.1 + lum * 0.85) * (0.35 + facing * 0.65) * e * pa;
           if (alpha < 0.03) continue;
           const t = Math.min(1, lum * 1.3);
           const r = Math.round(74 + (232 - 74) * t), g = Math.round(143 + (184 - 143) * t), b = Math.round(122 + (130 - 122) * t);
           ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
           const d = (0.7 + lum * 1.3) * q[3];
-          ctx.beginPath(); ctx.arc(q[0], q[1], d, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.arc(px, py, d, 0, Math.PI * 2); ctx.fill();
         }
 
         drawRing(ringPts, true, occluded, e);
-        drawMoon(now, cosXr, sinXr, R, cx, cy, occluded, e);
+        drawMoon(now, cosXr, sinXr, R, cx, cy, occluded, solid);
+        burst = null;
       }
 
       function drawRing(pts, front, occluded, e) {
@@ -2433,7 +2686,7 @@
           if ((q[2] >= 0) !== front) continue;
           if (!front && occluded(q)) continue;
           const depth = 0.45 + (q[2] + 2) / 4 * 0.55;
-          const alpha = p.o * depth * 0.75 * e;
+          const alpha = p.o * depth * 0.75 * e * q[6];
           ctx.fillStyle = p.sage ? `rgba(109, 184, 158, ${alpha})` : `rgba(200, 135, 74, ${alpha})`;
           const d = 0.55 * q[3] + (p.o > 0.9 ? 0.5 : 0);
           ctx.fillRect(q[0] - d, q[1] - d, d * 2, d * 2);
@@ -2474,7 +2727,20 @@
         const speed = 0.00012 + scrollP * 0.00012;
         rotY += dt * speed;
         spin += dt * scrollP * 0.0003;
-        draw(now);
+        // The pointer in canvas pixels, with a smoothed velocity for the wake it drags.
+        if (clientX >= 0) {
+          const box = canvas.getBoundingClientRect();
+          const x = (clientX - box.left) * (size / box.width), y = (clientY - box.top) * (size / box.height);
+          const limit = (v) => Math.max(-40, Math.min(40, v));
+          ptr.vx += ((ptr.on ? limit(x - ptr.x) : 0) - ptr.vx) * 0.35;
+          ptr.vy += ((ptr.on ? limit(y - ptr.y) : 0) - ptr.vy) * 0.35;
+          ptr.x = x;
+          ptr.y = y;
+          ptr.on = true;
+        } else {
+          ptr.on = false;
+        }
+        draw(now, dt / 16.67);
         requestAnimationFrame(frame);
       }
       function play() {
@@ -2498,11 +2764,24 @@
       onScrollY(y => {
         const h = window.innerHeight || 1;
         scrollP = Math.min(1, Math.max(0, y / h));
-        if (!reducedMotion) {
-          canvas.style.transform = `translate3d(0, ${scrollP * 140}px, 0) scale(${1 - scrollP * 0.28})`;
-          canvas.style.opacity = String(1 - scrollP * 0.85);
-        }
+        // The canvas only lags behind the page now; the grains themselves do the leaving.
+        if (!reducedMotion) canvas.style.transform = `translate3d(0, ${scrollP * 140}px, 0)`;
       });
+      if (!reducedMotion) {
+        if (canHover) {
+          window.addEventListener('pointermove', (e) => {
+            if (e.pointerType === 'touch') return;
+            clientX = e.clientX;
+            clientY = e.clientY;
+          }, { passive: true });
+          document.documentElement.addEventListener('pointerleave', () => { clientX = -1; });
+        }
+        // A press anywhere in the hero, touch included, sends a shockwave out from that point.
+        document.getElementById('home').addEventListener('pointerdown', (e) => {
+          const box = canvas.getBoundingClientRect();
+          burst = { x: (e.clientX - box.left) * (size / box.width), y: (e.clientY - box.top) * (size / box.height) };
+        }, { passive: true });
+      }
       window.addEventListener('resize', resize);
       resize();
       play();
@@ -2631,14 +2910,48 @@
         dirty = false;
       }
 
+      // Every so often a meteor crosses the upper sky: under a second, then a long quiet gap.
+      let meteor = null;
+      let nextMeteor = performance.now() + 4000 + Math.random() * 5000;
+      function drawMeteor(c, time) {
+        if (!meteor) {
+          if (time < nextMeteor) return;
+          const fall = 0.35 + Math.random() * 0.35;  // radians below horizontal
+          meteor = {
+            t0: time, life: 700 + Math.random() * 400, len: 90 + Math.random() * 90,
+            x: width * (0.2 + Math.random() * 0.6), y: height * (0.06 + Math.random() * 0.34),
+            dx: (Math.random() < 0.5 ? 1 : -1) * Math.cos(fall), dy: Math.sin(fall),
+          };
+        }
+        const p = (time - meteor.t0) / meteor.life;
+        if (p >= 1) {
+          meteor = null;
+          nextMeteor = time + 7000 + Math.random() * 11000;
+          return;
+        }
+        const travel = (time - meteor.t0) * 0.6;
+        const hx = meteor.x + meteor.dx * travel, hy = meteor.y + meteor.dy * travel;
+        const tx = hx - meteor.dx * meteor.len, ty = hy - meteor.dy * meteor.len;
+        const trail = c.createLinearGradient(tx, ty, hx, hy);
+        trail.addColorStop(0, 'rgba(232, 184, 130, 0)');
+        trail.addColorStop(1, `rgba(244, 236, 224, ${0.8 * Math.sin(Math.PI * p)})`);
+        c.strokeStyle = trail;
+        c.lineWidth = 1.2;
+        c.lineCap = 'round';
+        c.beginPath(); c.moveTo(tx, ty); c.lineTo(hx, hy); c.stroke();
+      }
+
       function tick(time) {
         // Static layers redraw only when scroll or pointer moved.
         if (dirty) {
           drawLayer(ctx, false, time);
           dirty = false;
         }
-        // The twinkle layer is 40 stars on a 3.5s sine; 30fps is plenty.
-        if ((frame++ & 1) === 0) drawLayer(tctx, true, time);
+        // The twinkle layer is 40 stars on a 3.5s sine; 30fps is plenty, except while a meteor is crossing.
+        if (meteor || (frame++ & 1) === 0) {
+          drawLayer(tctx, true, time);
+          drawMeteor(tctx, time);
+        }
         requestAnimationFrame(tick);
       }
 
@@ -2668,6 +2981,281 @@
         if (reducedMotion) renderAll(0);
       });
       if (!reducedMotion) requestAnimationFrame(tick);
+    }
+
+    // The band under the hero lists every project by name. It drifts on its own, and
+    // scrolling pushes it along, sets its direction, and leans it into the movement.
+    function initBand(rows) {
+      const band = document.getElementById('band');
+      const track = document.getElementById('bandTrack');
+      const names = rows.map(row => row.querySelector('.project-row-title')?.textContent.trim()).filter(Boolean);
+      if (!band || !names.length) return;
+      const group = () => {
+        const g = Object.assign(document.createElement('div'), { className: 'band-group' });
+        names.forEach(name => g.append(
+          Object.assign(document.createElement('span'), { className: 'band-item', textContent: name }),
+          Object.assign(document.createElement('i'), { className: 'band-sep' }),
+        ));
+        return g;
+      };
+      track.append(group());
+      if (reducedMotion) return;
+      // One group is far wider than any screen, so a second copy is enough to loop on.
+      track.append(group());
+
+      let x = 0, lean = 0, dir = -1, lastY = window.scrollY, last = 0, running = false, visible = false;
+      function frame(now) {
+        if (!running) return;
+        const dt = Math.min(64, now - (last || now));
+        last = now;
+        const y = window.scrollY;
+        const dy = y - lastY;
+        lastY = y;
+        if (Math.abs(dy) > 0.5) dir = dy > 0 ? -1 : 1;
+        lean += (dy - lean) * 0.12;
+        const width = track.firstElementChild.offsetWidth || 1;
+        x = (x + dir * dt * 0.045 - dy * 0.5) % width;
+        if (x > 0) x -= width;
+        const skew = Math.max(-7, Math.min(7, lean * -0.22));
+        track.style.transform = `translate3d(${x.toFixed(1)}px, 0, 0) skewX(${skew.toFixed(2)}deg)`;
+        requestAnimationFrame(frame);
+      }
+      const play = () => {
+        if (running || !visible || document.hidden) return;
+        running = true;
+        last = 0;
+        lastY = window.scrollY;
+        requestAnimationFrame(frame);
+      };
+      new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible) play(); else running = false;
+      }).observe(band);
+      document.addEventListener('visibilitychange', () => { if (document.hidden) running = false; else play(); });
+    }
+
+    // Every project card gets a constellation of its own: a few stars joined by their
+    // shortest links, placed by a generator seeded with the card's id so it never changes.
+    function initConstellations(rows) {
+      const NS = 'http://www.w3.org/2000/svg';
+      const W = 132, H = 40;
+      const el = (name, attrs, cls) => {
+        const node = document.createElementNS(NS, name);
+        Object.entries(attrs).forEach(([k, v]) => node.setAttribute(k, v));
+        if (cls) node.setAttribute('class', cls);
+        return node;
+      };
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          io.unobserve(entry.target);
+          const svg = entry.target;
+          svg.classList.replace('is-pending', 'is-drawing');
+          setTimeout(() => svg.classList.replace('is-drawing', 'is-idle'), 1700);
+        });
+      }, { threshold: 0.6 });
+
+      rows.forEach(row => {
+        const head = row.querySelector('.project-row-head');
+        if (!head || row.classList.contains('project-row--feature')) return;
+        let seed = 2166136261;
+        for (const ch of row.id) seed = Math.imul(seed ^ ch.charCodeAt(0), 16777619);
+        const rand = () => {
+          seed = (seed + 0x6D2B79F5) | 0;
+          let t = Math.imul(seed ^ (seed >>> 15), seed | 1);
+          t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+
+        // Scatter the stars, keeping them apart so the figure reads at this size.
+        const count = 5 + Math.floor(rand() * 3);
+        const stars = [];
+        for (let tries = 0; stars.length < count && tries < 200; tries++) {
+          const p = { x: 5 + rand() * (W - 10), y: 4 + rand() * (H - 8), r: 0.9 + rand() * 1.1 };
+          if (stars.every(s => Math.hypot(s.x - p.x, s.y - p.y) > 17)) stars.push(p);
+        }
+        // Join them with a minimum spanning tree, grown outward from the leftmost star.
+        stars.sort((a, b) => a.x - b.x);
+        const joined = [stars[0]];
+        const links = [];
+        while (joined.length < stars.length) {
+          let best = null;
+          joined.forEach(a => stars.forEach(b => {
+            if (joined.includes(b)) return;
+            const d = Math.hypot(a.x - b.x, a.y - b.y);
+            if (!best || d < best.d) best = { a, b, d };
+          }));
+          links.push(best);
+          joined.push(best.b);
+        }
+
+        const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, 'aria-hidden': 'true' }, `constel ${reducedMotion ? 'is-idle' : 'is-pending'}`);
+        links.forEach((l, i) => {
+          const line = el('line', { x1: l.a.x.toFixed(1), y1: l.a.y.toFixed(1), x2: l.b.x.toFixed(1), y2: l.b.y.toFixed(1), pathLength: 1 }, 'constel-line');
+          line.style.setProperty('--i', i);
+          svg.append(line);
+        });
+        const lead = stars.reduce((a, b) => (b.r > a.r ? b : a));
+        lead.r += 0.5;
+        svg.append(el('circle', { cx: lead.x.toFixed(1), cy: lead.y.toFixed(1), r: (lead.r * 3.2).toFixed(1) }, 'constel-halo'));
+        const sage = stars[Math.floor(rand() * stars.length)];
+        // Two faint stars that belong to no figure keep it from reading as a chart.
+        const loose = [0, 1].map(() => ({ x: rand() * W, y: rand() * H, r: 0.6, loose: true }));
+        [...joined, ...loose].forEach((s, i) => {
+          const cls = s.loose ? 'is-loose' : s === lead ? 'is-lead' : s === sage ? 'is-sage' : '';
+          const star = el('circle', { cx: s.x.toFixed(1), cy: s.y.toFixed(1), r: s.r.toFixed(2) }, `constel-star ${cls}`);
+          star.style.setProperty('--i', i);
+          svg.append(star);
+        });
+        head.append(svg);
+        if (!reducedMotion) io.observe(svg);
+      });
+    }
+
+    function initSectionEdges() {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          io.unobserve(entry.target);
+          entry.target.classList.add('in-view');
+        });
+      }, { rootMargin: '0px 0px -12% 0px' });
+      document.querySelectorAll('.section--band').forEach(section => io.observe(section));
+    }
+
+    // Closing scene: the hero's planet again, drawn with the same dot lattice but so large
+    // that only its upper limb is on screen. It turns slowly while the footer is in view.
+    function initHorizon() {
+      const footer = document.querySelector('.site-footer');
+      const canvas = document.getElementById('horizonCanvas');
+      if (!footer || !canvas) return;
+      const ctx = canvas.getContext('2d');
+      const golden = Math.PI * (3 - Math.sqrt(5));
+      const TILT = 0.5;  // the pole tips toward the viewer, so latitudes read as arcs
+      const cosT = Math.cos(TILT), sinT = Math.sin(TILT);
+      const SHADES = 10;
+      const buckets = Array.from({ length: SHADES }, () => []);
+      let pts = new Float32Array(0);
+      let lift = new Float32Array(0);  // how high each grain starts above the surface, 0 to 1
+      let W = 0, H = 0, R = 0, pad = 0, rot = 0.4, last = 0, running = false, visible = false;
+      // 0 while the footer is still below the screen, 1 once the page is at its end. The grains
+      // that fell off the hero's planet come to rest here: they hang above the surface and land.
+      let settle = reducedMotion ? 1 : 0;
+
+      function build() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+        W = canvas.clientWidth;
+        H = canvas.clientHeight;
+        if (!W || !H) return;
+        canvas.width = W * dpr;
+        canvas.height = H * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        R = W * 1.2;  // .horizon is 240% of the footer's width
+        // The canvas begins above the limb; pad is that headroom, the rest is planet.
+        pad = Math.max(0, footer.querySelector('.horizon').offsetTop - canvas.offsetTop);
+        const depth = H - pad;
+        const gap = Math.max(13, Math.min(24, W / 90));
+        const total = Math.round(4 * Math.PI * R * R / (gap * gap));
+        // Only the cap that can rotate into the visible strip is ever generated.
+        const reach = Math.min(Math.PI, Math.acos(Math.max(-1, 1 - depth / R)) + TILT);
+        const count = Math.ceil(total * (1 - Math.cos(reach)) / 2);
+        pts = new Float32Array(count * 3);
+        lift = new Float32Array(count);
+        for (let i = 0; i < count; i++) {
+          const y = 1 - ((i + 0.5) / total) * 2;
+          const r = Math.sqrt(1 - y * y);
+          pts[i * 3] = Math.cos(i * golden) * r;
+          pts[i * 3 + 1] = y;
+          pts[i * 3 + 2] = Math.sin(i * golden) * r;
+          const n = Math.sin(i * 12.9898) * 43758.5453;
+          lift[i] = n - Math.floor(n);
+        }
+        draw();
+      }
+
+      function draw() {
+        if (!R) return;
+        ctx.clearRect(0, 0, W, H);
+        const cosR = Math.cos(rot), sinR = Math.sin(rot);
+        const cx = W / 2;
+        const yMin = 1 - (H - pad) / R;
+        const zFar = Math.sqrt(1 - yMin * yMin);
+        // Still to fall, squared so the last stretch of scroll does the gentlest part of the landing.
+        const air = (1 - settle) * (1 - settle);
+        const drop = Math.min((H - pad) * 0.9, 220);
+        buckets.forEach(b => { b.length = 0; });
+        for (let i = 0; i < pts.length; i += 3) {
+          const px = pts[i], py = pts[i + 1], pz = pts[i + 2];
+          const x = px * cosR + pz * sinR;
+          const z1 = pz * cosR - px * sinR;
+          const y = py * cosT - z1 * sinT;
+          if (y < yMin) continue;
+          const z = py * sinT + z1 * cosT;
+          if (z <= 0) continue;
+          let sx = cx + x * R;
+          if (sx < -3 || sx > W + 3) continue;
+          // Lit from behind the limb: brightest at the edge, gone by the bottom of the strip.
+          const lit = Math.max(0, 1 - z / zFar);
+          let sy = pad + R - y * R;
+          if (air > 0) {
+            const up = lift[i / 3];
+            sy -= air * drop * (0.15 + up) * (0.35 + lit);
+            sx += Math.sin(up * 40 + air * 4) * air * drop * 0.22;
+          }
+          buckets[Math.min(SHADES - 1, (lit * lit * SHADES) | 0)].push(sx, sy);
+        }
+        ctx.globalAlpha = 0.2 + 0.8 * settle;
+        buckets.forEach((b, s) => {
+          if (!b.length) return;
+          const t = (s + 0.5) / SHADES;
+          const r = Math.round(74 + (232 - 74) * t), g = Math.round(143 + (184 - 143) * t), bl = Math.round(122 + (130 - 122) * t);
+          ctx.fillStyle = `rgba(${r}, ${g}, ${bl}, ${(0.05 + 0.85 * t).toFixed(3)})`;
+          const d = 0.55 + t * 0.95;
+          ctx.beginPath();
+          for (let i = 0; i < b.length; i += 2) {
+            ctx.moveTo(b[i] + d, b[i + 1]);
+            ctx.arc(b[i], b[i + 1], d, 0, Math.PI * 2);
+          }
+          ctx.fill();
+        });
+      }
+
+      function frame(now) {
+        if (!running) return;
+        // 30fps is plenty for a drift this slow; the speed matches the hero planet's on screen.
+        if (now - last >= 32) {
+          rot += Math.min(64, now - (last || now)) * (0.02 / R);
+          last = now;
+          draw();
+        }
+        requestAnimationFrame(frame);
+      }
+      const play = () => {
+        if (running || reducedMotion || !visible || document.hidden) return;
+        running = true;
+        last = 0;
+        requestAnimationFrame(frame);
+      };
+      new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible) play(); else running = false;
+      }).observe(footer);
+      document.addEventListener('visibilitychange', () => { if (document.hidden) running = false; else play(); });
+      let resizeTimer = 0;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(build, 150);
+      });
+      build();
+      if (!reducedMotion) {
+        onScrollY(() => {
+          const box = footer.getBoundingClientRect();
+          const next = Math.max(0, Math.min(1, (window.innerHeight - box.top) / box.height));
+          if (next === settle) return;
+          settle = next;
+          if (!running) draw();
+        });
+      }
     }
 
     let orbNodes = [];
