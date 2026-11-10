@@ -901,7 +901,9 @@
     .site-footer {
       --mark: clamp(3.2rem, 17vw, 12.5rem);
       --rise: clamp(3.5rem, 9vw, 7rem);
-      --limb: calc(var(--rise) + var(--mark) * 0.64);  /* where the planet's edge crosses the name */
+      /* The planet's edge. The name's lowest ink (the tails of J and p) ends 1.0em below its top,
+         so this sits just under that: once risen, the whole name stands clear of the horizon. */
+      --limb: calc(var(--rise) + var(--mark) * 1.07);
       --air: clamp(3.5rem, 10vw, 7rem);
       position: relative; overflow: hidden; isolation: isolate; padding-top: var(--rise);
     }
@@ -932,7 +934,8 @@
       /* It starts above the limb so grains still falling have room to show. */
       top: calc(var(--limb) - var(--air)); height: calc(100% - var(--limb) + var(--air));
     }
-    .footer-row { position: relative; z-index: 2; margin-top: clamp(3.75rem, 8.5vw, 7.5rem); padding-bottom: 2.5rem; }
+    /* The limb curves down toward the sides; the margin keeps the row's ends inside the planet. */
+    .footer-row { position: relative; z-index: 2; margin-top: calc(clamp(3.75rem, 8.5vw, 7.5rem) + var(--mark) * 0.45); padding-bottom: 2.5rem; }
 
     /* ---------- Toast ---------- */
     .toast {
@@ -2456,10 +2459,12 @@
         ease: 'power3.out',
       });
 
-      // The name rises from behind the horizon as the last of the page scrolls in.
-      const closing = { trigger: '.site-footer', start: 'top bottom', end: 'bottom bottom', scrub: 0.6 };
-      gsap.from('.footer-mark-inner', { scrollTrigger: closing, yPercent: 45, ease: 'none' });
-      gsap.from('.footer-glow', { scrollTrigger: closing, opacity: 0.1, scale: 0.65, ease: 'none' });
+      // The name is wholly behind the planet when its limb first comes on screen, and has risen
+      // clear of it a little before the page ends, so the last few pixels of scroll are not needed.
+      const closing = { trigger: '.horizon', start: 'top bottom', endTrigger: '.site-footer', end: 'bottom bottom', scrub: 0.6 };
+      const risen = (t) => Math.min(1, t / 0.9);
+      gsap.from('.footer-mark-inner', { scrollTrigger: closing, yPercent: 170, ease: risen });
+      gsap.from('.footer-glow', { scrollTrigger: closing, opacity: 0.1, scale: 0.65, ease: risen });
     }
 
     function initMilkywayParallax() {
